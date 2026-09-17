@@ -1,0 +1,489 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  OWNER
+  ADMIN
+  NURSE
+  CAREGIVER
+  FAMILY_VIEWER
+}
+
+enum ResidentStatus {
+  ACTIVE
+  DISCHARGED
+}
+
+enum Sex {
+  MALE
+  FEMALE
+  OTHER
+  UNKNOWN
+}
+
+enum MedOrderStatus {
+  ACTIVE
+  COMPLETED
+  DISCONTINUED
+}
+
+enum MedOutcome {
+  GIVEN
+  REFUSED
+  HELD
+  MISSED
+}
+
+enum MedAlertType {
+  MISSED
+  LATE
+  REFUSED
+}
+
+enum MedAlertStatus {
+  OPEN
+  ACKNOWLEDGED
+}
+
+enum NoteType {
+  PROGRESS
+  SHIFT
+  COMMUNICATION
+  OTHER
+}
+
+enum CarePlanStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum CareTaskCategory {
+  ADL
+  IADL
+  CARE
+  OTHER
+}
+
+enum ShiftWindow {
+  DAY
+  EVENING
+  NIGHT
+  ANY
+}
+
+enum TaskOutcome {
+  DONE
+  REFUSED
+  UNABLE
+  SKIPPED
+}
+
+enum CredentialType {
+  CPR
+  FIRST_AID
+  FOOD_HANDLER
+  NAC
+  HCA
+  RN_LICENSE
+  LPN_LICENSE
+  TB_TEST
+  BACKGROUND_CHECK
+  OTHER
+}
+
+enum CredentialAlertType {
+  EXPIRING_SOON
+  EXPIRED
+}
+
+enum AlertStatus {
+  OPEN
+  ACKNOWLEDGED
+}
+
+enum IncidentCategory {
+  FALL
+  MED_ERROR
+  BEHAVIOR
+  INJURY
+  ELOPEMENT
+  OTHER
+}
+
+enum IncidentSeverity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum IncidentStatus {
+  OPEN
+  UNDER_REVIEW
+  CLOSED
+}
+
+model Tenant {
+  id        String   @id @default(cuid())
+  name      String
+  timezone  String   @default("America/Los_Angeles")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users              User[]
+  residents          Resident[]
+  medicationOrders   MedicationOrder[]
+  medAdministrations MedAdministration[]
+  medAlerts          MedAlert[]
+  progressNotes      ProgressNote[]
+  auditLogs          AuditLog[]
+  carePlans          CarePlan[]
+  careTasks          CareTask[]
+  taskCompletions    TaskCompletion[]
+  staffCredentials   StaffCredential[]
+  credentialAlerts   CredentialAlert[]
+  familyLinks        FamilyResidentLink[]
+  incidents          Incident[]
+}
+
+model User {
+  id           String    @id @default(cuid())
+  tenantId     String
+  email        String
+  passwordHash String
+  role         Role
+  firstName    String
+  lastName     String
+  isActive     Boolean   @default(true)
+  deletedAt    DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  tenant             Tenant               @relation(fields: [tenantId], references: [id])
+  refreshTokens      RefreshToken[]
+  administrations    MedAdministration[]  @relation("AdministeredBy")
+  acknowledgedAlerts MedAlert[]           @relation("AlertAcknowledgedBy")
+  progressNotes      ProgressNote[]
+  auditLogs          AuditLog[]           @relation("AuditActor")
+  taskCompletions    TaskCompletion[]     @relation("TaskCompletedBy")
+  credentials        StaffCredential[]
+  ackCredentialAlerts CredentialAlert[]   @relation("CredentialAlertAckBy")
+  familyLinks        FamilyResidentLink[]
+  incidentsReported  Incident[]           @relation("IncidentReportedBy")
+
+  @@unique([tenantId, email])
+  @@index([tenantId, deletedAt])
+}
+
+model RefreshToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([tokenHash])
+}
+
+model Resident {
+  id          String         @id @default(cuid())
+  tenantId    String
+  firstName   String
+  lastName    String
+  dateOfBirth DateTime       @db.Date
+  sex         Sex            @default(UNKNOWN)
+  mrn         String?
+  room        String?
+  status      ResidentStatus @default(ACTIVE)
+  admitDate   DateTime       @db.Date
+  allergies   String[]       @default([])
+  deletedAt   DateTime?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  tenant             Tenant               @relation(fields: [tenantId], references: [id])
+  medicationOrders   MedicationOrder[]
+  medAdministrations MedAdministration[]
+  progressNotes      ProgressNote[]
+  carePlans          CarePlan[]
+  careTasks          CareTask[]
+  taskCompletions    TaskCompletion[]
+  familyLinks        FamilyResidentLink[]
+  incidents          Incident[]
+
+  @@index([tenantId, deletedAt, status])
+  @@index([tenantId, lastName, firstName])
+}
+
+model FamilyResidentLink {
+  id           String    @id @default(cuid())
+  tenantId     String
+  userId       String
+  residentId   String
+  relationship String
+  deletedAt    DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  tenant   Tenant   @relation(fields: [tenantId], references: [id])
+  user     User     @relation(fields: [userId], references: [id])
+  resident Resident @relation(fields: [residentId], references: [id])
+
+  @@unique([tenantId, userId, residentId])
+  @@index([tenantId, userId, deletedAt])
+}
+
+model MedicationOrder {
+  id            String         @id @default(cuid())
+  tenantId      String
+  residentId    String
+  drugName      String
+  dose          String
+  route         String
+  frequency     String
+  scheduleTimes String[]
+  startDate     DateTime       @db.Date
+  endDate       DateTime?      @db.Date
+  isPrn         Boolean        @default(false)
+  instructions  String?
+  status        MedOrderStatus @default(ACTIVE)
+  deletedAt     DateTime?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  tenant          Tenant              @relation(fields: [tenantId], references: [id])
+  resident        Resident            @relation(fields: [residentId], references: [id])
+  administrations MedAdministration[]
+
+  @@index([tenantId, residentId, status, deletedAt])
+}
+
+model MedAdministration {
+  id               String     @id @default(cuid())
+  tenantId         String
+  orderId          String
+  residentId       String
+  scheduledAt      DateTime
+  administeredAt   DateTime?
+  administeredById String?
+  outcome          MedOutcome
+  notes            String?
+  clientEventId    String?
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+
+  tenant         Tenant           @relation(fields: [tenantId], references: [id])
+  order          MedicationOrder  @relation(fields: [orderId], references: [id])
+  resident       Resident         @relation(fields: [residentId], references: [id])
+  administeredBy User?            @relation("AdministeredBy", fields: [administeredById], references: [id])
+  alerts         MedAlert[]
+
+  @@unique([tenantId, clientEventId])
+  @@index([tenantId, residentId, scheduledAt])
+  @@index([tenantId, outcome, scheduledAt])
+}
+
+model MedAlert {
+  id               String         @id @default(cuid())
+  tenantId         String
+  administrationId String
+  type             MedAlertType
+  status           MedAlertStatus @default(OPEN)
+  triggeredAt      DateTime       @default(now())
+  acknowledgedAt   DateTime?
+  acknowledgedById String?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  tenant         Tenant            @relation(fields: [tenantId], references: [id])
+  administration MedAdministration @relation(fields: [administrationId], references: [id])
+  acknowledgedBy User?             @relation("AlertAcknowledgedBy", fields: [acknowledgedById], references: [id])
+
+  @@index([tenantId, status, triggeredAt])
+}
+
+model ProgressNote {
+  id         String    @id @default(cuid())
+  tenantId   String
+  residentId String
+  authorId   String
+  body       String
+  noteType   NoteType  @default(PROGRESS)
+  occurredAt DateTime
+  deletedAt  DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  tenant   Tenant   @relation(fields: [tenantId], references: [id])
+  resident Resident @relation(fields: [residentId], references: [id])
+  author   User     @relation(fields: [authorId], references: [id])
+
+  @@index([tenantId, residentId, occurredAt])
+  @@index([tenantId, deletedAt])
+}
+
+model CarePlan {
+  id            String         @id @default(cuid())
+  tenantId      String
+  residentId    String
+  title         String
+  goals         String?
+  status        CarePlanStatus @default(ACTIVE)
+  effectiveFrom DateTime       @db.Date
+  effectiveTo   DateTime?      @db.Date
+  deletedAt     DateTime?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  tenant    Tenant     @relation(fields: [tenantId], references: [id])
+  resident  Resident   @relation(fields: [residentId], references: [id])
+  careTasks CareTask[]
+
+  @@index([tenantId, residentId, status, deletedAt])
+}
+
+model CareTask {
+  id            String           @id @default(cuid())
+  tenantId      String
+  carePlanId    String
+  residentId    String
+  category      CareTaskCategory @default(ADL)
+  title         String
+  shift         ShiftWindow      @default(ANY)
+  scheduleTimes String[]         @default([])
+  instructions  String?
+  isActive      Boolean          @default(true)
+  deletedAt     DateTime?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  tenant      Tenant           @relation(fields: [tenantId], references: [id])
+  carePlan    CarePlan         @relation(fields: [carePlanId], references: [id])
+  resident    Resident         @relation(fields: [residentId], references: [id])
+  completions TaskCompletion[]
+
+  @@index([tenantId, residentId, isActive, deletedAt])
+  @@index([tenantId, carePlanId])
+}
+
+model TaskCompletion {
+  id            String      @id @default(cuid())
+  tenantId      String
+  careTaskId    String
+  residentId    String
+  scheduledAt   DateTime
+  completedAt   DateTime?
+  completedById String?
+  outcome       TaskOutcome
+  notes         String?
+  clientEventId String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  tenant      Tenant   @relation(fields: [tenantId], references: [id])
+  careTask    CareTask @relation(fields: [careTaskId], references: [id])
+  resident    Resident @relation(fields: [residentId], references: [id])
+  completedBy User?    @relation("TaskCompletedBy", fields: [completedById], references: [id])
+
+  @@unique([tenantId, clientEventId])
+  @@index([tenantId, residentId, scheduledAt])
+  @@index([tenantId, careTaskId, scheduledAt])
+}
+
+model StaffCredential {
+  id            String         @id @default(cuid())
+  tenantId      String
+  userId        String
+  type          CredentialType
+  label         String
+  licenseNumber String?
+  issuedAt      DateTime?      @db.Date
+  expiresAt     DateTime       @db.Date
+  deletedAt     DateTime?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  tenant  Tenant            @relation(fields: [tenantId], references: [id])
+  user    User              @relation(fields: [userId], references: [id])
+  alerts  CredentialAlert[]
+
+  @@index([tenantId, userId, deletedAt])
+  @@index([tenantId, expiresAt])
+}
+
+model CredentialAlert {
+  id               String              @id @default(cuid())
+  tenantId         String
+  credentialId     String
+  type             CredentialAlertType
+  status           AlertStatus         @default(OPEN)
+  triggeredAt      DateTime            @default(now())
+  acknowledgedAt   DateTime?
+  acknowledgedById String?
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+
+  tenant         Tenant          @relation(fields: [tenantId], references: [id])
+  credential     StaffCredential @relation(fields: [credentialId], references: [id])
+  acknowledgedBy User?           @relation("CredentialAlertAckBy", fields: [acknowledgedById], references: [id])
+
+  @@index([tenantId, status, triggeredAt])
+}
+
+model Incident {
+  id                String           @id @default(cuid())
+  tenantId          String
+  residentId        String
+  reportedById      String
+  occurredAt        DateTime
+  category          IncidentCategory
+  severity          IncidentSeverity @default(MEDIUM)
+  status            IncidentStatus   @default(OPEN)
+  title             String
+  /// AES-GCM encrypted narrative (enc:v1:…)
+  narrative         String
+  immediateActions  String?
+  closedAt          DateTime?
+  deletedAt         DateTime?
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+
+  tenant     Tenant   @relation(fields: [tenantId], references: [id])
+  resident   Resident @relation(fields: [residentId], references: [id])
+  reportedBy User     @relation("IncidentReportedBy", fields: [reportedById], references: [id])
+
+  @@index([tenantId, residentId, occurredAt])
+  @@index([tenantId, status, deletedAt])
+  @@index([tenantId, category, severity])
+}
+
+/// Append-only immutable audit trail. Never UPDATE or DELETE rows in application code.
+model AuditLog {
+  id           String   @id @default(cuid())
+  tenantId     String
+  actorId      String?
+  action       String
+  resourceType String
+  resourceId   String?
+  metadata     Json?
+  ip           String?
+  userAgent    String?
+  createdAt    DateTime @default(now())
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+  actor  User?  @relation("AuditActor", fields: [actorId], references: [id])
+
+  @@index([tenantId, createdAt])
+  @@index([tenantId, resourceType, resourceId])
+  @@index([tenantId, actorId, createdAt])
+}

@@ -1,0 +1,17 @@
+{
+  "name": "rfh-system",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:api": "npm run start:dev -w @rfh/api",
+    "dev:web": "npm run dev -w @rfh/web",
+    "build": "npm run build -w @rfh/api && npm run build -w @rfh/web",
+    "db:migrate": "npm run prisma:migrate -w @rfh/api",
+    "db:seed": "npm run prisma:seed -w @rfh/api",
+    "db:generate": "npm run prisma:generate -w @rfh/api"
+  }
+}
