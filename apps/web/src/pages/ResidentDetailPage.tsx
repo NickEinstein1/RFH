@@ -12,6 +12,8 @@ import {
   readSnapshot,
 } from '../offlineQueue';
 import { fileToResidentPhotoDataUrl } from '../residentPhoto';
+import { PrnRecordModal } from '../components/PrnRecordModal';
+import { prnPayloadFromForm } from '../marBackGuides';
 
 type Resident = {
   id: string;
@@ -87,6 +89,7 @@ export function ResidentDetailPage({ timezone }: { timezone: string }) {
   const [pending, setPending] = useState(() => pendingCount());
   const [online, setOnline] = useState(() => isOnline());
   const [photoBusy, setPhotoBusy] = useState(false);
+  const [prnSlot, setPrnSlot] = useState<Slot | null>(null);
 
   const load = useCallback(async () => {
     if (!id) return;
@@ -161,9 +164,17 @@ export function ResidentDetailPage({ timezone }: { timezone: string }) {
     };
   }, [load]);
 
-  async function record(slot: Slot, outcome: 'GIVEN' | 'REFUSED' | 'HELD' | 'MISSED') {
+  async function record(
+    slot: Slot,
+    outcome: 'GIVEN' | 'REFUSED' | 'HELD' | 'MISSED',
+    prn?: ReturnType<typeof prnPayloadFromForm>,
+  ) {
     if (!slot.scheduledAt && !slot.isPrn) return;
     if (!id) return;
+    if (outcome === 'GIVEN' && slot.isPrn && !prn) {
+      setPrnSlot(slot);
+      return;
+    }
     setBusyId(`${slot.order.id}-${outcome}`);
     setError('');
     const clientEventId = crypto.randomUUID();
@@ -174,6 +185,7 @@ export function ResidentDetailPage({ timezone }: { timezone: string }) {
       outcome,
       administeredAt,
       clientEventId,
+      ...prn,
     };
     try {
       if (!navigator.onLine) {
@@ -193,6 +205,7 @@ export function ResidentDetailPage({ timezone }: { timezone: string }) {
               : s,
           ),
         );
+        setPrnSlot(null);
         setError('Saved offline — will sync when connection returns.');
         return;
       }
@@ -200,6 +213,7 @@ export function ResidentDetailPage({ timezone }: { timezone: string }) {
         method: 'POST',
         body: JSON.stringify(body),
       });
+      setPrnSlot(null);
       await load();
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to record dose';
@@ -382,7 +396,7 @@ export function ResidentDetailPage({ timezone }: { timezone: string }) {
         <div className="stack">
           <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.75rem', flexWrap: 'wrap' }}>
             <p className="meta" style={{ margin: 0 }}>
-              Record = ✓ given · Reject = X not given · clears to - on MAR
+              Record = ✓ given · Reject = X not given · PRN Record opens back-of-MAR form
             </p>
             <Link
               className="btn secondary"
@@ -406,6 +420,7 @@ export function ResidentDetailPage({ timezone }: { timezone: string }) {
                   <div>
                     <strong style={{ fontSize: '1.25rem' }}>
                       {slot.order.drugName} {slot.order.dose}
+                      {slot.isPrn ? ' · PRN' : ''}
                     </strong>
                     <div className="meta">
                       {slot.order.route}
@@ -567,6 +582,21 @@ export function ResidentDetailPage({ timezone }: { timezone: string }) {
             ))}
           </div>
         </div>
+      ) : null}
+
+      {prnSlot ? (
+        <PrnRecordModal
+          medication={prnSlot.order.drugName}
+          dose={prnSlot.order.dose}
+          defaultRoute={prnSlot.order.route}
+          patientName={
+            resident ? `${resident.lastName}, ${resident.firstName}` : 'Resident'
+          }
+          facilityName={user?.tenantName || ''}
+          busy={busyId !== null}
+          onCancel={() => setPrnSlot(null)}
+          onSubmit={(fields) => record(prnSlot, 'GIVEN', fields)}
+        />
       ) : null}
     </div>
   );

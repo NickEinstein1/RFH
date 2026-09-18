@@ -156,6 +156,8 @@ export class EmarService {
     });
     if (!order) throw new NotFoundException('Medication order not found');
 
+    const prnData = this.normalizePrnFields(order.isPrn, dto);
+
     if (dto.clientEventId) {
       const existing = await this.prisma.db.medAdministration.findFirst({
         where: { tenantId: user.tenantId, clientEventId: dto.clientEventId },
@@ -181,6 +183,7 @@ export class EmarService {
           administeredById: user.id,
           outcome: dto.outcome,
           notes: dto.notes ?? slotExisting.notes,
+          ...prnData,
         },
       });
       await this.audit.logForUser(user, 'med_admin.update', 'MedAdministration', admin.id, {
@@ -190,6 +193,7 @@ export class EmarService {
         previousOutcome: slotExisting.outcome,
         scheduledAt: scheduledAt.toISOString(),
         marMark: marMarkForOutcome(dto.outcome),
+        prn: order.isPrn,
       }, req);
       return admin;
     }
@@ -205,6 +209,7 @@ export class EmarService {
         outcome: dto.outcome,
         notes: dto.notes,
         clientEventId: dto.clientEventId,
+        ...prnData,
       },
     });
 
@@ -231,9 +236,53 @@ export class EmarService {
       scheduledAt: scheduledAt.toISOString(),
       administeredById: user.id,
       marMark: marMarkForOutcome(dto.outcome),
+      prn: order.isPrn,
     }, req);
 
     return admin;
+  }
+
+  /** Back-of-MAR PRN fields — required when giving a PRN medication */
+  private normalizePrnFields(isPrn: boolean, dto: RecordMedAdminDto) {
+    if (!isPrn || dto.outcome !== MedOutcome.GIVEN) {
+      return {
+        prnRouteSite: dto.prnRouteSite ?? null,
+        prnReason: dto.prnReason ?? null,
+        prnBmi: dto.prnBmi ?? null,
+        prnBmiOther: dto.prnBmiOther ?? null,
+        prnResult: dto.prnResult ?? null,
+        prnMse: dto.prnMse ?? null,
+        prnMseOther: dto.prnMseOther ?? null,
+        prnPainScore: dto.prnPainScore ?? null,
+      };
+    }
+
+    if (!dto.prnRouteSite?.trim()) {
+      throw new BadRequestException('PRN ROUTE/SITE is required (back of MAR)');
+    }
+    if (!dto.prnReason?.trim()) {
+      throw new BadRequestException('PRN REASON is required (back of MAR)');
+    }
+    if (!dto.prnResult?.trim()) {
+      throw new BadRequestException('PRN RESULT/OUTCOMES is required (back of MAR)');
+    }
+    if ((dto.prnBmi === 'G' || dto.prnBmi === 'H') && !dto.prnBmiOther?.trim()) {
+      throw new BadRequestException('BMI other text is required when BMI is G or H');
+    }
+    if (dto.prnMse === 'L' && !dto.prnMseOther?.trim()) {
+      throw new BadRequestException('MSE other text is required when MSE is L');
+    }
+
+    return {
+      prnRouteSite: dto.prnRouteSite.trim(),
+      prnReason: dto.prnReason.trim(),
+      prnBmi: dto.prnBmi?.trim() || null,
+      prnBmiOther: dto.prnBmiOther?.trim() || null,
+      prnResult: dto.prnResult.trim(),
+      prnMse: dto.prnMse?.trim() || null,
+      prnMseOther: dto.prnMseOther?.trim() || null,
+      prnPainScore: dto.prnPainScore ?? null,
+    };
   }
 
   /**
@@ -286,7 +335,17 @@ export class EmarService {
         administeredBy: {
           select: { id: true, firstName: true, lastName: true },
         },
+        order: {
+          select: {
+            id: true,
+            drugName: true,
+            dose: true,
+            route: true,
+            isPrn: true,
+          },
+        },
       },
+      orderBy: { scheduledAt: 'asc' },
     });
 
     const dayNumbers = Array.from({ length: daysInMonth }, (_, i) => i + 1);
@@ -380,6 +439,44 @@ export class EmarService {
       orderCount: orders.length,
     }, req);
 
+    const prnEntries = administrations
+      .filter((a) => a.order.isPrn && a.outcome === MedOutcome.GIVEN)
+      .map((a) => {
+        const when = a.administeredAt ?? a.scheduledAt;
+        const initials = a.administeredBy
+          ? `${a.administeredBy.firstName[0] ?? ''}${a.administeredBy.lastName[0] ?? ''}`.toUpperCase()
+          : '';
+        const signature = a.administeredBy
+          ? `${a.administeredBy.firstName} ${a.administeredBy.lastName}`
+          : '';
+        return {
+          id: a.id,
+          date: when.toISOString().slice(0, 10),
+          time: when.toISOString().slice(11, 16),
+          medication: a.order.drugName,
+          dose: a.order.dose,
+          routeSite: a.prnRouteSite || a.order.route,
+          reason: a.prnReason || '',
+          bmi: a.prnBmi || '',
+          bmiOther: a.prnBmiOther || '',
+          result: a.prnResult || '',
+          mse: a.prnMse || '',
+          mseOther: a.prnMseOther || '',
+          painScore: a.prnPainScore,
+          initials,
+          signature,
+        };
+      });
+
+    const staffMap = new Map<string, string>();
+    for (const a of administrations) {
+      if (!a.administeredBy) continue;
+      const initials =
+        `${a.administeredBy.firstName[0] ?? ''}${a.administeredBy.lastName[0] ?? ''}`.toUpperCase();
+      if (!initials) continue;
+      staffMap.set(initials, `${a.administeredBy.firstName} ${a.administeredBy.lastName}`);
+    }
+
     return {
       facilityName: tenant.name,
       timezone: tenant.timezone,
@@ -402,6 +499,14 @@ export class EmarService {
         room: resident.room,
       },
       rows,
+      backPage: {
+        title: 'PRN / As-Needed Medication Log (Back of MAR)',
+        prnEntries,
+        staffSignatureKey: [...staffMap.entries()].map(([initials, signature]) => ({
+          initials,
+          signature,
+        })),
+      },
     };
   }
 

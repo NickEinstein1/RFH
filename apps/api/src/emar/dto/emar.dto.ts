@@ -4,8 +4,11 @@ import {
   IsBoolean,
   IsDateString,
   IsEnum,
+  IsInt,
   IsOptional,
   IsString,
+  Max,
+  Min,
   MinLength,
   ValidateNested,
 } from 'class-validator';
@@ -72,6 +75,41 @@ export class RecordMedAdminDto {
   @IsOptional()
   @IsString()
   clientEventId?: string;
+
+  /** Back-of-MAR PRN fields (required when recording a GIVEN PRN dose) */
+  @IsOptional()
+  @IsString()
+  prnRouteSite?: string;
+
+  @IsOptional()
+  @IsString()
+  prnReason?: string;
+
+  @IsOptional()
+  @IsString()
+  prnBmi?: string;
+
+  @IsOptional()
+  @IsString()
+  prnBmiOther?: string;
+
+  @IsOptional()
+  @IsString()
+  prnResult?: string;
+
+  @IsOptional()
+  @IsString()
+  prnMse?: string;
+
+  @IsOptional()
+  @IsString()
+  prnMseOther?: string;
+
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  @Max(10)
+  prnPainScore?: number;
 }
 
 export class SyncBatchDto {

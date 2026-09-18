@@ -1,0 +1,79 @@
+{
+  "source": "Back of MAR.pdf",
+  "pages": 4,
+  "description": "PRN / as-needed medication log on the reverse of the monthly MAR",
+  "header": {
+    "title": "HAZARDOUS DRUG GUIDE",
+    "hazardous_indicator": "(H) indicates medication is HAZARDOUS",
+    "hazard_levels": [
+      { "level": "Universal", "color": "GREEN", "precautions": "Handling and disposal using normal precautions" },
+      { "level": "Low", "color": "YELLOW", "precautions": "Handle at all times with gloves and appropriate engineering controls" },
+      { "level": "Moderate", "color": "ORANGE", "precautions": "Handle at all times with gloves, gown, eye and face protection (with splash potential) and appropriate engineering controls" },
+      { "level": "High", "color": "RED", "precautions": "Handle at all times with double gloves, gown, eye and face protection in addition to any necessary engineering controls" }
+    ],
+    "pain_scale": [
+      { "score": "0", "label": "No Pain" },
+      { "score": "1-2", "label": "Mild Pain", "descriptors": ["annoying", "nagging"] },
+      { "score": "3-4", "label": "Uncomfortable", "descriptors": ["troublesome", "grueling"] },
+      { "score": "5-6", "label": "Distressing", "descriptors": ["miserable", "agonizing"] },
+      { "score": "7-8", "label": "Intense", "descriptors": ["dreadful", "horrible"] },
+      { "score": "9-10", "label": "Excruciating", "descriptors": ["unbearable", "worst pain imaginable"] }
+    ],
+    "emergency": {
+      "emergency": "911",
+      "poison_control": "(800) 222-1222",
+      "pharmacy_name": "LINCOLN PHARMACY",
+      "pharmacy_phone": "253.473.1155",
+      "pharmacy_fax": "253.473.1158"
+    }
+  },
+  "codes": {
+    "bmi": [
+      { "code": "A", "label": "offer/assist to restroom" },
+      { "code": "B", "label": "offer food/fluid" },
+      { "code": "C", "label": "redirection" },
+      { "code": "D", "label": "positive reinforcement" },
+      { "code": "E", "label": "offer music/activity" },
+      { "code": "F", "label": "medication offered" },
+      { "code": "G", "label": "other", "requires_text": true },
+      { "code": "H", "label": "other", "requires_text": true }
+    ],
+    "result_outcomes": [
+      { "code": "N", "label": "not observed" },
+      { "code": "E", "label": "effective" },
+      { "code": "I", "label": "ineffective" },
+      { "code": "M", "label": "medication intervention" }
+    ],
+    "mse": [
+      { "code": "A", "label": "sedation/drowsiness" },
+      { "code": "B", "label": "dizziness" },
+      { "code": "C", "label": "constipation" },
+      { "code": "D", "label": "weight gain/edema" },
+      { "code": "E", "label": "seizures" },
+      { "code": "F", "label": "urinary retention" },
+      { "code": "G", "label": "tardive dyskinesia" },
+      { "code": "H", "label": "cognitive behavior impairment" },
+      { "code": "I", "label": "orthostatic hypotension" },
+      { "code": "J", "label": "unsteady on feet/fall" },
+      { "code": "K", "label": "high blood sugar" },
+      { "code": "L", "label": "other", "requires_text": true },
+      { "code": "N/A", "label": "not applicable" }
+    ]
+  },
+  "prn_table_columns": [
+    { "key": "date", "label": "DATE", "required": true },
+    { "key": "time", "label": "TIME", "required": true },
+    { "key": "medication", "label": "MEDICATION", "required": true, "from_order": true },
+    { "key": "dose", "label": "DOSE", "required": true, "from_order": true },
+    { "key": "routeSite", "label": "ROUTE/SITE", "required": true },
+    { "key": "reason", "label": "REASON", "required": true },
+    { "key": "bmi", "label": "BMI *if applies", "required": false, "codes": "bmi" },
+    { "key": "result", "label": "RESULT/OUTCOMES", "required": true, "codes": "result_outcomes" },
+    { "key": "mse", "label": "MSE *if applies", "required": false, "codes": "mse" },
+    { "key": "signature", "label": "Signature", "required": true, "from_user": true }
+  ],
+  "footer": {
+    "staff_signature_key": ["INITIALS", "STAFF SIGNATURE"],
+    "instructions": true
+  }
+}

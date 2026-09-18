@@ -285,6 +285,15 @@ model MedAdministration {
   administeredById String?
   outcome          MedOutcome
   notes            String?
+  /** Back-of-MAR PRN log fields */
+  prnRouteSite     String?
+  prnReason        String?
+  prnBmi           String?
+  prnBmiOther      String?
+  prnResult        String?
+  prnMse           String?
+  prnMseOther      String?
+  prnPainScore     Int?
   clientEventId    String?
   createdAt        DateTime   @default(now())
   updatedAt        DateTime   @updatedAt

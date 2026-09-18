@@ -671,3 +671,122 @@ a {
     text-align: left;
   }
 }
+
+.mar-prn-tag {
+  color: var(--accent);
+  font-weight: 800;
+  font-size: 0.75rem;
+}
+
+.mar-back-page {
+  margin-top: 1.5rem;
+}
+
+.mar-back-guides {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.mar-back-guides h3 {
+  margin: 0 0 0.35rem;
+  font-size: 0.95rem;
+}
+
+.mar-guide-list {
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: 0.82rem;
+}
+
+.mar-code-cols {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.hz-universal { color: #166534; font-weight: 700; }
+.hz-low { color: #a16207; font-weight: 700; }
+.hz-mod { color: #c2410c; font-weight: 700; }
+.hz-high { color: #b91c1c; font-weight: 700; }
+
+.mar-prn-table th,
+.mar-prn-table td {
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+
+.mar-prn-blank td {
+  height: 1.6rem;
+}
+
+.mar-staff-key {
+  margin-top: 1rem;
+}
+
+.mar-staff-key h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+}
+
+.mar-staff-table {
+  width: 100%;
+  min-width: 0 !important;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 43, 40, 0.45);
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  z-index: 50;
+}
+
+.modal-panel {
+  width: min(560px, 100%);
+  max-height: min(92vh, 900px);
+  overflow: auto;
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  padding: 1.1rem 1.2rem 1.25rem;
+}
+
+.prn-modal-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+
+.prn-modal-header h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+}
+
+.prn-modal-med {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  padding: 0.65rem 0.75rem;
+  background: #f3f7f5;
+  border-radius: 10px;
+  margin-bottom: 0.85rem;
+}
+
+.prn-form {
+  display: grid;
+  gap: 0.65rem;
+}
+
+@media (max-width: 900px) {
+  .mar-back-guides {
+    grid-template-columns: 1fr;
+  }
+}
