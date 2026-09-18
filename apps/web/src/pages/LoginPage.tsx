@@ -2,15 +2,32 @@ import { useState, type FormEvent } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../auth';
 
+const FACILITIES = [
+  {
+    name: 'Loving Garden AFH',
+    email: 'care@lovinggarden.demo',
+  },
+  {
+    name: 'Sunrise Adult Family Home',
+    email: 'care@sunrise.demo',
+  },
+] as const;
+
 export function LoginPage() {
   const { user, login } = useAuth();
-  const [email, setEmail] = useState('care@sunrise.demo');
+  const [tenantName, setTenantName] = useState<string>(FACILITIES[0].name);
+  const [email, setEmail] = useState(FACILITIES[0].email);
   const [password, setPassword] = useState('Password123!');
-  const [tenantName, setTenantName] = useState('Sunrise Adult Family Home');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
 
   if (user) return <Navigate to="/" replace />;
+
+  function onFacilityChange(name: string) {
+    setTenantName(name);
+    const match = FACILITIES.find((f) => f.name === name);
+    if (match) setEmail(match.email);
+  }
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
@@ -33,12 +50,18 @@ export function LoginPage() {
         {error ? <div className="error">{error}</div> : null}
         <div className="field">
           <label htmlFor="tenant">Facility</label>
-          <input
+          <select
             id="tenant"
             value={tenantName}
-            onChange={(e) => setTenantName(e.target.value)}
-            autoComplete="organization"
-          />
+            onChange={(e) => onFacilityChange(e.target.value)}
+            required
+          >
+            {FACILITIES.map((f) => (
+              <option key={f.name} value={f.name}>
+                {f.name}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="field">
           <label htmlFor="email">Email</label>

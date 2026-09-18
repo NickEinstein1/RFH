@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import type { Request } from 'express';
 import { ResidentsService } from './residents.service';
-import { CreateResidentDto, UpdateResidentDto } from './dto/resident.dto';
+import { CreateResidentDto, UpdateResidentDto, UploadResidentPhotoDto } from './dto/resident.dto';
 import { RequirePermissions } from '../common/decorators/auth.decorators';
 import { Permissions } from '../common/enums/rbac';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
@@ -44,6 +44,27 @@ export class ResidentsController {
     @Req() req: Request,
   ) {
     return this.residents.findOne(user, id, req);
+  }
+
+  @Post(':id/photo')
+  @RequirePermissions(Permissions.MED_PASS)
+  uploadPhoto(
+    @CurrentUser() user: AuthUser,
+    @Param('id') id: string,
+    @Body() dto: UploadResidentPhotoDto,
+    @Req() req: Request,
+  ) {
+    return this.residents.uploadPhoto(user, id, dto, req);
+  }
+
+  @Delete(':id/photo')
+  @RequirePermissions(Permissions.MED_PASS)
+  clearPhoto(
+    @CurrentUser() user: AuthUser,
+    @Param('id') id: string,
+    @Req() req: Request,
+  ) {
+    return this.residents.clearPhoto(user, id, req);
   }
 
   @Patch(':id')

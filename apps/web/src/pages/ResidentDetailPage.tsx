@@ -11,6 +11,7 @@ import {
   pendingCount,
   readSnapshot,
 } from '../offlineQueue';
+import { fileToResidentPhotoDataUrl } from '../residentPhoto';
 
 type Resident = {
   id: string;
@@ -18,6 +19,7 @@ type Resident = {
   lastName: string;
   room: string | null;
   allergies: string[];
+  photoUrl: string | null;
 };
 
 type Slot = {
@@ -65,7 +67,6 @@ type CarePlan = {
   careTasks: { id: string; title: string; category: string }[];
 };
 
-const OUTCOMES = ['GIVEN', 'REFUSED', 'HELD', 'MISSED'] as const;
 const TASK_OUTCOMES = ['DONE', 'REFUSED', 'UNABLE', 'SKIPPED'] as const;
 
 export function ResidentDetailPage({ timezone }: { timezone: string }) {
@@ -85,6 +86,7 @@ export function ResidentDetailPage({ timezone }: { timezone: string }) {
   const [busyId, setBusyId] = useState<string | null>(null);
   const [pending, setPending] = useState(() => pendingCount());
   const [online, setOnline] = useState(() => isOnline());
+  const [photoBusy, setPhotoBusy] = useState(false);
 
   const load = useCallback(async () => {
     if (!id) return;
@@ -159,23 +161,23 @@ export function ResidentDetailPage({ timezone }: { timezone: string }) {
     };
   }, [load]);
 
-  async function record(slot: Slot, outcome: (typeof OUTCOMES)[number]) {
+  async function record(slot: Slot, outcome: 'GIVEN' | 'REFUSED' | 'HELD' | 'MISSED') {
     if (!slot.scheduledAt && !slot.isPrn) return;
     if (!id) return;
     setBusyId(`${slot.order.id}-${outcome}`);
     setError('');
     const clientEventId = crypto.randomUUID();
-    const payload = {
+    const administeredAt = outcome === 'GIVEN' ? new Date().toISOString() : undefined;
+    const body = {
       orderId: slot.order.id,
       scheduledAt: slot.scheduledAt ?? new Date().toISOString(),
       outcome,
-      administeredAt: outcome === 'GIVEN' ? new Date().toISOString() : undefined,
+      administeredAt,
       clientEventId,
-      residentId: id,
     };
     try {
       if (!navigator.onLine) {
-        enqueueMedEvent(payload);
+        enqueueMedEvent({ ...body, residentId: id });
         setPending(pendingCount());
         setSlots((prev) =>
           prev.map((s) =>
@@ -185,7 +187,7 @@ export function ResidentDetailPage({ timezone }: { timezone: string }) {
                   administration: {
                     id: clientEventId,
                     outcome,
-                    administeredAt: payload.administeredAt ?? null,
+                    administeredAt: administeredAt ?? null,
                   },
                 }
               : s,
@@ -196,18 +198,20 @@ export function ResidentDetailPage({ timezone }: { timezone: string }) {
       }
       await api('/emar/administrations', {
         method: 'POST',
-        body: JSON.stringify(payload),
+        body: JSON.stringify(body),
       });
       await load();
     } catch (e) {
-      // Network failure mid-request → queue for sync
-      enqueueMedEvent(payload);
-      setPending(pendingCount());
-      setError(
-        e instanceof Error
-          ? `${e.message} — queued offline for retry`
-          : 'Failed to record dose — queued offline',
-      );
+      const msg = e instanceof Error ? e.message : 'Failed to record dose';
+      const looksNetwork =
+        !navigator.onLine || /failed to fetch|networkerror|load failed|offline/i.test(msg);
+      if (looksNetwork) {
+        enqueueMedEvent({ ...body, residentId: id });
+        setPending(pendingCount());
+        setError(`${msg} — queued offline for retry`);
+      } else {
+        setError(msg);
+      }
     } finally {
       setBusyId(null);
     }
@@ -256,6 +260,38 @@ export function ResidentDetailPage({ timezone }: { timezone: string }) {
     }
   }
 
+  async function onPhotoSelected(file: File | null) {
+    if (!file || !id) return;
+    setPhotoBusy(true);
+    setError('');
+    try {
+      const photoUrl = await fileToResidentPhotoDataUrl(file);
+      const updated = await api<Resident>(`/residents/${id}/photo`, {
+        method: 'POST',
+        body: JSON.stringify({ photoUrl }),
+      });
+      setResident(updated);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to upload photo');
+    } finally {
+      setPhotoBusy(false);
+    }
+  }
+
+  async function clearPhoto() {
+    if (!id) return;
+    setPhotoBusy(true);
+    setError('');
+    try {
+      const updated = await api<Resident>(`/residents/${id}/photo`, { method: 'DELETE' });
+      setResident(updated);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to remove photo');
+    } finally {
+      setPhotoBusy(false);
+    }
+  }
+
   if (!resident && !error) return <p className="empty">Loading…</p>;
 
   return (
@@ -263,14 +299,64 @@ export function ResidentDetailPage({ timezone }: { timezone: string }) {
       <Link to="/" className="meta">
         ← Residents
       </Link>
-      <h1 className="page-title" style={{ marginTop: '0.5rem' }}>
-        {resident ? `${resident.lastName}, ${resident.firstName}` : 'Resident'}
-      </h1>
-      <p className="page-sub">
-        Room {resident?.room || '—'}
-        {resident?.allergies?.length ? ` · Allergies: ${resident.allergies.join(', ')}` : ''}
-        {!isFamily ? ` · ${online ? 'Online' : 'Offline'}${pending ? ` · ${pending} queued` : ''}` : ''}
-      </p>
+
+      <div className="resident-profile-header">
+        <div className="resident-photo-wrap">
+          {resident?.photoUrl ? (
+            <img
+              className="resident-photo"
+              src={resident.photoUrl}
+              alt={`${resident.lastName}, ${resident.firstName}`}
+            />
+          ) : (
+            <div className="resident-photo placeholder" aria-hidden>
+              {(resident?.firstName?.[0] || '?') + (resident?.lastName?.[0] || '')}
+            </div>
+          )}
+          {!isFamily ? (
+            <div className="resident-photo-actions">
+              <label className="btn secondary photo-upload-btn">
+                {photoBusy ? 'Saving…' : resident?.photoUrl ? 'Change photo' : 'Add photo'}
+                <input
+                  type="file"
+                  accept="image/*"
+                  capture="environment"
+                  hidden
+                  disabled={photoBusy}
+                  onChange={(e) => {
+                    const file = e.target.files?.[0] ?? null;
+                    e.target.value = '';
+                    void onPhotoSelected(file);
+                  }}
+                />
+              </label>
+              {resident?.photoUrl ? (
+                <button
+                  type="button"
+                  className="btn ghost"
+                  disabled={photoBusy}
+                  onClick={() => void clearPhoto()}
+                >
+                  Remove
+                </button>
+              ) : null}
+            </div>
+          ) : null}
+        </div>
+        <div>
+          <h1 className="page-title" style={{ marginTop: 0 }}>
+            {resident ? `${resident.lastName}, ${resident.firstName}` : 'Resident'}
+          </h1>
+          <p className="page-sub">
+            {user?.tenantName ? `${user.tenantName} · ` : ''}
+            Room {resident?.room || '—'}
+            {resident?.allergies?.length ? ` · Allergies: ${resident.allergies.join(', ')}` : ''}
+            {!isFamily
+              ? ` · ${online ? 'Online' : 'Offline'}${pending ? ` · ${pending} queued` : ''}`
+              : ''}
+          </p>
+        </div>
+      </div>
       {error ? <div className="error">{error}</div> : null}
 
       <div className="tabs">
@@ -294,9 +380,22 @@ export function ResidentDetailPage({ timezone }: { timezone: string }) {
 
       {tab === 'meds' ? (
         <div className="stack">
+          <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <p className="meta" style={{ margin: 0 }}>
+              Record = ✓ given · Reject = X not given · clears to - on MAR
+            </p>
+            <Link
+              className="btn secondary"
+              to={`/residents/${id}/mar?month=${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}`}
+            >
+              Open MAR sheet
+            </Link>
+          </div>
           {slots.length === 0 ? <p className="empty">No medications due today.</p> : null}
           {slots.map((slot) => {
-            const done = Boolean(slot.administration);
+            const outcome = slot.administration?.outcome;
+            const mark =
+              outcome === 'GIVEN' ? '✓' : outcome === 'REFUSED' || outcome === 'HELD' ? 'X' : outcome === 'MISSED' ? '-' : null;
             return (
               <div
                 key={`${slot.order.id}-${slot.scheduledAt}`}
@@ -320,36 +419,49 @@ export function ResidentDetailPage({ timezone }: { timezone: string }) {
                       </div>
                     ) : null}
                   </div>
-                  {done ? (
+                  {mark ? (
                     <span
                       className={`badge ${
-                        slot.administration?.outcome === 'GIVEN'
-                          ? 'ok'
-                          : slot.administration?.outcome === 'HELD'
-                            ? 'warn'
-                            : 'danger'
+                        mark === '✓' ? 'ok' : mark === 'X' ? 'danger' : 'warn'
                       }`}
+                      title={outcome || undefined}
                     >
-                      {slot.administration?.outcome}
+                      MAR {mark}
                     </span>
                   ) : (
                     <span className="badge warn">DUE</span>
                   )}
                 </div>
-                {!done ? (
-                  <div className="outcome-grid">
-                    {OUTCOMES.map((o) => (
-                      <button
-                        key={o}
-                        className={`btn ${o === 'GIVEN' ? '' : o === 'HELD' ? 'warn' : 'danger'}`}
-                        disabled={busyId !== null}
-                        onClick={() => void record(slot, o)}
-                      >
-                        {o}
-                      </button>
-                    ))}
-                  </div>
-                ) : null}
+                <div className="outcome-grid med-record-grid">
+                  <button
+                    className="btn"
+                    disabled={busyId !== null}
+                    onClick={() => void record(slot, 'GIVEN')}
+                  >
+                    Record ✓
+                  </button>
+                  <button
+                    className="btn danger"
+                    disabled={busyId !== null}
+                    onClick={() => void record(slot, 'REFUSED')}
+                  >
+                    Reject X
+                  </button>
+                  <button
+                    className="btn secondary"
+                    disabled={busyId !== null}
+                    onClick={() => void record(slot, 'MISSED')}
+                  >
+                    Not given -
+                  </button>
+                  <button
+                    className="btn warn"
+                    disabled={busyId !== null}
+                    onClick={() => void record(slot, 'HELD')}
+                  >
+                    Held X
+                  </button>
+                </div>
               </div>
             );
           })}

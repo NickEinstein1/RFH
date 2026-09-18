@@ -4,6 +4,8 @@ import {
   IsEnum,
   IsOptional,
   IsString,
+  Matches,
+  MaxLength,
   MinLength,
 } from 'class-validator';
 import { ResidentStatus, Sex } from '@prisma/client';
@@ -78,4 +80,14 @@ export class UpdateResidentDto {
   @IsArray()
   @IsString({ each: true })
   allergies?: string[];
+}
+
+export class UploadResidentPhotoDto {
+  /** JPEG/PNG/WebP data URL from client (resized before upload) */
+  @IsString()
+  @MaxLength(900_000)
+  @Matches(/^data:image\/(jpeg|jpg|png|webp);base64,/, {
+    message: 'photoUrl must be a jpeg, png, or webp data URL',
+  })
+  photoUrl!: string;
 }

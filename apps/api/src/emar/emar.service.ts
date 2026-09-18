@@ -164,7 +164,37 @@ export class EmarService {
     }
 
     const scheduledAt = new Date(dto.scheduledAt);
-    const admin = await this.prisma.db.medAdministration.create({
+    const slotExisting = await this.prisma.db.medAdministration.findFirst({
+      where: {
+        tenantId: user.tenantId,
+        orderId: order.id,
+        scheduledAt,
+      },
+    });
+
+    let admin;
+    if (slotExisting) {
+      admin = await this.prisma.db.medAdministration.update({
+        where: { id: slotExisting.id },
+        data: {
+          administeredAt: dto.administeredAt ? new Date(dto.administeredAt) : new Date(),
+          administeredById: user.id,
+          outcome: dto.outcome,
+          notes: dto.notes ?? slotExisting.notes,
+        },
+      });
+      await this.audit.logForUser(user, 'med_admin.update', 'MedAdministration', admin.id, {
+        orderId: order.id,
+        residentId: order.residentId,
+        outcome: dto.outcome,
+        previousOutcome: slotExisting.outcome,
+        scheduledAt: scheduledAt.toISOString(),
+        marMark: marMarkForOutcome(dto.outcome),
+      }, req);
+      return admin;
+    }
+
+    admin = await this.prisma.db.medAdministration.create({
       data: {
         tenantId: user.tenantId,
         orderId: order.id,
@@ -200,9 +230,179 @@ export class EmarService {
       outcome: dto.outcome,
       scheduledAt: scheduledAt.toISOString(),
       administeredById: user.id,
+      marMark: marMarkForOutcome(dto.outcome),
     }, req);
 
     return admin;
+  }
+
+  /**
+   * Monthly MAR sheet for one resident — PDF-style day grid with marks:
+   * ✓ given · X refused/held · - blank/missed
+   */
+  async monthlyMarSheet(
+    user: AuthUser,
+    residentId: string,
+    monthYm: string,
+    req?: Request,
+  ) {
+    await this.assertResident(user.tenantId, residentId);
+    const tenant = await this.prisma.db.tenant.findUniqueOrThrow({
+      where: { id: user.tenantId },
+    });
+    const [year, month] = monthYm.split('-').map(Number);
+    const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
+    const monthStart = facilityLocalToUtc(
+      `${monthYm}-01`,
+      '00:00',
+      tenant.timezone,
+    );
+    const nextMonth = month === 12 ? `${year + 1}-01` : `${year}-${String(month + 1).padStart(2, '0')}`;
+    const monthEnd = facilityLocalToUtc(`${nextMonth}-01`, '00:00', tenant.timezone);
+
+    const resident = await this.prisma.db.resident.findFirstOrThrow({
+      where: { id: residentId, tenantId: user.tenantId },
+    });
+
+    const orders = await this.prisma.db.medicationOrder.findMany({
+      where: {
+        tenantId: user.tenantId,
+        residentId,
+        deletedAt: null,
+        status: MedOrderStatus.ACTIVE,
+        startDate: { lte: monthEnd },
+        OR: [{ endDate: null }, { endDate: { gte: monthStart } }],
+      },
+      orderBy: [{ isPrn: 'asc' }, { drugName: 'asc' }],
+    });
+
+    const administrations = await this.prisma.db.medAdministration.findMany({
+      where: {
+        tenantId: user.tenantId,
+        residentId,
+        scheduledAt: { gte: monthStart, lt: monthEnd },
+      },
+      include: {
+        administeredBy: {
+          select: { id: true, firstName: true, lastName: true },
+        },
+      },
+    });
+
+    const dayNumbers = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+
+    const rows = orders.map((order) => {
+      const times = order.isPrn
+        ? ['PRN']
+        : order.scheduleTimes.length
+          ? order.scheduleTimes
+          : ['08:00'];
+
+      return {
+        order: {
+          id: order.id,
+          drugName: order.drugName,
+          dose: order.dose,
+          route: order.route,
+          frequency: order.frequency,
+          instructions: order.instructions,
+          brand: order.brand,
+          rxNumber: order.rxNumber,
+          imprint: order.imprint,
+          categoryLabel: order.categoryLabel,
+          prescriber: order.prescriber,
+          highAlert: order.highAlert,
+          isPrn: order.isPrn,
+          startDate: order.startDate.toISOString().slice(0, 10),
+        },
+        timeRows: times.map((time) => {
+          const cells = dayNumbers.map((day) => {
+            if (order.isPrn || time === 'PRN') {
+              const dayStart = facilityLocalToUtc(
+                `${monthYm}-${String(day).padStart(2, '0')}`,
+                '00:00',
+                tenant.timezone,
+              );
+              const dayEnd = facilityLocalToUtc(
+                `${monthYm}-${String(day).padStart(2, '0')}`,
+                '23:59',
+                tenant.timezone,
+              );
+              const hits = administrations.filter(
+                (a) =>
+                  a.orderId === order.id &&
+                  a.scheduledAt >= dayStart &&
+                  a.scheduledAt <= dayEnd,
+              );
+              const admin = hits[hits.length - 1] ?? null;
+              return {
+                day,
+                scheduledAt: dayStart.toISOString(),
+                mark: admin ? marMarkForOutcome(admin.outcome) : '-',
+                outcome: admin?.outcome ?? null,
+                administrationId: admin?.id ?? null,
+                initials: admin?.administeredBy
+                  ? `${admin.administeredBy.firstName[0] ?? ''}${admin.administeredBy.lastName[0] ?? ''}`.toUpperCase()
+                  : null,
+              };
+            }
+
+            const scheduledAt = facilityLocalToUtc(
+              `${monthYm}-${String(day).padStart(2, '0')}`,
+              time,
+              tenant.timezone,
+            );
+            const admin =
+              administrations.find(
+                (a) =>
+                  a.orderId === order.id &&
+                  a.scheduledAt.getTime() === scheduledAt.getTime(),
+              ) ?? null;
+            return {
+              day,
+              scheduledAt: scheduledAt.toISOString(),
+              mark: admin ? marMarkForOutcome(admin.outcome) : '-',
+              outcome: admin?.outcome ?? null,
+              administrationId: admin?.id ?? null,
+              initials: admin?.administeredBy
+                ? `${admin.administeredBy.firstName[0] ?? ''}${admin.administeredBy.lastName[0] ?? ''}`.toUpperCase()
+                : null,
+            };
+          });
+          return { time, cells };
+        }),
+      };
+    });
+
+    await this.audit.logForUser(user, 'mar_sheet.read', 'MedAdministration', null, {
+      residentId,
+      month: monthYm,
+      orderCount: orders.length,
+    }, req);
+
+    return {
+      facilityName: tenant.name,
+      timezone: tenant.timezone,
+      month: monthYm,
+      daysInMonth,
+      dayNumbers,
+      legend: {
+        given: '✓',
+        notGiven: 'X',
+        blankOrMissed: '-',
+        note: 'Record = ✓ given · Reject = X not given · blank/- = not given at all',
+      },
+      resident: {
+        id: resident.id,
+        firstName: resident.firstName,
+        lastName: resident.lastName,
+        dateOfBirth: resident.dateOfBirth.toISOString().slice(0, 10),
+        mrn: resident.mrn,
+        allergies: resident.allergies,
+        room: resident.room,
+      },
+      rows,
+    };
   }
 
   /**
@@ -413,4 +613,13 @@ export class EmarService {
     if (!r) throw new NotFoundException('Resident not found');
     return r;
   }
+}
+
+/** MAR sheet marks matching facility PDF recording convention requested:
+ * ✓ given · X not given (refused/held) · - not given at all (blank/missed)
+ */
+function marMarkForOutcome(outcome: MedOutcome): '✓' | 'X' | '-' {
+  if (outcome === MedOutcome.GIVEN) return '✓';
+  if (outcome === MedOutcome.REFUSED || outcome === MedOutcome.HELD) return 'X';
+  return '-';
 }

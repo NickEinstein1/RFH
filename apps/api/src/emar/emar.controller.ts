@@ -43,6 +43,18 @@ export class EmarController {
     return this.emar.medPassBoard(user, residentId, day, req);
   }
 
+  @Get('mar-sheet')
+  @RequirePermissions(Permissions.MED_PASS)
+  marSheet(
+    @CurrentUser() user: AuthUser,
+    @Query('residentId') residentId: string,
+    @Query('month') month: string,
+    @Req() req: Request,
+  ) {
+    const ym = month || new Date().toISOString().slice(0, 7);
+    return this.emar.monthlyMarSheet(user, residentId, ym, req);
+  }
+
   @Post('administrations')
   @RequirePermissions(Permissions.MED_PASS)
   record(

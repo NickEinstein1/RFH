@@ -4,7 +4,7 @@ import { AuditService } from '../audit/audit.service';
 import { FamilyAccessService } from '../tenancy/family-access.service';
 import { PhiCryptoService } from '../common/crypto/phi-crypto.service';
 import type { AuthUser } from '../common/decorators/current-user.decorator';
-import { CreateResidentDto, UpdateResidentDto } from './dto/resident.dto';
+import { CreateResidentDto, UpdateResidentDto, UploadResidentPhotoDto } from './dto/resident.dto';
 import type { Request } from 'express';
 import type { Resident } from '@prisma/client';
 
@@ -95,6 +95,38 @@ export class ResidentsService {
       data: { deletedAt: new Date() },
     });
     await this.audit.logForUser(user, 'resident.soft_delete', 'Resident', id, undefined, req);
+    return this.reveal(resident);
+  }
+
+  async uploadPhoto(user: AuthUser, id: string, dto: UploadResidentPhotoDto, req?: Request) {
+    await this.familyAccess.assertCanAccessResident(user, id);
+    const existing = await this.prisma.db.resident.findFirst({
+      where: { id, tenantId: user.tenantId, deletedAt: null },
+    });
+    if (!existing) throw new NotFoundException('Resident not found');
+
+    const resident = await this.prisma.db.resident.update({
+      where: { id },
+      data: { photoUrl: dto.photoUrl },
+    });
+    await this.audit.logForUser(user, 'resident.photo_upload', 'Resident', id, {
+      bytes: dto.photoUrl.length,
+    }, req);
+    return this.reveal(resident);
+  }
+
+  async clearPhoto(user: AuthUser, id: string, req?: Request) {
+    await this.familyAccess.assertCanAccessResident(user, id);
+    const existing = await this.prisma.db.resident.findFirst({
+      where: { id, tenantId: user.tenantId, deletedAt: null },
+    });
+    if (!existing) throw new NotFoundException('Resident not found');
+
+    const resident = await this.prisma.db.resident.update({
+      where: { id },
+      data: { photoUrl: null },
+    });
+    await this.audit.logForUser(user, 'resident.photo_clear', 'Resident', id, undefined, req);
     return this.reveal(resident);
   }
 }

@@ -207,6 +207,7 @@ model Resident {
   status      ResidentStatus @default(ACTIVE)
   admitDate   DateTime       @db.Date
   allergies   String[]       @default([])
+  photoUrl    String?        @db.Text
   deletedAt   DateTime?
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
@@ -256,6 +257,12 @@ model MedicationOrder {
   endDate       DateTime?      @db.Date
   isPrn         Boolean        @default(false)
   instructions  String?
+  brand         String?
+  rxNumber      String?
+  imprint       String?
+  categoryLabel String?
+  prescriber    String?
+  highAlert     Boolean        @default(false)
   status        MedOrderStatus @default(ACTIVE)
   deletedAt     DateTime?
   createdAt     DateTime       @default(now())

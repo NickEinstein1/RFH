@@ -7,6 +7,7 @@ import { AlertsPage } from './pages/AlertsPage';
 import { StaffPage } from './pages/StaffPage';
 import { IncidentsPage } from './pages/IncidentsPage';
 import { ReportsPage } from './pages/ReportsPage';
+import { MarSheetPage } from './pages/MarSheetPage';
 
 function Shell() {
   const { user, logout } = useAuth();
@@ -46,8 +47,11 @@ function Shell() {
               Reports
             </NavLink>
           ) : null}
-          <span className="meta">
-            {user.firstName} · {user.role}
+          <span className="meta account-chip">
+            <span className="account-facility">{user.tenantName}</span>
+            <span>
+              {user.firstName} · {user.role}
+            </span>
           </span>
           <button className="btn ghost" type="button" onClick={() => void logout()}>
             Sign out
@@ -71,6 +75,7 @@ function AppRoutes() {
       <Route element={<Shell />}>
         <Route index element={<ResidentsPage timezone={tz} />} />
         <Route path="residents/:id" element={<ResidentDetailPage timezone={tz} />} />
+        <Route path="residents/:id/mar" element={<MarSheetPage />} />
         <Route path="alerts" element={<AlertsPage timezone={tz} />} />
         <Route path="incidents" element={<IncidentsPage timezone={tz} />} />
         <Route path="staff" element={<StaffPage timezone={tz} />} />

@@ -51,7 +51,9 @@ export async function api<T>(
   const res = await fetch(`/api${path}`, { ...options, headers });
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
-    throw new Error(body.message || `Request failed (${res.status})`);
+    const raw = body.message;
+    const message = Array.isArray(raw) ? raw.join(', ') : raw || `Request failed (${res.status})`;
+    throw new Error(message);
   }
   if (res.status === 204) return undefined as T;
   return res.json() as Promise<T>;

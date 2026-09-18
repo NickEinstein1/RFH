@@ -1,0 +1,1023 @@
+{
+  "source": "Loving Garden AFH - Medication Administration Record, September 2026",
+  "extracted_for": "eMAR medication order entry",
+  "mar_month": "2026-09",
+  "fields_legend": {
+    "resident": "Resident demographics + allergies/diagnoses from MAR header",
+    "medication_orders": "One entry per medication order",
+    "medication": "Drug name + strength + form as printed",
+    "brand": "Brand name as printed",
+    "generic_name": "Generic name if printed",
+    "rx_number": "Prescription number",
+    "prescriber": "Prescribing provider + phone",
+    "start_date": "Order start date (MMDDYYYY as printed)",
+    "admin_times": "Scheduled administration time(s) on the MAR grid",
+    "sig": "Directions for use",
+    "dose": "Dose quantity per administration (as printed on grid)",
+    "prn": "True = as-needed medication",
+    "category": "Condition/category tag as printed on MAR",
+    "high_alert": "(H) marking on MAR - high-alert medication",
+    "notes": "Free-text notes from the MAR (verify before entry)"
+  },
+  "residents": [
+    {
+      "name": "DEVRIES, CODY",
+      "dob": "03/12/2002",
+      "patient_no": "LGAFH002",
+      "allergies": "No Known Allergies",
+      "diagnoses": [
+        "Depression, unspecified",
+        "Mood disorder due to known physiological condition",
+        "Anxiety disorder, unspecified",
+        "Acne vulgaris"
+      ],
+      "medication_orders": [
+        {
+          "medication": "DOXYCYCLINE HYCLATE 100MG CAPSULE",
+          "brand": "VIBRAMYCIN",
+          "imprint": "blue West-ward 3142 oblong",
+          "rx_number": "2579268",
+          "prescriber": "SSEBA, S - 253-847-2304",
+          "start_date": "08/30/2024",
+          "admin_times": [
+            "morning"
+          ],
+          "sig": "Take 1 tablet by mouth in morning",
+          "dose": "1",
+          "prn": false,
+          "category": "Mental Health",
+          "high_alert": false,
+          "notes": ""
+        },
+        {
+          "medication": "PRAZOSIN HCL 2MG CAPSULE",
+          "brand": "MINIPRESS",
+          "imprint": "yellow PRA 2 oblong",
+          "rx_number": "2579270",
+          "prescriber": "SSEBA, S - 253-847-2304",
+          "start_date": "08/31/2024",
+          "admin_times": [
+            "09:00PM"
+          ],
+          "sig": "Take 2 capsules (4mg) by mouth every evening",
+          "dose": "2",
+          "prn": false,
+          "category": "",
+          "high_alert": false,
+          "notes": ""
+        },
+        {
+          "medication": "SERTRALINE HCL 100MG TABLET",
+          "brand": "ZOLOFT",
+          "imprint": "yellow LU D03 oblong",
+          "rx_number": "2579269",
+          "prescriber": "SSEBA, S - 253-847-2304",
+          "start_date": "08/31/2024",
+          "admin_times": [
+            "08:00AM"
+          ],
+          "sig": "Take 1 tablet by mouth daily",
+          "dose": "1",
+          "prn": false,
+          "category": "",
+          "high_alert": false,
+          "notes": ""
+        },
+        {
+          "medication": "BENZOYL PEROXIDE 5% GEL (GRAM)",
+          "brand": "DESQUAM-X",
+          "imprint": "",
+          "rx_number": "2555839",
+          "prescriber": "",
+          "start_date": "08/30/2024",
+          "admin_times": [
+            "08:00AM"
+          ],
+          "sig": "Apply to affected area(s) topically every day",
+          "dose": "1",
+          "prn": false,
+          "category": "",
+          "high_alert": false,
+          "notes": "Note text partially legible: 'JANE AWARE TO DISCARD 1/2 TAB UNTIL LINE' - verify"
+        },
+        {
+          "medication": "IBUPROFEN 600MG TABLET",
+          "brand": "MOTRIN",
+          "imprint": "white I6 oblong",
+          "rx_number": "2579275",
+          "prescriber": "SSEBA, S - 253-847-2304",
+          "start_date": "08/31/2024",
+          "admin_times": [
+            "PRN"
+          ],
+          "sig": "Take 1 tablet by mouth every 8 hours as needed - be sure to take dose at bedtime - take with food",
+          "dose": "1",
+          "prn": true,
+          "category": "",
+          "high_alert": false,
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "name": "ELLIS, RAYSHEAL",
+      "dob": "12/12/2000",
+      "patient_no": "LGAFH006",
+      "allergies": "No Known Allergies",
+      "diagnoses": [
+        "Pediculosis due to Pediculus humanus capitis",
+        "Impacted cerumen, bilateral",
+        "Tobacco use",
+        "Dysuria",
+        "Iron deficiency anemia, unspecified",
+        "Vitamin B12 deficiency anemia, unspecified",
+        "Schizophrenia, unspecified",
+        "Opioid use, unspecified, uncomplicated",
+        "Insomnia, unspecified"
+      ],
+      "medication_orders": [
+        {
+          "medication": "DOXAZOSIN MESYLATE 1MG TABLET",
+          "brand": "CARDURA 1mg TABLET",
+          "imprint": "white APO 093 round",
+          "rx_number": "2583327",
+          "prescriber": "KEYA, D - 253-325-1121",
+          "start_date": "03/02/2026",
+          "admin_times": [
+            "09:00PM"
+          ],
+          "sig": "Take one (1) tablet by mouth at bedtime",
+          "dose": "1",
+          "prn": false,
+          "category": "",
+          "high_alert": false,
+          "notes": ""
+        },
+        {
+          "medication": "FAMOTIDINE 20MG TABLET",
+          "brand": "PEPCID",
+          "imprint": "yellow CC 60 square (rounded corners)",
+          "rx_number": "2583234",
+          "prescriber": "KEYA, D - 253-325-1121",
+          "start_date": "08/14/2026",
+          "admin_times": [
+            "08:00AM"
+          ],
+          "sig": "Take 1 tablet by mouth daily (every morning with breakfast)",
+          "dose": "1",
+          "prn": false,
+          "category": "Antibiotic (as tagged on MAR)",
+          "high_alert": false,
+          "notes": ""
+        },
+        {
+          "medication": "FERROUS SULFATE 325MG (65MG IRON) TABLET",
+          "brand": "",
+          "imprint": "",
+          "rx_number": "2583218",
+          "prescriber": "KEYA, D",
+          "start_date": "03/13/2026",
+          "admin_times": [
+            "morning"
+          ],
+          "sig": "Take 1 tablet by mouth every morning with breakfast",
+          "dose": "1",
+          "prn": false,
+          "category": "",
+          "high_alert": false,
+          "notes": ""
+        },
+        {
+          "medication": "METFORMIN HCL 500MG TABLET",
+          "brand": "GLUCOPHAGE",
+          "imprint": "white G 10 round",
+          "rx_number": "2583239",
+          "prescriber": "KEYA, D - 253-325-1121",
+          "start_date": "08/14/2026",
+          "admin_times": [
+            "08:00AM"
+          ],
+          "sig": "Take 1.5 tablets by mouth daily",
+          "dose": "1.5",
+          "prn": false,
+          "category": "Diabetes",
+          "high_alert": false,
+          "notes": ""
+        },
+        {
+          "medication": "MULTIVITAMIN, CALCIUM, MINERALS/IRON/FOLIC ACID TABLET",
+          "brand": "",
+          "imprint": "",
+          "rx_number": "",
+          "prescriber": "",
+          "start_date": "",
+          "admin_times": [
+            "08:00AM"
+          ],
+          "sig": "Take 1 tablet by mouth daily",
+          "dose": "1",
+          "prn": false,
+          "category": "",
+          "high_alert": false,
+          "notes": "Generic: multivit, calc, mins/iron/folic"
+        },
+        {
+          "medication": "VITAMIN B-12 TABLET",
+          "brand": "",
+          "imprint": "",
+          "rx_number": "",
+          "prescriber": "",
+          "start_date": "",
+          "admin_times": [
+            "08:00AM",
+            "08:00AM"
+          ],
+          "sig": "Take 2 tablets by mouth daily",
+          "dose": "2",
+          "prn": false,
+          "category": "",
+          "high_alert": false,
+          "notes": ""
+        },
+        {
+          "medication": "NICOTINE PATCH 21MG/24HR PATCH TD24",
+          "brand": "NICODERM CQ 21mg/24hr",
+          "imprint": "(Other)",
+          "rx_number": "2576982",
+          "prescriber": "KEYA, D - 253-325-1121",
+          "start_date": "08/14/2026",
+          "admin_times": [
+            "08:00AM"
+          ],
+          "sig": "Apply 1 patch onto skin daily",
+          "dose": "1",
+          "prn": false,
+          "category": "",
+          "high_alert": false,
+          "notes": ""
+        },
+        {
+          "medication": "SUBOXONE FILM 8-2MG FILM (BUPRENORPHINE HCL/NALOXONE HCL)",
+          "brand": "",
+          "imprint": "orange N8 rectangular",
+          "rx_number": "2485083",
+          "prescriber": "CONLEY-PRINCE, L - 253-942-5644",
+          "start_date": "03/06/2026",
+          "admin_times": [
+            "09:00PM"
+          ],
+          "sig": "Place 1 film under the tongue at bedtime",
+          "dose": "1",
+          "prn": false,
+          "category": "",
+          "high_alert": true,
+          "notes": "Controlled substance"
+        },
+        {
+          "medication": "DOK 100MG TABLET",
+          "brand": "",
+          "imprint": "white GC422 round",
+          "rx_number": "2583326",
+          "prescriber": "KEYA, D - 253-325-1121",
+          "start_date": "03/03/2026",
+          "admin_times": [
+            "PRN"
+          ],
+          "sig": "Take 1/2 tablet by mouth 2 times a day as needed with senna",
+          "dose": "0.5",
+          "prn": true,
+          "category": "",
+          "high_alert": false,
+          "notes": ""
+        },
+        {
+          "medication": "HYDROCORTISONE 1% CREAM (GRAM)",
+          "brand": "ALA-CORT",
+          "imprint": "white",
+          "rx_number": "2583233",
+          "prescriber": "KEYA, D - 253-325-1121",
+          "start_date": "08/14/2026",
+          "admin_times": [
+            "PRN"
+          ],
+          "sig": "Apply to affected area(s) daily as needed for rashes",
+          "dose": "",
+          "prn": true,
+          "category": "Itching",
+          "high_alert": false,
+          "notes": ""
+        },
+        {
+          "medication": "IBUPROFEN 400MG TABLET",
+          "brand": "MOTRIN",
+          "imprint": "white I4 oval",
+          "rx_number": "2583243",
+          "prescriber": "KEYA, D - 253-325-1121",
+          "start_date": "08/14/2026",
+          "admin_times": [
+            "PRN"
+          ],
+          "sig": "Take 2 tablets by mouth every 6 hours as needed for pain",
+          "dose": "2",
+          "prn": true,
+          "category": "Pain/Inflammation",
+          "high_alert": false,
+          "notes": ""
+        },
+        {
+          "medication": "SENNA 8.6MG TABLET",
+          "brand": "",
+          "imprint": "",
+          "rx_number": "2583325",
+          "prescriber": "KEYA, D - 253-325-1121",
+          "start_date": "03/03/2026",
+          "admin_times": [
+            "PRN"
+          ],
+          "sig": "Take 1 tablet by mouth 2 times a day as needed along with DOK",
+          "dose": "1",
+          "prn": true,
+          "category": "",
+          "high_alert": false,
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "name": "JAGER, JULIA",
+      "dob": "02/20/1940",
+      "patient_no": "LGAFH001",
+      "allergies": [
+        "Casein",
+        "Hmg-Coa Reductase Inhibitors (Statins)",
+        "Levofloxacin"
+      ],
+      "diagnoses": [
+        "Chronic atrial fibrillation, unspecified",
+        "Bilateral primary osteoarthritis of knee",
+        "Psychophysiologic insomnia",
+        "Type 2 diabetes mellitus without complications",
+        "Type 2 diabetes mellitus",
+        "Mild intermittent asthma with (acute) exacerbation",
+        "Essential (primary) hypertension",
+        "Hyperlipidemia, unspecified",
+        "Unspecified combined systolic (congestive) and diastolic (congestive) heart failure",
+        "Pain in right hip"
+      ],
+      "medication_orders": [
+        {
+          "medication": "DILTIAZEM CAPSULE (BRAND: TIAZAC)",
+          "brand": "TIAZAC",
+          "imprint": "",
+          "rx_number": "",
+          "prescriber": "",
+          "start_date": "",
+          "admin_times": [
+            "08:00AM"
+          ],
+          "sig": "Take 1 capsule by mouth daily",
+          "dose": "1",
+          "prn": false,
+          "category": "Heart Failure",
+          "high_alert": false,
+          "notes": "Drug name cell blank on MAR; identified by brand TIAZAC - VERIFY strength/Rx with pharmacy"
+        },
+        {
+          "medication": "METFORMIN HCL 500MG TABLET",
+          "brand": "GLUCOPHAGE",
+          "imprint": "white G10 round",
+          "rx_number": "2566668",
+          "prescriber": "LE, M - 253-274-7503",
+          "start_date": "07/09/2024",
+          "admin_times": [
+            "08:00AM",
+            "05:00PM"
+          ],
+          "sig": "Take 1 tablet by mouth 2 times a day with meals",
+          "dose": "1",
+          "prn": false,
+          "category": "Diabetes",
+          "high_alert": false,
+          "notes": ""
+        },
+        {
+          "medication": "METHENAMINE HIPPURATE 1 GRAM TABLET",
+          "brand": "HIPREX",
+          "imprint": "",
+          "rx_number": "",
+          "prescriber": "LE, M",
+          "start_date": "",
+          "admin_times": [
+            "08:00AM"
+          ],
+          "sig": "Take 1 tablet by mouth 2 times a day with meals (hold if on antibiotics)",
+          "dose": "1",
+          "prn": false,
+          "category": "Antibiotic (as tagged on MAR)",
+          "high_alert": false,
+          "notes": "Rx number not legible on MAR - verify"
+        },
+        {
+          "medication": "METOPROLOL TABLET (BRAND: TOPROL XL)",
+          "brand": "TOPROL XL",
+          "imprint": "",
+          "rx_number": "",
+          "prescriber": "",
+          "start_date": "",
+          "admin_times": [
+            "08:00AM"
+          ],
+          "sig": "Take 1 tablet by mouth daily",
+          "dose": "1",
+          "prn": false,
+          "category": "Hypertension/Heart",
+          "high_alert": false,
+          "notes": "Drug name cell blank on MAR; identified by brand TOPROL XL - VERIFY strength/Rx"
+        },
+        {
+          "medication": "POTASSIUM TABLET",
+          "brand": "",
+          "imprint": "",
+          "rx_number": "",
+          "prescriber": "",
+          "start_date": "",
+          "admin_times": [
+            "05:00PM"
+          ],
+          "sig": "Take 1 tablet by mouth 2 times a day to be taken with torsemide only",
+          "dose": "1",
+          "prn": false,
+          "category": "Potassium",
+          "high_alert": false,
+          "notes": "Drug name cell blank on MAR - VERIFY"
+        },
+        {
+          "medication": "TAMSULOSIN HCL 0.4MG CAPSULE",
+          "brand": "FLOMAX",
+          "imprint": "green ZA-18 0.4mg oblong",
+          "rx_number": "2584576",
+          "prescriber": "HUNT, R - 253-207-4200",
+          "start_date": "07/09/2024",
+          "admin_times": [
+            "05:00PM"
+          ],
+          "sig": "Take 1 capsule by mouth daily with dinner",
+          "dose": "1",
+          "prn": false,
+          "category": "Prostate",
+          "high_alert": false,
+          "notes": ""
+        },
+        {
+          "medication": "TORSEMIDE 20MG TABLET",
+          "brand": "DEMADEX",
+          "imprint": "white 59 H oval",
+          "rx_number": "2543278",
+          "prescriber": "LE, M - 253-274-7503",
+          "start_date": "07/17/2024",
+          "admin_times": [
+            "08:00AM"
+          ],
+          "sig": "Take 1 tablet by mouth daily",
+          "dose": "1",
+          "prn": false,
+          "category": "Hypertension",
+          "high_alert": false,
+          "notes": ""
+        },
+        {
+          "medication": "WARFARIN SODIUM 5MG TABLET",
+          "brand": "COUMADIN",
+          "imprint": "",
+          "rx_number": "",
+          "prescriber": "",
+          "start_date": "08/19/2026",
+          "admin_times": [
+            "05:00PM"
+          ],
+          "sig": "Take 1 tablet by mouth on Sunday and Thursdays; Take 1/2 tablet (2.5mg) by mouth on Mon/Tue/Wed/Fri/Sat",
+          "dose": "1 / 0.5",
+          "prn": false,
+          "category": "Blood Thinner / Anticoagulant",
+          "high_alert": true,
+          "notes": "Split dose schedule by day of week; Rx number not legible - verify"
+        },
+        {
+          "medication": "ALCOHOL PREP PADS MED. PAD",
+          "brand": "",
+          "imprint": "(Other)",
+          "rx_number": "2503752",
+          "prescriber": "LE, M - 253-274-7503",
+          "start_date": "07/16/2024",
+          "admin_times": [
+            "08:00AM"
+          ],
+          "sig": "For use in testing blood sugar 2 times a day",
+          "dose": "1",
+          "prn": false,
+          "category": "Sanitation",
+          "high_alert": false,
+          "notes": "Supply item"
+        },
+        {
+          "medication": "BUDESONIDE 0.25MG/2ML AMPUL-NEB",
+          "brand": "PULMICORT",
+          "imprint": "",
+          "rx_number": "2489367",
+          "prescriber": "LE, M - 253-274-7503",
+          "start_date": "07/09/2024",
+          "admin_times": [
+            "08:00AM",
+            "09:00PM"
+          ],
+          "sig": "Use 1 vial via nebulizer once daily",
+          "dose": "1",
+          "prn": false,
+          "category": "",
+          "high_alert": false,
+          "notes": "Two admin times shown on grid (08:00AM and 09:00PM) despite 'once daily' sig - verify"
+        },
+        {
+          "medication": "ESTRADIOL 0.01% (0.1MG/GRAM) CREAM/APPL",
+          "brand": "ESTRACE",
+          "imprint": "white (Taper)",
+          "rx_number": "2508847",
+          "prescriber": "LE, M - 253-274-7503",
+          "start_date": "07/09/2024",
+          "admin_times": [
+            "08:00AM"
+          ],
+          "sig": "Apply pea sized portion to the urethral area twice weekly, Tuesday and Friday",
+          "dose": "1",
+          "prn": false,
+          "category": "",
+          "high_alert": false,
+          "notes": "Taper; schedule effective Start Date 04/20/2026"
+        },
+        {
+          "medication": "NASAL SPRAY (NAME NOT LEGIBLE)",
+          "brand": "",
+          "imprint": "",
+          "rx_number": "",
+          "prescriber": "",
+          "start_date": "",
+          "admin_times": [
+            "12:00PM",
+            "05:00PM",
+            "09:00PM"
+          ],
+          "sig": "Inhale 2 sprays into each nostril 4 times a day for runny nose",
+          "dose": "2",
+          "prn": false,
+          "category": "Respitory Distress",
+          "high_alert": false,
+          "notes": "Medication name not legible on MAR - VERIFY (only 3 of 4 daily times visible)"
+        },
+        {
+          "medication": "LANCETS EACH",
+          "brand": "",
+          "imprint": "",
+          "rx_number": "",
+          "prescriber": "",
+          "start_date": "",
+          "admin_times": [
+            "08:00AM",
+            "09:00PM"
+          ],
+          "sig": "For use 2 times a day before breakfast and bedtime",
+          "dose": "",
+          "prn": false,
+          "category": "Blood Sugar Testing",
+          "high_alert": false,
+          "notes": "Supply item; 'MED NECESS AND CHART NOTES ON FILE'"
+        },
+        {
+          "medication": "LIDOCAINE 4% ADH. PATCH",
+          "brand": "",
+          "imprint": "(Other)",
+          "rx_number": "251026",
+          "prescriber": "LE, M",
+          "start_date": "01/14/20--",
+          "admin_times": [],
+          "sig": "Apply 1 patch to affected area(s) once every 24 hours (12 hours on then 12 hours off)",
+          "dose": "1",
+          "prn": false,
+          "category": "",
+          "high_alert": false,
+          "notes": "Start date year not legible"
+        },
+        {
+          "medication": "MELATONIN 10MG TAB RAPDIS",
+          "brand": "",
+          "imprint": "(Other)",
+          "rx_number": "2453215",
+          "prescriber": "LE, M",
+          "start_date": "04/2----",
+          "admin_times": [
+            "09:00PM"
+          ],
+          "sig": "Dissolve 1 tablet by mouth every night about 2 hours before bedtime",
+          "dose": "1",
+          "prn": false,
+          "category": "",
+          "high_alert": false,
+          "notes": "Per Jane OK to charge $8.95 (1-27-25)"
+        },
+        {
+          "medication": "REPATHA PUSHTRONEX 420MG/3.5ML WEAR INJC (EVOLOCUMAB)",
+          "brand": "",
+          "imprint": "(Other)",
+          "rx_number": "2453120",
+          "prescriber": "LE, M - 253-274-7503",
+          "start_date": "07/0----",
+          "admin_times": [],
+          "sig": "Inject 3.5ml (420mg) under the skin every 28 days",
+          "dose": "1",
+          "prn": false,
+          "category": "",
+          "high_alert": false,
+          "notes": "Cycle medication"
+        },
+        {
+          "medication": "TRUE METRIX GLUCOSE TEST STRIP (MEDICARE/DSHS)",
+          "brand": "",
+          "imprint": "(Other)",
+          "rx_number": "2160675",
+          "prescriber": "LE, M - 253-274-7503",
+          "start_date": "07/16/2---",
+          "admin_times": [
+            "08:00AM",
+            "09:00PM"
+          ],
+          "sig": "For use 2 times a day before breakfast and bedtime",
+          "dose": "",
+          "prn": false,
+          "category": "Diabetes",
+          "high_alert": false,
+          "notes": "Supply item; 'MED NECESS AND CHART NOTES ON FILE'"
+        },
+        {
+          "medication": "CETIRIZINE HCL 10MG TABLET",
+          "brand": "ZYRTEC",
+          "imprint": "white X 36 round",
+          "rx_number": "2489257",
+          "prescriber": "LE, M - 253-274-7503",
+          "start_date": "07/09/2024",
+          "admin_times": [
+            "PRN"
+          ],
+          "sig": "Take 1 tablet by mouth daily as needed for allergies or rhinitis",
+          "dose": "1",
+          "prn": true,
+          "category": "Allergies",
+          "high_alert": false,
+          "notes": ""
+        },
+        {
+          "medication": "DICLOFENAC SODIUM 1% GEL (GRAM)",
+          "brand": "",
+          "imprint": "",
+          "rx_number": "2508816",
+          "prescriber": "LE, M - 253-274-7503",
+          "start_date": "07/09/2024",
+          "admin_times": [
+            "PRN"
+          ],
+          "sig": "Apply topically 4 times a day as needed",
+          "dose": "",
+          "prn": true,
+          "category": "",
+          "high_alert": false,
+          "notes": ""
+        },
+        {
+          "medication": "DOCUSATE SODIUM 100MG CAPSULE",
+          "brand": "COLACE",
+          "imprint": "orange P51 oval",
+          "rx_number": "2361692",
+          "prescriber": "LE, M - 253-274-7503",
+          "start_date": "07/09/2024",
+          "admin_times": [
+            "PRN"
+          ],
+          "sig": "Take 1 capsule by mouth 2 times a day as needed for constipation",
+          "dose": "1",
+          "prn": true,
+          "category": "Stool Softener",
+          "high_alert": false,
+          "notes": "IPS hardstop - Prescription exceeds maximum day supply (as noted on MAR)"
+        },
+        {
+          "medication": "HYDROCORTISONE CREAM (BRAND: HYTONE)",
+          "brand": "HYTONE",
+          "imprint": "",
+          "rx_number": "",
+          "prescriber": "",
+          "start_date": "",
+          "admin_times": [
+            "PRN"
+          ],
+          "sig": "Apply topically 2 times a day as needed",
+          "dose": "",
+          "prn": true,
+          "category": "",
+          "high_alert": false,
+          "notes": "Drug name cell blank on MAR; identified by brand HYTONE - VERIFY"
+        },
+        {
+          "medication": "TIZANIDINE HCL 4MG TABLET",
+          "brand": "ZANAFLEX",
+          "imprint": "white APO TI-4 round",
+          "rx_number": "2489258",
+          "prescriber": "LE, M - 253-274-7503",
+          "start_date": "01/14/2025",
+          "admin_times": [
+            "PRN"
+          ],
+          "sig": "Take 1 tablet by mouth daily at bedtime as needed",
+          "dose": "1",
+          "prn": true,
+          "category": "",
+          "high_alert": false,
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "name": "KERSHNER, WILLIAM",
+      "dob": "01/13/1956",
+      "patient_no": "LGAFH005",
+      "allergies": "No Known Allergies",
+      "diagnoses": [
+        "Autistic disorder",
+        "Hyperlipidemia, unspecified",
+        "Epilepsy and recurrent seizures",
+        "Hypothyroidism, unspecified",
+        "Polyp of colon",
+        "Encounter for immunization",
+        "Insomnia due to other mental disorder",
+        "Gastro-esophageal reflux disease with esophagitis, without bleeding",
+        "Barrett's esophagus with dysplasia, unspecified",
+        "Epilepsy, unspecified, not intractable, without status epilepticus",
+        "Encounter for therapeutic drug level monitoring"
+      ],
+      "medication_orders": [
+        {
+          "medication": "CHOLESTEROL MED (NAME NOT LEGIBLE)",
+          "brand": "",
+          "imprint": "",
+          "rx_number": "",
+          "prescriber": "",
+          "start_date": "",
+          "admin_times": [
+            "08:00AM"
+          ],
+          "sig": "Take 1 tablet by mouth every morning at 8:00am",
+          "dose": "1",
+          "prn": false,
+          "category": "Cholesterol",
+          "high_alert": false,
+          "notes": "Medication name not legible on MAR - VERIFY"
+        },
+        {
+          "medication": "BUSPIRONE HCL 30MG TABLET",
+          "brand": "BUSPAR",
+          "imprint": "white U247 rectangular",
+          "rx_number": "2546324",
+          "prescriber": "FORCHU, V - 801-649-7584",
+          "start_date": "06/23/2026",
+          "admin_times": [
+            "08:00AM",
+            "09:00PM"
+          ],
+          "sig": "Take 1 tablet by mouth 2 times a day",
+          "dose": "1",
+          "prn": false,
+          "category": "Anxiety",
+          "high_alert": false,
+          "notes": ""
+        },
+        {
+          "medication": "CARBAMAZEPINE TABLET (BRAND: TEGRETOL)",
+          "brand": "TEGRETOL",
+          "imprint": "yellow TEVA 832 round",
+          "rx_number": "2588348",
+          "prescriber": "PERRY, E - 253-792-6680",
+          "start_date": "03/11/2021",
+          "admin_times": [
+            "09:00PM"
+          ],
+          "sig": "Take 1 tablet by mouth daily at bedtime",
+          "dose": "1",
+          "prn": false,
+          "category": "Seizures/Mood Stabilizer",
+          "high_alert": false,
+          "notes": "Strength not printed; TEVA 832 = 200mg - verify"
+        },
+        {
+          "medication": "CLONAZEPAM 0.5MG TABLET",
+          "brand": "KLONOPIN",
+          "imprint": "",
+          "rx_number": "",
+          "prescriber": "",
+          "start_date": "",
+          "admin_times": [
+            "09:00PM"
+          ],
+          "sig": "Take 1 tablet by mouth daily at bedtime",
+          "dose": "1",
+          "prn": false,
+          "category": "Anxiety",
+          "high_alert": true,
+          "notes": "Controlled substance; Rx number not legible - verify"
+        },
+        {
+          "medication": "DOK 100MG TABLET",
+          "brand": "COLACE",
+          "imprint": "white GPI 51 round",
+          "rx_number": "2584738",
+          "prescriber": "GILL, A - 253-697-1420",
+          "start_date": "03/11/2021",
+          "admin_times": [
+            "08:00AM",
+            "05:00PM"
+          ],
+          "sig": "Take 1 tablet by mouth 2 times a day",
+          "dose": "1",
+          "prn": false,
+          "category": "",
+          "high_alert": false,
+          "notes": "Per Jane, OK to charge $7.95 (9/4/25 @ 10:05pm)"
+        },
+        {
+          "medication": "GUANFACINE HCL ER 2MG TAB ER24H",
+          "brand": "",
+          "imprint": "white YH 117 oval",
+          "rx_number": "2566036",
+          "prescriber": "FORCHU, V - 801-649-7584",
+          "start_date": "11/27/2021",
+          "admin_times": [
+            "08:00AM"
+          ],
+          "sig": "Take 1 tablet by mouth daily each morning (before breakfast)",
+          "dose": "1",
+          "prn": false,
+          "category": "ADHD",
+          "high_alert": false,
+          "notes": ""
+        },
+        {
+          "medication": "LEVOTHYROXINE SODIUM 125MCG TABLET",
+          "brand": "SYNTHROID",
+          "imprint": "",
+          "rx_number": "",
+          "prescriber": "",
+          "start_date": "",
+          "admin_times": [
+            "08:00AM"
+          ],
+          "sig": "Take 1 tablet by mouth daily",
+          "dose": "1",
+          "prn": false,
+          "category": "Thyroid",
+          "high_alert": false,
+          "notes": "Rx number not legible - verify"
+        },
+        {
+          "medication": "MELATONIN 5MG TABLET",
+          "brand": "",
+          "imprint": "",
+          "rx_number": "2538730",
+          "prescriber": "TRAN, A - 253-792-6680",
+          "start_date": "02/26/2026",
+          "admin_times": [
+            "09:00PM"
+          ],
+          "sig": "Take 1 tablet by mouth daily at bedtime for insomnia",
+          "dose": "1",
+          "prn": false,
+          "category": "Insomnia",
+          "high_alert": false,
+          "notes": ""
+        },
+        {
+          "medication": "QUETIAPINE FUMARATE 100MG TABLET",
+          "brand": "SEROQUEL",
+          "imprint": "yellow LU Y17 round",
+          "rx_number": "2575834",
+          "prescriber": "ALYASIRI, H - 253-792-6680",
+          "start_date": "08/12/2026",
+          "admin_times": [
+            "09:00PM"
+          ],
+          "sig": "Take 1 tablet by mouth daily at bedtime",
+          "dose": "1",
+          "prn": false,
+          "category": "Mental Health",
+          "high_alert": false,
+          "notes": "PER JANE, they can split 200mg dose until... (partially legible)"
+        },
+        {
+          "medication": "VITAMIN D3 (MEDICAID) 1,000 UNIT TABLET",
+          "brand": "",
+          "imprint": "white round",
+          "rx_number": "2491610",
+          "prescriber": "LEGERWOOD, H - 253-792-6680",
+          "start_date": "03/11/2021",
+          "admin_times": [
+            "08:00AM"
+          ],
+          "sig": "Take 1 tablet by mouth daily",
+          "dose": "1",
+          "prn": false,
+          "category": "",
+          "high_alert": false,
+          "notes": ""
+        },
+        {
+          "medication": "POLYETHYLENE GLYCOL 3350 17GRAM/DOSE PO",
+          "brand": "MIRALAX 100% POWDER",
+          "imprint": "white (Other)",
+          "rx_number": "2507592",
+          "prescriber": "LEGERWOOD, H - 253-792-6680",
+          "start_date": "10/18/2024",
+          "admin_times": [],
+          "sig": "Mix 17 grams (fill to line in cap) in 4-8 ounces juice/water and drink daily",
+          "dose": "1",
+          "prn": false,
+          "category": "",
+          "high_alert": false,
+          "notes": "PER JANE @ AFH OK TO CHARGE $5.95 TO FILL"
+        },
+        {
+          "medication": "PAIN MED - TAKE 2 TABLETS 3X/DAY PRN (NAME NOT LEGIBLE)",
+          "brand": "",
+          "imprint": "",
+          "rx_number": "",
+          "prescriber": "",
+          "start_date": "",
+          "admin_times": [
+            "PRN"
+          ],
+          "sig": "Take 2 tablets by mouth 3 times a day as needed for pain",
+          "dose": "2",
+          "prn": true,
+          "category": "Pain",
+          "high_alert": false,
+          "notes": "Medication name not legible on MAR - VERIFY"
+        },
+        {
+          "medication": "BACITRACIN OINTMENT (BRAND: BACTERICIN)",
+          "brand": "BACTERICIN",
+          "imprint": "",
+          "rx_number": "",
+          "prescriber": "",
+          "start_date": "",
+          "admin_times": [
+            "PRN"
+          ],
+          "sig": "Apply topically to affected area(s) 2 times a day as needed for wound care/cleansing",
+          "dose": "",
+          "prn": true,
+          "category": "",
+          "high_alert": false,
+          "notes": "Brand only on MAR - verify generic"
+        },
+        {
+          "medication": "CARBAMIDE PEROXIDE 6.5% EAR DROPS (BRAND: EARDROPS 6.5%)",
+          "brand": "EARDROPS 6.5%",
+          "imprint": "",
+          "rx_number": "",
+          "prescriber": "",
+          "start_date": "",
+          "admin_times": [
+            "PRN"
+          ],
+          "sig": "Place 5 drops into both ears 2 times a day as needed (earwax impaction) for 5 days at a time as needed",
+          "dose": "5 drops",
+          "prn": true,
+          "category": "",
+          "high_alert": false,
+          "notes": "PER ARETHA @ FACILITY, OK TO CHARGE $9-- (partially legible)"
+        },
+        {
+          "medication": "LORAZEPAM 1MG TABLET",
+          "brand": "ATIVAN",
+          "imprint": "white TV1 1R round",
+          "rx_number": "2519317",
+          "prescriber": "ALVARADO HERRERA, R - 801-649-7---",
+          "start_date": "04/04/2023",
+          "admin_times": [
+            "PRN"
+          ],
+          "sig": "Take 1 tablet by mouth daily as needed prior to medical appointments",
+          "dose": "1",
+          "prn": true,
+          "category": "Anxiety",
+          "high_alert": true,
+          "notes": "Controlled substance"
+        }
+      ]
+    }
+  ]
+}
