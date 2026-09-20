@@ -1,0 +1,20 @@
+{
+  "source": "Ray_filled_Incidence_Report.docx",
+  "documentTitle": "Community Behavioral Health Supports (CBHS)",
+  "clientFields": [
+    "Full legal name of resident",
+    "Client\u2019s date of birth",
+    "ProviderOne ID",
+    "Facility providing services",
+    "Facility address",
+    "Tier level",
+    "Month & year CBHS services provided",
+    "Caregiver initials"
+  ],
+  "behaviorLogColumns": [
+    "Date",
+    "Time Interval",
+    "Behavior Observed",
+    "Standard Intervention Applied (First-Person)"
+  ]
+}

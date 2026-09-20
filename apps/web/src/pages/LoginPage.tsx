@@ -1,31 +1,45 @@
 import { useState, type FormEvent } from 'react';
 import { Navigate } from 'react-router-dom';
+import { api } from '../api';
 import { useAuth } from '../auth';
 
 const FACILITIES = [
   {
+    id: 'loving-garden',
     name: 'Loving Garden AFH',
     email: 'care@lovinggarden.demo',
+    label: 'Loving Garden AFH',
   },
   {
+    id: 'sunrise',
     name: 'Sunrise Adult Family Home',
     email: 'care@sunrise.demo',
+    label: 'Sunrise Adult Family Home',
+  },
+  {
+    id: 'portfolio',
+    name: 'Loving Garden AFH',
+    email: 'owner@portfolio.demo',
+    label: 'Portfolio owner (multi-home)',
   },
 ] as const;
 
 export function LoginPage() {
   const { user, login } = useAuth();
-  const [tenantName, setTenantName] = useState<string>(FACILITIES[0].name);
-  const [email, setEmail] = useState(FACILITIES[0].email);
+  const [facilityId, setFacilityId] = useState<string>(FACILITIES[0].id);
+  const facility = FACILITIES.find((f) => f.id === facilityId) || FACILITIES[0];
+  const [email, setEmail] = useState<string>(FACILITIES[0].email);
   const [password, setPassword] = useState('Password123!');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+  const [mode, setMode] = useState<'login' | 'reset'>('login');
+  const [resetMsg, setResetMsg] = useState('');
 
   if (user) return <Navigate to="/" replace />;
 
-  function onFacilityChange(name: string) {
-    setTenantName(name);
-    const match = FACILITIES.find((f) => f.name === name);
+  function onFacilityChange(id: string) {
+    setFacilityId(id);
+    const match = FACILITIES.find((f) => f.id === id);
     if (match) setEmail(match.email);
   }
 
@@ -33,10 +47,19 @@ export function LoginPage() {
     e.preventDefault();
     setBusy(true);
     setError('');
+    setResetMsg('');
     try {
-      await login(email, password, tenantName || undefined);
+      if (mode === 'reset') {
+        await api('/auth/password-reset/request', {
+          method: 'POST',
+          body: JSON.stringify({ email, tenantName: facility.name }),
+        });
+        setResetMsg('If an account exists, a reset link was emailed (or logged when SMTP is off).');
+      } else {
+        await login(email, password, facility.name);
+      }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Login failed');
+      setError(err instanceof Error ? err.message : 'Request failed');
     } finally {
       setBusy(false);
     }
@@ -44,21 +67,27 @@ export function LoginPage() {
 
   return (
     <div className="login-wrap">
-      <form className="login-panel" onSubmit={onSubmit}>
-        <h1>RFH Care</h1>
-        <p className="page-sub">Sign in for med pass and resident care.</p>
+      <form className="login-panel page-enter" onSubmit={onSubmit}>
+        <div className="login-brand">RFH Care</div>
+        <h1>{facility.label}</h1>
+        <p className="page-sub">
+          {mode === 'login'
+            ? 'Facility gate for med pass, MAR, and care notes.'
+            : 'Request a password reset email for this facility.'}
+        </p>
         {error ? <div className="error">{error}</div> : null}
+        {resetMsg ? <div className="toast toast-success">{resetMsg}</div> : null}
         <div className="field">
           <label htmlFor="tenant">Facility</label>
           <select
             id="tenant"
-            value={tenantName}
+            value={facilityId}
             onChange={(e) => onFacilityChange(e.target.value)}
             required
           >
             {FACILITIES.map((f) => (
-              <option key={f.name} value={f.name}>
-                {f.name}
+              <option key={f.id} value={f.id}>
+                {f.label}
               </option>
             ))}
           </select>
@@ -74,19 +103,32 @@ export function LoginPage() {
             required
           />
         </div>
-        <div className="field">
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            autoComplete="current-password"
-            required
-          />
-        </div>
-        <button className="btn" type="submit" disabled={busy} style={{ width: '100%' }}>
-          {busy ? 'Signing in…' : 'Sign in'}
+        {mode === 'login' ? (
+          <div className="field">
+            <label htmlFor="password">Password</label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
+              required
+            />
+          </div>
+        ) : null}
+        <button className="btn" type="submit" disabled={busy}>
+          {busy ? 'Please wait…' : mode === 'login' ? 'Sign in' : 'Send reset link'}
+        </button>
+        <button
+          className="btn ghost"
+          type="button"
+          onClick={() => {
+            setMode((m) => (m === 'login' ? 'reset' : 'login'));
+            setError('');
+            setResetMsg('');
+          }}
+        >
+          {mode === 'login' ? 'Forgot password?' : 'Back to sign in'}
         </button>
       </form>
     </div>

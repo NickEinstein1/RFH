@@ -1,6 +1,8 @@
 import {
+  IsBoolean,
   IsDateString,
   IsEnum,
+  IsObject,
   IsOptional,
   IsString,
   MinLength,
@@ -32,9 +34,21 @@ export class CreateIncidentDto {
   @IsOptional()
   @IsString()
   immediateActions?: string;
+
+  @IsOptional()
+  @IsObject()
+  formData?: Record<string, unknown>;
+
+  @IsOptional()
+  @IsString()
+  clientEventId?: string;
 }
 
 export class UpdateIncidentDto {
+  @IsOptional()
+  @IsEnum(IncidentCategory)
+  category?: IncidentCategory;
+
   @IsOptional()
   @IsEnum(IncidentSeverity)
   severity?: IncidentSeverity;
@@ -54,4 +68,12 @@ export class UpdateIncidentDto {
   @IsOptional()
   @IsString()
   immediateActions?: string;
+
+  @IsOptional()
+  @IsDateString()
+  occurredAt?: string;
+
+  @IsOptional()
+  @IsObject()
+  formData?: Record<string, unknown>;
 }

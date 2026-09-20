@@ -244,6 +244,38 @@ async function main() {
     password: 'Password123!',
     resident: `${resident.firstName} ${resident.lastName}`,
   });
+
+  await linkPortfolioDemo(passwordHash);
+}
+
+async function linkPortfolioDemo(passwordHash: string) {
+  const org =
+    (await prisma.organization.findFirst({ where: { name: 'RFH Demo Portfolio' } })) ||
+    (await prisma.organization.create({
+      data: { name: 'RFH Demo Portfolio' },
+    }));
+
+  const sunrise = await prisma.tenant.findFirst({ where: { name: 'Sunrise Adult Family Home' } });
+  const loving = await prisma.tenant.findFirst({ where: { name: 'Loving Garden AFH' } });
+  for (const t of [sunrise, loving]) {
+    if (!t) continue;
+    await prisma.tenant.update({
+      where: { id: t.id },
+      data: { organizationId: org.id },
+    });
+    await prisma.user.upsert({
+      where: { tenantId_email: { tenantId: t.id, email: 'owner@portfolio.demo' } },
+      update: { passwordHash, role: Role.OWNER, isActive: true },
+      create: {
+        tenantId: t.id,
+        email: 'owner@portfolio.demo',
+        passwordHash,
+        role: Role.OWNER,
+        firstName: 'Pat',
+        lastName: 'Portfolio',
+      },
+    });
+  }
 }
 
 main()

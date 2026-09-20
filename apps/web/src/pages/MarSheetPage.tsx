@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { api } from '../api';
+import { api, downloadFile } from '../api';
 import { useAuth } from '../auth';
 import { PrnRecordModal } from '../components/PrnRecordModal';
 import { BMI_CODES, MSE_CODES, PAIN_SCALE, RESULT_CODES, prnPayloadFromForm } from '../marBackGuides';
+import { formatUsDate } from '../usDate';
 
 type MarCell = {
   day: number;
@@ -257,6 +258,20 @@ export function MarSheetPage() {
         <button className="btn secondary" type="button" onClick={() => shiftMonth(1)}>
           Next →
         </button>
+        {id ? (
+          <button
+            className="btn"
+            type="button"
+            onClick={() => {
+              void downloadFile(
+                `/downloads/mar?residentId=${encodeURIComponent(id)}&month=${encodeURIComponent(month)}`,
+                `MAR_${month}.pdf`,
+              ).catch((e) => setError(e instanceof Error ? e.message : 'Download failed'));
+            }}
+          >
+            Download PDF
+          </button>
+        ) : null}
       </div>
 
       {error ? <div className="error">{error}</div> : null}
@@ -269,7 +284,7 @@ export function MarSheetPage() {
                 <div className="mar-title">Medication Administration Record</div>
                 <div className="mar-resident-name">{displayPatient}</div>
                 <div className="mar-resident">
-                  DOB: {sheet.resident.dateOfBirth}
+                  DOB: {formatUsDate(sheet.resident.dateOfBirth)}
                   {' · '}Patient No: {sheet.resident.mrn || '—'}
                   {sheet.resident.room ? ` · Room ${sheet.resident.room}` : ''}
                 </div>
@@ -338,7 +353,7 @@ export function MarSheetPage() {
                               {row.order.imprint ? (
                                 <div className="meta">{row.order.imprint}</div>
                               ) : null}
-                              <div className="meta">Start: {row.order.startDate}</div>
+                              <div className="meta">Start: {formatUsDate(row.order.startDate)}</div>
                             </td>
                           ) : null}
                           {idx === 0 ? (
@@ -529,7 +544,7 @@ export function MarSheetPage() {
                 <tbody>
                   {sheet.backPage.prnEntries.map((e) => (
                     <tr key={e.id}>
-                      <td>{e.date}</td>
+                      <td>{formatUsDate(e.date)}</td>
                       <td>{e.time}</td>
                       <td>{e.medication}</td>
                       <td>{e.dose}</td>

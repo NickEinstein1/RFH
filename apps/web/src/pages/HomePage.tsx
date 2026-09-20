@@ -1,0 +1,238 @@
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { api } from '../api';
+import { useAuth } from '../auth';
+import { formatInFacilityTz } from '../time';
+import { pendingCount } from '../offlineQueue';
+
+type MedAlert = {
+  id: string;
+  type: string;
+  status: string;
+  triggeredAt: string;
+  administration?: {
+    resident?: { id: string; firstName: string; lastName: string; room: string | null };
+    order?: { drugName: string };
+  };
+};
+
+type Incident = {
+  id: string;
+  title: string;
+  severity: string;
+  status: string;
+  occurredAt: string;
+  resident: { firstName: string; lastName: string };
+};
+
+type DueSlot = {
+  residentId: string;
+  residentName: string;
+  room: string | null;
+  drugName: string;
+  scheduledAt: string;
+};
+
+function currentMonthYm() {
+  const now = new Date();
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+}
+
+export function HomePage({ timezone }: { timezone: string }) {
+  const { user } = useAuth();
+  const [alerts, setAlerts] = useState<MedAlert[]>([]);
+  const [incidents, setIncidents] = useState<Incident[]>([]);
+  const [due, setDue] = useState<DueSlot[]>([]);
+  const [error, setError] = useState('');
+  const [syncPending, setSyncPending] = useState(pendingCount());
+  const [survey, setSurvey] = useState<{ score: number; label: string } | null>(null);
+  const month = currentMonthYm();
+  const isFamily = user?.role === 'FAMILY_VIEWER';
+  const showReports = ['OWNER', 'ADMIN', 'NURSE'].includes(user?.role || '');
+
+  useEffect(() => {
+    const onQueue = () => setSyncPending(pendingCount());
+    window.addEventListener('rfh-offline-queue', onQueue);
+    return () => window.removeEventListener('rfh-offline-queue', onQueue);
+  }, []);
+
+  useEffect(() => {
+    void (async () => {
+      try {
+        const [alertRows, incidentRows, residents, readiness] = await Promise.all([
+          isFamily
+            ? Promise.resolve([] as MedAlert[])
+            : api<MedAlert[]>('/emar/alerts').catch(() => [] as MedAlert[]),
+          api<Incident[]>('/incidents').catch(() => [] as Incident[]),
+          api<
+            Array<{
+              id: string;
+              firstName: string;
+              lastName: string;
+              room: string | null;
+            }>
+          >('/residents'),
+          showReports
+            ? api<{ score: number; label: string }>('/reports/survey-readiness').catch(() => null)
+            : Promise.resolve(null),
+        ]);
+
+        if (readiness) setSurvey({ score: readiness.score, label: readiness.label });
+        setAlerts(alertRows.slice(0, 6));
+        setIncidents(
+          incidentRows
+            .filter((i) => i.status !== 'CLOSED')
+            .slice(0, 5),
+        );
+
+        const slots: DueSlot[] = [];
+        const sample = residents.slice(0, 8);
+        const today = new Date().toISOString().slice(0, 10);
+        await Promise.all(
+          sample.map(async (r) => {
+            try {
+              const pass = await api<{
+                slots: Array<{
+                  scheduledAt: string | null;
+                  isPrn: boolean;
+                  order: { drugName: string };
+                  administration: { outcome: string } | null;
+                }>;
+              }>(
+                `/emar/med-pass?residentId=${encodeURIComponent(r.id)}&date=${today}`,
+              );
+              for (const d of pass.slots || []) {
+                if (d.isPrn || d.administration) continue;
+                if (!d.scheduledAt) continue;
+                slots.push({
+                  residentId: r.id,
+                  residentName: `${r.lastName}, ${r.firstName}`,
+                  room: r.room,
+                  drugName: d.order.drugName,
+                  scheduledAt: d.scheduledAt,
+                });
+              }
+            } catch {
+              /* skip resident if pass unavailable */
+            }
+          }),
+        );
+        slots.sort((a, b) => a.scheduledAt.localeCompare(b.scheduledAt));
+        setDue(slots.slice(0, 8));
+        setError('');
+      } catch (e) {
+        setError(e instanceof Error ? e.message : 'Failed to load today');
+      }
+    })();
+  }, [isFamily, showReports]);
+
+  return (
+    <div className="home-today page-enter">
+      <header className="home-hero">
+        <p className="home-eyebrow">{user?.tenantName}</p>
+        <h1 className="page-title">Today’s care</h1>
+        <p className="page-sub">
+          Due meds, open alerts, and recent CBHS notes — one place to start your shift.
+          {syncPending ? ` · ${syncPending} pending offline sync` : ''}
+        </p>
+        {survey ? (
+          <Link className="survey-pill" to="/reports">
+            <span className="survey-pill-score">{survey.score}%</span>
+            <span>{survey.label}</span>
+          </Link>
+        ) : null}
+        <div className="home-cta-row">
+          <Link className="btn" to="/residents">
+            Residents
+          </Link>
+          {!isFamily ? (
+            <Link className="btn secondary" to="/alerts">
+              Med alerts
+            </Link>
+          ) : null}
+          <Link className="btn ghost" to="/downloads">
+            Downloads
+          </Link>
+        </div>
+      </header>
+
+      {error ? <div className="error">{error}</div> : null}
+
+      <section className="home-section">
+        <h2>Due medications</h2>
+        <div className="stack">
+          {due.length === 0 ? <p className="empty">No due doses in the current sample.</p> : null}
+          {due.map((d, i) => (
+            <Link
+              key={`${d.residentId}-${d.scheduledAt}-${i}`}
+              className="home-row"
+              to={`/residents/${d.residentId}`}
+            >
+              <div>
+                <strong>{d.drugName}</strong>
+                <div className="meta">
+                  {d.residentName}
+                  {d.room ? ` · Rm ${d.room}` : ''} ·{' '}
+                  {formatInFacilityTz(d.scheduledAt, timezone, { timeStyle: 'short' })}
+                </div>
+              </div>
+              <span className="badge warn">Due</span>
+            </Link>
+          ))}
+        </div>
+        {due[0] ? (
+          <Link className="meta home-more" to={`/residents/${due[0].residentId}/mar?month=${month}`}>
+            Open MAR →
+          </Link>
+        ) : null}
+      </section>
+
+      {!isFamily ? (
+        <section className="home-section">
+          <h2>Open alerts</h2>
+          <div className="stack">
+            {alerts.length === 0 ? <p className="empty">No open med alerts.</p> : null}
+            {alerts.map((a) => (
+              <Link key={a.id} className="home-row" to="/alerts">
+                <div>
+                  <strong>{a.type}</strong>
+                  <div className="meta">
+                    {a.administration?.resident
+                      ? `${a.administration.resident.lastName}, ${a.administration.resident.firstName}`
+                      : 'Resident'}
+                    {a.administration?.order?.drugName
+                      ? ` · ${a.administration.order.drugName}`
+                      : ''}{' '}
+                    · {formatInFacilityTz(a.triggeredAt, timezone)}
+                  </div>
+                </div>
+                <span className="badge danger">Open</span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      <section className="home-section">
+        <h2>Recent CBHS notes</h2>
+        <div className="stack">
+          {incidents.length === 0 ? <p className="empty">No open notes.</p> : null}
+          {incidents.map((i) => (
+            <Link key={i.id} className="home-row" to="/incidents">
+              <div>
+                <strong>{i.title}</strong>
+                <div className="meta">
+                  {i.resident.lastName}, {i.resident.firstName} · {i.severity} ·{' '}
+                  {formatInFacilityTz(i.occurredAt, timezone)}
+                </div>
+              </div>
+              <span className={`badge ${i.severity === 'CRITICAL' || i.severity === 'HIGH' ? 'danger' : 'warn'}`}>
+                {i.status}
+              </span>
+            </Link>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}

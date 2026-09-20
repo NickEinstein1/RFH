@@ -56,12 +56,14 @@ export const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
     Permissions.CREDENTIALS_WRITE,
     Permissions.INCIDENTS_CLOSE,
     Permissions.REPORTS_READ,
+    Permissions.AUDIT_READ,
   ],
   [Role.CAREGIVER]: STAFF_CLINICAL,
   [Role.FAMILY_VIEWER]: [
     Permissions.RESIDENTS_READ,
     Permissions.NOTES_READ,
     Permissions.CARE_PLANS_READ,
+    Permissions.INCIDENTS_READ,
   ],
 };
 

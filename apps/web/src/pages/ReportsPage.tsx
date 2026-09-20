@@ -1,11 +1,23 @@
 import { useEffect, useState } from 'react';
-import { api } from '../api';
+import { api, downloadFile } from '../api';
 import { formatInFacilityTz } from '../time';
+import { Link } from 'react-router-dom';
 
 type Pack = {
   generatedAt: string;
   facilityTimezone: string;
   range: { from: string; to: string };
+  surveyReadiness?: {
+    score: number;
+    label: string;
+    findings: Array<{
+      id: string;
+      label: string;
+      severity: 'ok' | 'warn' | 'critical';
+      detail: string;
+      penalty: number;
+    }>;
+  };
   census: { activeCount: number; residents: Array<{ lastName: string; firstName: string; room: string | null }> };
   emar: { outcomeCounts: Record<string, number>; openAlertCount: number };
   incidents: { count: number; items: Array<{ title: string; category: string; severity: string; status: string }> };
@@ -53,14 +65,59 @@ export function ReportsPage({ timezone }: { timezone: string }) {
   return (
     <div>
       <h1 className="page-title">Inspection pack</h1>
-      <p className="page-sub">Last 30 days · survey-ready summary with audit trail.</p>
+      <p className="page-sub">Live survey readiness + last 30 days summary with audit trail.</p>
       {error ? <div className="error">{error}</div> : null}
       {pack ? (
         <>
-          <div style={{ marginBottom: '1rem' }}>
+          {pack.surveyReadiness ? (
+            <section className="survey-score-card page-enter">
+              <div className="survey-score-num">{pack.surveyReadiness.score}%</div>
+              <div>
+                <strong>{pack.surveyReadiness.label}</strong>
+                <p className="meta" style={{ margin: '0.35rem 0 0' }}>
+                  State-survey readiness from credentials, med alerts, incident follow-up, and missed-dose rate.
+                </p>
+              </div>
+              <div className="stack" style={{ gridColumn: '1 / -1', marginTop: '0.75rem' }}>
+                {pack.surveyReadiness.findings.map((f) => (
+                  <div key={f.id} className="home-row" style={{ cursor: 'default' }}>
+                    <div>
+                      <strong>{f.label}</strong>
+                      <div className="meta">{f.detail}</div>
+                    </div>
+                    <span
+                      className={`badge ${
+                        f.severity === 'ok' ? 'ok' : f.severity === 'warn' ? 'warn' : 'danger'
+                      }`}
+                    >
+                      {f.severity === 'ok' ? 'OK' : f.severity.toUpperCase()}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </section>
+          ) : null}
+          <div style={{ marginBottom: '1rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
             <button className="btn" type="button" onClick={downloadJson}>
               Download JSON
             </button>
+            <button
+              className="btn secondary"
+              type="button"
+              onClick={() => {
+                const to = new Date().toISOString();
+                const from = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+                void downloadFile(
+                  `/downloads/inspection-pack?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`,
+                  'InspectionPack.pdf',
+                ).catch((e) => setError(e instanceof Error ? e.message : 'Download failed'));
+              }}
+            >
+              Download PDF
+            </button>
+            <Link className="btn ghost" to="/downloads">
+              All downloads
+            </Link>
           </div>
           <div className="stack">
             <div className="note-row" style={{ flexDirection: 'column', alignItems: 'stretch' }}>

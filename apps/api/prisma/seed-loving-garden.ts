@@ -216,6 +216,28 @@ async function main() {
     logins: users.map((u) => u.email),
     password: 'Password123!',
   });
+
+  const org =
+    (await prisma.organization.findFirst({ where: { name: 'RFH Demo Portfolio' } })) ||
+    (await prisma.organization.create({
+      data: { name: 'RFH Demo Portfolio' },
+    }));
+  await prisma.tenant.update({
+    where: { id: tenant.id },
+    data: { organizationId: org.id },
+  });
+  await prisma.user.upsert({
+    where: { tenantId_email: { tenantId: tenant.id, email: 'owner@portfolio.demo' } },
+    update: { passwordHash, role: Role.OWNER, isActive: true },
+    create: {
+      tenantId: tenant.id,
+      email: 'owner@portfolio.demo',
+      passwordHash,
+      role: Role.OWNER,
+      firstName: 'Pat',
+      lastName: 'Portfolio',
+    },
+  });
 }
 
 main()

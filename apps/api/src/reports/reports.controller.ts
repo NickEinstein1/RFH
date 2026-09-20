@@ -10,6 +10,12 @@ import type { AuthUser } from '../common/decorators/current-user.decorator';
 export class ReportsController {
   constructor(private readonly reports: ReportsService) {}
 
+  @Get('survey-readiness')
+  @RequirePermissions(Permissions.REPORTS_READ)
+  surveyReadiness(@CurrentUser() user: AuthUser, @Req() req: Request) {
+    return this.reports.surveyReadiness(user, req);
+  }
+
   @Get('inspection-pack')
   @RequirePermissions(Permissions.REPORTS_READ)
   inspectionPack(

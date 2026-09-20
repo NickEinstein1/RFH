@@ -1,9 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { IncidentStatus } from '@prisma/client';
+import { IncidentSeverity, IncidentStatus, Prisma, Role } from '@prisma/client';
 import type { Request } from 'express';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuditService } from '../audit/audit.service';
 import { PhiCryptoService } from '../common/crypto/phi-crypto.service';
+import { MailService } from '../mail/mail.service';
 import type { AuthUser } from '../common/decorators/current-user.decorator';
 import { CreateIncidentDto, UpdateIncidentDto } from './dto/incident.dto';
 
@@ -13,6 +14,7 @@ export class IncidentsService {
     private readonly prisma: PrismaService,
     private readonly audit: AuditService,
     private readonly phi: PhiCryptoService,
+    private readonly mail: MailService,
   ) {}
 
   private reveal<T extends { narrative: string }>(row: T): T {
@@ -25,6 +27,17 @@ export class IncidentsService {
     });
     if (!resident) throw new NotFoundException('Resident not found');
 
+    if (dto.clientEventId) {
+      const existing = await this.prisma.db.incident.findFirst({
+        where: { tenantId: user.tenantId, clientEventId: dto.clientEventId },
+        include: {
+          reportedBy: { select: { id: true, firstName: true, lastName: true, role: true } },
+          resident: { select: { id: true, firstName: true, lastName: true, room: true } },
+        },
+      });
+      if (existing) return this.reveal(existing);
+    }
+
     const incident = await this.prisma.db.incident.create({
       data: {
         tenantId: user.tenantId,
@@ -36,6 +49,10 @@ export class IncidentsService {
         title: dto.title,
         narrative: this.phi.encrypt(dto.narrative)!,
         immediateActions: dto.immediateActions,
+        formData: dto.formData
+          ? (dto.formData as Prisma.InputJsonValue)
+          : undefined,
+        clientEventId: dto.clientEventId,
       },
       include: {
         reportedBy: { select: { id: true, firstName: true, lastName: true, role: true } },
@@ -48,6 +65,32 @@ export class IncidentsService {
       category: dto.category,
       severity: incident.severity,
     }, req);
+
+    if (
+      incident.severity === IncidentSeverity.HIGH ||
+      incident.severity === IncidentSeverity.CRITICAL
+    ) {
+      const nurses = await this.prisma.db.user.findMany({
+        where: {
+          tenantId: user.tenantId,
+          deletedAt: null,
+          isActive: true,
+          role: { in: [Role.OWNER, Role.ADMIN, Role.NURSE] },
+        },
+        select: { email: true },
+      });
+      const tenant = await this.prisma.db.tenant.findUniqueOrThrow({
+        where: { id: user.tenantId },
+      });
+      await this.mail.sendHighSeverityAlert({
+        to: nurses.map((n) => n.email),
+        facilityName: tenant.name,
+        summary: `${incident.severity} ${incident.category} report opened: ${incident.title}`,
+        actor: user,
+        tenantId: user.tenantId,
+      });
+    }
+
     return this.reveal(incident);
   }
 
@@ -94,7 +137,16 @@ export class IncidentsService {
     const row = await this.prisma.db.incident.update({
       where: { id },
       data: {
-        ...dto,
+        category: dto.category,
+        severity: dto.severity,
+        status: dto.status,
+        title: dto.title,
+        immediateActions: dto.immediateActions,
+        formData:
+          dto.formData === undefined
+            ? undefined
+            : (dto.formData as Prisma.InputJsonValue),
+        occurredAt: dto.occurredAt ? new Date(dto.occurredAt) : undefined,
         narrative:
           dto.narrative !== undefined ? this.phi.encrypt(dto.narrative)! : undefined,
       },

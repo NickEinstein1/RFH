@@ -1,5 +1,13 @@
-import { IsEmail, IsEnum, IsOptional, IsString, MinLength } from 'class-validator';
+import {
+  IsBoolean,
+  IsEmail,
+  IsEnum,
+  IsOptional,
+  IsString,
+  MinLength,
+} from 'class-validator';
 import { Role } from '@prisma/client';
+import { IsStrongPassword } from '../../common/validators/password.policy';
 
 export class LoginDto {
   @IsEmail()
@@ -9,7 +17,6 @@ export class LoginDto {
   @MinLength(8)
   password!: string;
 
-  /** Optional tenant slug/name for multi-tenant login disambiguation */
   @IsOptional()
   @IsString()
   tenantName?: string;
@@ -28,7 +35,7 @@ export class RegisterTenantDto {
   email!: string;
 
   @IsString()
-  @MinLength(8)
+  @IsStrongPassword()
   password!: string;
 
   @IsString()
@@ -43,7 +50,7 @@ export class CreateUserDto {
   email!: string;
 
   @IsString()
-  @MinLength(8)
+  @IsStrongPassword()
   password!: string;
 
   @IsString()
@@ -54,9 +61,47 @@ export class CreateUserDto {
 
   @IsEnum(Role)
   role!: Role;
+
+  @IsOptional()
+  @IsBoolean()
+  sendInvite?: boolean;
 }
 
 export class RefreshDto {
   @IsString()
   refreshToken!: string;
+}
+
+export class PasswordResetRequestDto {
+  @IsEmail()
+  email!: string;
+
+  @IsOptional()
+  @IsString()
+  tenantName?: string;
+}
+
+export class PasswordResetConfirmDto {
+  @IsString()
+  @MinLength(20)
+  token!: string;
+
+  @IsString()
+  @IsStrongPassword()
+  password!: string;
+}
+
+export class ChangePasswordDto {
+  @IsString()
+  @MinLength(8)
+  currentPassword!: string;
+
+  @IsString()
+  @IsStrongPassword()
+  newPassword!: string;
+}
+
+export class SwitchHomeDto {
+  @IsString()
+  tenantId!: string;
 }

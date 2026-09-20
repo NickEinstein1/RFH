@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CarePlanStatus } from '@prisma/client';
+import { CarePlanStatus, Prisma } from '@prisma/client';
 import type { Request } from 'express';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuditService } from '../audit/audit.service';
@@ -10,6 +10,7 @@ import {
   CreateCareTaskDto,
   RecordTaskCompletionDto,
   UpdateCarePlanDto,
+  UpdateCareTaskDto,
 } from './dto/care.dto';
 import {
   addDaysYmd,
@@ -40,6 +41,9 @@ export class CareService {
         goals: dto.goals,
         effectiveFrom: new Date(dto.effectiveFrom),
         effectiveTo: dto.effectiveTo ? new Date(dto.effectiveTo) : null,
+        formData: dto.formData
+          ? (dto.formData as Prisma.InputJsonValue)
+          : undefined,
       },
     });
     await this.audit.logForUser(user, 'care_plan.create', 'CarePlan', plan.id, {
@@ -82,13 +86,67 @@ export class CareService {
     const plan = await this.prisma.db.carePlan.update({
       where: { id },
       data: {
-        ...dto,
+        title: dto.title,
+        goals: dto.goals,
+        status: dto.status,
+        formData:
+          dto.formData === undefined
+            ? undefined
+            : (dto.formData as Prisma.InputJsonValue),
+        effectiveFrom: dto.effectiveFrom ? new Date(dto.effectiveFrom) : undefined,
         effectiveTo: dto.effectiveTo ? new Date(dto.effectiveTo) : undefined,
+      },
+      include: {
+        careTasks: {
+          where: { deletedAt: null },
+          orderBy: { title: 'asc' },
+        },
       },
     });
     await this.audit.logForUser(user, 'care_plan.update', 'CarePlan', id, {
       fields: Object.keys(dto),
     }, req);
+    return plan;
+  }
+
+  async findPlan(user: AuthUser, id: string, req?: Request) {
+    const plan = await this.prisma.db.carePlan.findFirst({
+      where: { id, tenantId: user.tenantId, deletedAt: null },
+      include: {
+        careTasks: {
+          where: { deletedAt: null },
+          orderBy: { title: 'asc' },
+        },
+        resident: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            dateOfBirth: true,
+            room: true,
+            allergies: true,
+            admitDate: true,
+          },
+        },
+      },
+    });
+    if (!plan) throw new NotFoundException('Care plan not found');
+    await this.familyAccess.assertCanAccessResident(user, plan.residentId);
+    await this.audit.logForUser(user, 'care_plan.read', 'CarePlan', id, undefined, req);
+    return plan;
+  }
+
+  async softDeletePlan(user: AuthUser, id: string, req?: Request) {
+    const existing = await this.prisma.db.carePlan.findFirst({
+      where: { id, tenantId: user.tenantId, deletedAt: null },
+    });
+    if (!existing) throw new NotFoundException('Care plan not found');
+    await this.familyAccess.assertCanAccessResident(user, existing.residentId);
+    const plan = await this.prisma.db.carePlan.update({
+      where: { id },
+      data: { deletedAt: new Date(), status: CarePlanStatus.ARCHIVED },
+    });
+    await this.audit.logForUser(user, 'care_plan.soft_delete', 'CarePlan', id, undefined, req);
     return plan;
   }
 
@@ -119,6 +177,43 @@ export class CareService {
       carePlanId: plan.id,
       title: task.title,
     }, req);
+    return task;
+  }
+
+  async updateTask(user: AuthUser, id: string, dto: UpdateCareTaskDto, req?: Request) {
+    const existing = await this.prisma.db.careTask.findFirst({
+      where: { id, tenantId: user.tenantId, deletedAt: null },
+    });
+    if (!existing) throw new NotFoundException('Care task not found');
+    await this.familyAccess.assertCanAccessResident(user, existing.residentId);
+    const task = await this.prisma.db.careTask.update({
+      where: { id },
+      data: {
+        category: dto.category,
+        title: dto.title,
+        shift: dto.shift,
+        scheduleTimes: dto.scheduleTimes,
+        instructions: dto.instructions,
+        isActive: dto.isActive,
+      },
+    });
+    await this.audit.logForUser(user, 'care_task.update', 'CareTask', id, {
+      fields: Object.keys(dto),
+    }, req);
+    return task;
+  }
+
+  async softDeleteTask(user: AuthUser, id: string, req?: Request) {
+    const existing = await this.prisma.db.careTask.findFirst({
+      where: { id, tenantId: user.tenantId, deletedAt: null },
+    });
+    if (!existing) throw new NotFoundException('Care task not found');
+    await this.familyAccess.assertCanAccessResident(user, existing.residentId);
+    const task = await this.prisma.db.careTask.update({
+      where: { id },
+      data: { deletedAt: new Date(), isActive: false },
+    });
+    await this.audit.logForUser(user, 'care_task.soft_delete', 'CareTask', id, undefined, req);
     return task;
   }
 

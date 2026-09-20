@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Param, Patch, Post, Query, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  Req,
+} from '@nestjs/common';
 import type { Request } from 'express';
 import { CareService } from './care.service';
 import {
@@ -6,6 +16,7 @@ import {
   CreateCareTaskDto,
   RecordTaskCompletionDto,
   UpdateCarePlanDto,
+  UpdateCareTaskDto,
 } from './dto/care.dto';
 import { RequirePermissions } from '../common/decorators/auth.decorators';
 import { Permissions } from '../common/enums/rbac';
@@ -36,6 +47,16 @@ export class CareController {
     return this.care.listPlans(user, residentId, req);
   }
 
+  @Get('plans/:id')
+  @RequirePermissions(Permissions.CARE_PLANS_READ)
+  findPlan(
+    @CurrentUser() user: AuthUser,
+    @Param('id') id: string,
+    @Req() req: Request,
+  ) {
+    return this.care.findPlan(user, id, req);
+  }
+
   @Patch('plans/:id')
   @RequirePermissions(Permissions.CARE_PLANS_WRITE)
   updatePlan(
@@ -45,6 +66,16 @@ export class CareController {
     @Req() req: Request,
   ) {
     return this.care.updatePlan(user, id, dto, req);
+  }
+
+  @Delete('plans/:id')
+  @RequirePermissions(Permissions.CARE_PLANS_WRITE)
+  deletePlan(
+    @CurrentUser() user: AuthUser,
+    @Param('id') id: string,
+    @Req() req: Request,
+  ) {
+    return this.care.softDeletePlan(user, id, req);
   }
 
   @Post('tasks')
@@ -57,6 +88,27 @@ export class CareController {
     return this.care.createTask(user, dto, req);
   }
 
+  @Patch('tasks/:id')
+  @RequirePermissions(Permissions.CARE_PLANS_WRITE)
+  updateTask(
+    @CurrentUser() user: AuthUser,
+    @Param('id') id: string,
+    @Body() dto: UpdateCareTaskDto,
+    @Req() req: Request,
+  ) {
+    return this.care.updateTask(user, id, dto, req);
+  }
+
+  @Delete('tasks/:id')
+  @RequirePermissions(Permissions.CARE_PLANS_WRITE)
+  deleteTask(
+    @CurrentUser() user: AuthUser,
+    @Param('id') id: string,
+    @Req() req: Request,
+  ) {
+    return this.care.softDeleteTask(user, id, req);
+  }
+
   @Get('task-board')
   @RequirePermissions(Permissions.TASKS_COMPLETE)
   taskBoard(
@@ -65,7 +117,12 @@ export class CareController {
     @Query('date') date: string,
     @Req() req: Request,
   ) {
-    return this.care.taskBoard(user, residentId, date || new Date().toISOString().slice(0, 10), req);
+    return this.care.taskBoard(
+      user,
+      residentId,
+      date || new Date().toISOString().slice(0, 10),
+      req,
+    );
   }
 
   @Post('completions')

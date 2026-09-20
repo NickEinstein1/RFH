@@ -1,7 +1,9 @@
 import {
   IsArray,
+  IsBoolean,
   IsDateString,
   IsEnum,
+  IsObject,
   IsOptional,
   IsString,
   MinLength,
@@ -26,6 +28,10 @@ export class CreateCarePlanDto {
   @IsOptional()
   @IsDateString()
   effectiveTo?: string;
+
+  @IsOptional()
+  @IsObject()
+  formData?: Record<string, unknown>;
 }
 
 export class CreateCareTaskDto {
@@ -51,6 +57,34 @@ export class CreateCareTaskDto {
   @IsOptional()
   @IsString()
   instructions?: string;
+}
+
+export class UpdateCareTaskDto {
+  @IsOptional()
+  @IsEnum(CareTaskCategory)
+  category?: CareTaskCategory;
+
+  @IsOptional()
+  @IsString()
+  @MinLength(1)
+  title?: string;
+
+  @IsOptional()
+  @IsEnum(ShiftWindow)
+  shift?: ShiftWindow;
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  scheduleTimes?: string[];
+
+  @IsOptional()
+  @IsString()
+  instructions?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  isActive?: boolean;
 }
 
 export class RecordTaskCompletionDto {
@@ -91,5 +125,13 @@ export class UpdateCarePlanDto {
 
   @IsOptional()
   @IsDateString()
+  effectiveFrom?: string;
+
+  @IsOptional()
+  @IsDateString()
   effectiveTo?: string;
+
+  @IsOptional()
+  @IsObject()
+  formData?: Record<string, unknown>;
 }

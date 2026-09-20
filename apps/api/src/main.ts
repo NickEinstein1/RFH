@@ -4,11 +4,20 @@ loadEnv({ path: '.env', override: true });
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import helmet from 'helmet';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const config = app.get(ConfigService);
+
+  app.getHttpAdapter().getInstance().disable('x-powered-by');
+  app.use(
+    helmet({
+      contentSecurityPolicy: false,
+      crossOriginEmbedderPolicy: false,
+    }),
+  );
 
   app.setGlobalPrefix('api');
   app.useGlobalPipes(
@@ -25,6 +34,7 @@ async function bootstrap() {
   });
 
   // Production: terminate TLS at reverse proxy (TLS 1.3). Local HTTP is for dev only.
+  // Ops: set JWT_* secrets, PHI_FIELD_KEY, SMTP_* ; never log PHI or response bodies for downloads.
   const port = config.get<number>('PORT', 3000);
   await app.listen(port);
   // eslint-disable-next-line no-console

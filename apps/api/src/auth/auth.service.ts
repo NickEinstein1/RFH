@@ -2,6 +2,7 @@ import {
   ConflictException,
   Injectable,
   UnauthorizedException,
+  BadRequestException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
@@ -10,12 +11,19 @@ import { createHash, randomBytes } from 'crypto';
 import { Role } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuditService } from '../audit/audit.service';
+import { MailService } from '../mail/mail.service';
 import {
+  ChangePasswordDto,
   CreateUserDto,
   LoginDto,
+  PasswordResetConfirmDto,
+  PasswordResetRequestDto,
   RegisterTenantDto,
 } from './dto/auth.dto';
 import type { AuthUser } from '../common/decorators/current-user.decorator';
+
+const MAX_FAILED_LOGINS = 5;
+const LOCKOUT_MS = 15 * 60 * 1000;
 
 @Injectable()
 export class AuthService {
@@ -24,6 +32,7 @@ export class AuthService {
     private readonly jwt: JwtService,
     private readonly config: ConfigService,
     private readonly audit: AuditService,
+    private readonly mail: MailService,
   ) {}
 
   async registerTenant(dto: RegisterTenantDto, req?: { ip?: string; headers?: Record<string, string | string[] | undefined> }) {
@@ -36,10 +45,14 @@ export class AuthService {
       }
 
       const passwordHash = await bcrypt.hash(dto.password, 12);
+      const organization = await this.prisma.db.organization.create({
+        data: { name: `${dto.tenantName} Organization` },
+      });
       const tenant = await this.prisma.db.tenant.create({
         data: {
           name: dto.tenantName,
           timezone: dto.timezone ?? 'America/Los_Angeles',
+          organizationId: organization.id,
         },
       });
       const user = await this.prisma.db.user.create({
@@ -59,12 +72,26 @@ export class AuthService {
         action: 'tenant.register',
         resourceType: 'Tenant',
         resourceId: tenant.id,
-        metadata: { email: user.email },
+        metadata: { email: user.email, organizationId: organization.id },
         ip: req?.ip,
         userAgent: header(req?.headers, 'user-agent'),
       });
 
-      return this.issueTokens(user);
+      const tokens = await this.issueTokens(user);
+      return {
+        ...tokens,
+        user: {
+          id: user.id,
+          email: user.email,
+          role: user.role,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          tenantId: tenant.id,
+          tenantName: tenant.name,
+          timezone: tenant.timezone,
+        },
+        homes: await this.homesForEmail(user.email, organization.id),
+      };
     });
   }
 
@@ -93,19 +120,58 @@ export class AuthService {
       }
 
       const user = users[0];
+      if (user.lockedUntil && user.lockedUntil.getTime() > Date.now()) {
+        await this.audit.log({
+          tenantId: user.tenantId,
+          actorId: user.id,
+          action: 'auth.login_locked',
+          resourceType: 'User',
+          resourceId: user.id,
+          metadata: { lockedUntil: user.lockedUntil.toISOString() },
+          ip: req?.ip,
+          userAgent: header(req?.headers, 'user-agent'),
+        });
+        throw new UnauthorizedException(
+          'Account temporarily locked after failed sign-in attempts. Try again later.',
+        );
+      }
+
       const match = await bcrypt.compare(dto.password, user.passwordHash);
       if (!match) {
+        const failedLoginCount = user.failedLoginCount + 1;
+        const lockedUntil =
+          failedLoginCount >= MAX_FAILED_LOGINS
+            ? new Date(Date.now() + LOCKOUT_MS)
+            : null;
+        await this.prisma.db.user.update({
+          where: { id: user.id },
+          data: {
+            failedLoginCount,
+            ...(lockedUntil ? { lockedUntil } : {}),
+          },
+        });
         await this.audit.log({
           tenantId: user.tenantId,
           actorId: user.id,
           action: 'auth.login_failed',
           resourceType: 'User',
           resourceId: user.id,
-          metadata: { reason: 'bad_password' },
+          metadata: {
+            reason: 'bad_password',
+            failedLoginCount,
+            locked: Boolean(lockedUntil),
+          },
           ip: req?.ip,
           userAgent: header(req?.headers, 'user-agent'),
         });
         throw new UnauthorizedException('Invalid credentials');
+      }
+
+      if (user.failedLoginCount > 0 || user.lockedUntil) {
+        await this.prisma.db.user.update({
+          where: { id: user.id },
+          data: { failedLoginCount: 0, lockedUntil: null },
+        });
       }
 
       await this.audit.log({
@@ -119,6 +185,7 @@ export class AuthService {
       });
 
       const tokens = await this.issueTokens(user);
+      const homes = await this.homesForEmail(user.email, user.tenant.organizationId);
       return {
         ...tokens,
         user: {
@@ -131,6 +198,7 @@ export class AuthService {
           tenantName: user.tenant.name,
           timezone: user.tenant.timezone,
         },
+        homes,
       };
     });
   }
@@ -206,10 +274,130 @@ export class AuthService {
         email: user.email,
         role: user.role,
       }, req);
+
+      if (dto.sendInvite !== false) {
+        const tenant = await this.prisma.db.tenant.findUniqueOrThrow({
+          where: { id: actor.tenantId },
+        });
+        await this.mail.sendStaffInvite({
+          to: user.email,
+          firstName: user.firstName,
+          facilityName: tenant.name,
+          tempPassword: dto.password,
+          actor,
+        });
+      }
+
       return user;
     } catch {
       throw new ConflictException('User with this email already exists in facility');
     }
+  }
+
+  async requestPasswordReset(dto: PasswordResetRequestDto, req?: { ip?: string; headers?: Record<string, string | string[] | undefined> }) {
+    return this.prisma.runWithBypass(async () => {
+      const email = dto.email.toLowerCase();
+      const users = await this.prisma.db.user.findMany({
+        where: {
+          email,
+          isActive: true,
+          deletedAt: null,
+          ...(dto.tenantName ? { tenant: { name: dto.tenantName } } : {}),
+        },
+        include: { tenant: true },
+      });
+
+      // Always succeed to avoid account enumeration
+      if (users.length === 1) {
+        const user = users[0];
+        const raw = randomBytes(32).toString('hex');
+        await this.prisma.db.passwordResetToken.create({
+          data: {
+            userId: user.id,
+            tokenHash: hashToken(raw),
+            expiresAt: new Date(Date.now() + 30 * 60 * 1000),
+          },
+        });
+        const appOrigin = this.config.get('CORS_ORIGIN', 'http://localhost:5173');
+        const resetUrl = `${appOrigin}/reset-password?token=${raw}`;
+        await this.mail.sendPasswordReset({
+          to: user.email,
+          resetUrl,
+          facilityName: user.tenant.name,
+          tenantId: user.tenantId,
+        });
+        await this.audit.log({
+          tenantId: user.tenantId,
+          actorId: user.id,
+          action: 'auth.password_reset_request',
+          resourceType: 'User',
+          resourceId: user.id,
+          ip: req?.ip,
+          userAgent: header(req?.headers, 'user-agent'),
+        });
+      }
+
+      return { ok: true };
+    });
+  }
+
+  async confirmPasswordReset(dto: PasswordResetConfirmDto, req?: { ip?: string; headers?: Record<string, string | string[] | undefined> }) {
+    return this.prisma.runWithBypass(async () => {
+      const tokenHash = hashToken(dto.token);
+      const stored = await this.prisma.db.passwordResetToken.findFirst({
+        where: {
+          tokenHash,
+          usedAt: null,
+          expiresAt: { gt: new Date() },
+        },
+        include: { user: true },
+      });
+      if (!stored) throw new BadRequestException('Invalid or expired reset token');
+
+      const passwordHash = await bcrypt.hash(dto.password, 12);
+      await this.prisma.db.user.update({
+        where: { id: stored.userId },
+        data: {
+          passwordHash,
+          failedLoginCount: 0,
+          lockedUntil: null,
+        },
+      });
+      await this.prisma.db.passwordResetToken.update({
+        where: { id: stored.id },
+        data: { usedAt: new Date() },
+      });
+      await this.prisma.db.refreshToken.updateMany({
+        where: { userId: stored.userId, revokedAt: null },
+        data: { revokedAt: new Date() },
+      });
+      await this.audit.log({
+        tenantId: stored.user.tenantId,
+        actorId: stored.userId,
+        action: 'auth.password_reset_confirm',
+        resourceType: 'User',
+        resourceId: stored.userId,
+        ip: req?.ip,
+        userAgent: header(req?.headers, 'user-agent'),
+      });
+      return { ok: true };
+    });
+  }
+
+  async changePassword(user: AuthUser, dto: ChangePasswordDto, req?: { ip?: string; headers?: Record<string, string | string[] | undefined> }) {
+    const full = await this.prisma.db.user.findFirst({
+      where: { id: user.id, tenantId: user.tenantId, deletedAt: null },
+    });
+    if (!full) throw new UnauthorizedException();
+    const match = await bcrypt.compare(dto.currentPassword, full.passwordHash);
+    if (!match) throw new UnauthorizedException('Current password is incorrect');
+    const passwordHash = await bcrypt.hash(dto.newPassword, 12);
+    await this.prisma.db.user.update({
+      where: { id: user.id },
+      data: { passwordHash, failedLoginCount: 0, lockedUntil: null },
+    });
+    await this.audit.logForUser(user, 'auth.password_change', 'User', user.id, undefined, req);
+    return { ok: true };
   }
 
   async me(user: AuthUser) {
@@ -218,6 +406,7 @@ export class AuthService {
       include: { tenant: true },
     });
     if (!full) throw new UnauthorizedException();
+    const homes = await this.homesForEmail(full.email, full.tenant.organizationId);
     return {
       id: full.id,
       email: full.email,
@@ -227,7 +416,114 @@ export class AuthService {
       tenantId: full.tenantId,
       tenantName: full.tenant.name,
       timezone: full.tenant.timezone,
+      homes,
     };
+  }
+
+  async listHomes(user: AuthUser) {
+    const full = await this.prisma.db.user.findFirst({
+      where: { id: user.id, tenantId: user.tenantId, deletedAt: null },
+      include: { tenant: true },
+    });
+    if (!full) throw new UnauthorizedException();
+    return this.homesForEmail(full.email, full.tenant.organizationId);
+  }
+
+  async switchHome(
+    actor: AuthUser,
+    tenantId: string,
+    req?: { ip?: string; headers?: Record<string, string | string[] | undefined> },
+  ) {
+    return this.prisma.runWithBypass(async () => {
+      const current = await this.prisma.db.user.findFirst({
+        where: { id: actor.id, tenantId: actor.tenantId, deletedAt: null, isActive: true },
+        include: { tenant: true },
+      });
+      if (!current) throw new UnauthorizedException();
+
+      const target = await this.prisma.db.user.findFirst({
+        where: {
+          email: current.email,
+          tenantId,
+          deletedAt: null,
+          isActive: true,
+        },
+        include: { tenant: true },
+      });
+      if (!target) {
+        throw new UnauthorizedException('No access to that facility for this account');
+      }
+
+      const orgId = current.tenant.organizationId;
+      if (
+        !orgId ||
+        !target.tenant.organizationId ||
+        target.tenant.organizationId !== orgId
+      ) {
+        throw new UnauthorizedException('Facility is not in your organization portfolio');
+      }
+
+      await this.prisma.db.refreshToken.updateMany({
+        where: { userId: current.id, revokedAt: null },
+        data: { revokedAt: new Date() },
+      });
+
+      await this.audit.log({
+        tenantId: target.tenantId,
+        actorId: target.id,
+        action: 'auth.switch_home',
+        resourceType: 'Tenant',
+        resourceId: target.tenantId,
+        metadata: { fromTenantId: current.tenantId },
+        ip: req?.ip,
+        userAgent: header(req?.headers, 'user-agent'),
+      });
+
+      const tokens = await this.issueTokens(target);
+      return {
+        ...tokens,
+        user: {
+          id: target.id,
+          email: target.email,
+          role: target.role,
+          firstName: target.firstName,
+          lastName: target.lastName,
+          tenantId: target.tenantId,
+          tenantName: target.tenant.name,
+          timezone: target.tenant.timezone,
+        },
+        homes: await this.homesForEmail(target.email, target.tenant.organizationId),
+      };
+    });
+  }
+
+  private async homesForEmail(email: string, organizationId: string | null | undefined) {
+    if (!organizationId) {
+      return [] as Array<{
+        tenantId: string;
+        tenantName: string;
+        role: Role;
+        timezone: string;
+        userId: string;
+      }>;
+    }
+    const rows = await this.prisma.db.user.findMany({
+      where: {
+        email: email.toLowerCase(),
+        deletedAt: null,
+        isActive: true,
+        tenant: { organizationId },
+      },
+      include: { tenant: { select: { id: true, name: true, timezone: true } } },
+      orderBy: { tenant: { name: 'asc' } },
+    });
+    return rows.map((r) => ({
+      tenantId: r.tenant.id,
+      tenantName: r.tenant.name,
+      role: r.role,
+      timezone: r.tenant.timezone,
+      userId: r.id,
+    }));
   }
 
   private async issueTokens(user: { id: string; tenantId: string; email: string; role: Role }) {
@@ -240,7 +536,7 @@ export class AuthService {
       },
       {
         secret: this.config.getOrThrow('JWT_ACCESS_SECRET'),
-        expiresIn: this.config.get('JWT_ACCESS_TTL', '15m'),
+        expiresIn: this.config.get('JWT_ACCESS_TTL', '10m'),
       },
     );
 

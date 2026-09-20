@@ -1,18 +1,20 @@
-import { useCallback, useEffect, useState, type FormEvent } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api } from '../api';
 import { useAuth } from '../auth';
-import { formatInFacilityTz, todayUtcDate } from '../time';
+import { formatInFacilityTz, todayInFacilityTz } from '../time';
 import {
   cacheSnapshot,
   enqueueMedEvent,
-  flushOfflineQueue,
+  enqueueTaskEvent,
+  flushAllOfflineQueues,
   isOnline,
   pendingCount,
   readSnapshot,
 } from '../offlineQueue';
 import { fileToResidentPhotoDataUrl } from '../residentPhoto';
 import { PrnRecordModal } from '../components/PrnRecordModal';
+import { CbhsReportPanel } from '../components/CbhsReportPanel';
 import { prnPayloadFromForm } from '../marBackGuides';
 
 type Resident = {
@@ -22,6 +24,7 @@ type Resident = {
   room: string | null;
   allergies: string[];
   photoUrl: string | null;
+  dateOfBirth?: string;
 };
 
 type Slot = {
@@ -53,14 +56,6 @@ type TaskSlot = {
   completion: { id: string; outcome: string } | null;
 };
 
-type Note = {
-  id: string;
-  body: string;
-  noteType: string;
-  occurredAt: string;
-  author: { firstName: string; lastName: string };
-};
-
 type CarePlan = {
   id: string;
   title: string;
@@ -76,35 +71,32 @@ export function ResidentDetailPage({ timezone }: { timezone: string }) {
   const { user } = useAuth();
   const isFamily = user?.role === 'FAMILY_VIEWER';
   const [tab, setTab] = useState<'meds' | 'tasks' | 'notes' | 'plan'>(
-    isFamily ? 'plan' : 'meds',
+    isFamily ? 'notes' : 'meds',
   );
   const [resident, setResident] = useState<Resident | null>(null);
   const [slots, setSlots] = useState<Slot[]>([]);
   const [taskSlots, setTaskSlots] = useState<TaskSlot[]>([]);
   const [plans, setPlans] = useState<CarePlan[]>([]);
-  const [notes, setNotes] = useState<Note[]>([]);
-  const [noteBody, setNoteBody] = useState('');
   const [error, setError] = useState('');
   const [busyId, setBusyId] = useState<string | null>(null);
   const [pending, setPending] = useState(() => pendingCount());
   const [online, setOnline] = useState(() => isOnline());
   const [photoBusy, setPhotoBusy] = useState(false);
+  const [syncNote, setSyncNote] = useState('');
   const [prnSlot, setPrnSlot] = useState<Slot | null>(null);
 
   const load = useCallback(async () => {
     if (!id) return;
     setError('');
-    const date = todayUtcDate();
+    const date = todayInFacilityTz(timezone);
     try {
       const r = await api<Resident>(`/residents/${id}`);
       setResident(r);
 
-      const notesP = api<Note[]>(`/notes?residentId=${id}`);
       const plansP = api<CarePlan[]>(`/care/plans?residentId=${id}`);
 
       if (isFamily) {
-        const [n, p] = await Promise.all([notesP, plansP]);
-        setNotes(n);
+        const p = await plansP;
         setPlans(p);
         setSlots([]);
         setTaskSlots([]);
@@ -112,16 +104,14 @@ export function ResidentDetailPage({ timezone }: { timezone: string }) {
         const snapP = api<{ slots: Slot[] }>(
           `/emar/sync/snapshot?residentId=${id}&date=${date}`,
         );
-        const [snap, tasks, n, p] = await Promise.all([
+        const [snap, tasks, p] = await Promise.all([
           snapP,
           api<{ slots: TaskSlot[] }>(`/care/task-board?residentId=${id}&date=${date}`),
-          notesP,
           plansP,
         ]);
         setSlots(snap.slots);
         cacheSnapshot(id, date, snap);
         setTaskSlots(tasks.slots);
-        setNotes(n);
         setPlans(p);
       }
     } catch (e) {
@@ -135,7 +125,7 @@ export function ResidentDetailPage({ timezone }: { timezone: string }) {
       }
       setError(e instanceof Error ? e.message : 'Failed to load');
     }
-  }, [id, isFamily]);
+  }, [id, isFamily, timezone]);
 
   useEffect(() => {
     void load();
@@ -144,8 +134,17 @@ export function ResidentDetailPage({ timezone }: { timezone: string }) {
   useEffect(() => {
     const onOnline = () => {
       setOnline(true);
-      void flushOfflineQueue()
-        .then(() => setPending(pendingCount()))
+      void flushAllOfflineQueues()
+        .then((r) => {
+          setPending(pendingCount());
+          if (r.conflicts > 0) {
+            setSyncNote(
+              `${r.conflicts} dose(s) conflicted with server — facility record kept. Review those slots.`,
+            );
+          } else if (r.flushed > 0) {
+            setSyncNote(`Synced ${r.flushed} offline action(s).`);
+          }
+        })
         .then(() => load())
         .catch(() => undefined);
     };
@@ -155,7 +154,7 @@ export function ResidentDetailPage({ timezone }: { timezone: string }) {
     window.addEventListener('offline', onOffline);
     window.addEventListener('rfh-offline-queue', onQueue);
     if (navigator.onLine) {
-      void flushOfflineQueue().then(() => setPending(pendingCount()));
+      void flushAllOfflineQueues().then(() => setPending(pendingCount()));
     }
     return () => {
       window.removeEventListener('online', onOnline);
@@ -232,45 +231,41 @@ export function ResidentDetailPage({ timezone }: { timezone: string }) {
   }
 
   async function recordTask(slot: TaskSlot, outcome: (typeof TASK_OUTCOMES)[number]) {
+    if (!id) return;
     setBusyId(`${slot.task.id}-${outcome}`);
     setError('');
+    const clientEventId = crypto.randomUUID();
+    const body = {
+      careTaskId: slot.task.id,
+      scheduledAt: slot.scheduledAt,
+      outcome,
+      completedAt: new Date().toISOString(),
+      clientEventId,
+    };
     try {
+      if (!navigator.onLine) {
+        enqueueTaskEvent({ ...body, residentId: id });
+        setPending(pendingCount());
+        setError('Offline — task queued for sync');
+        return;
+      }
       await api('/care/completions', {
         method: 'POST',
-        body: JSON.stringify({
-          careTaskId: slot.task.id,
-          scheduledAt: slot.scheduledAt,
-          outcome,
-          completedAt: new Date().toISOString(),
-          clientEventId: crypto.randomUUID(),
-        }),
+        body: JSON.stringify(body),
       });
       await load();
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to record task');
+      const msg = e instanceof Error ? e.message : 'Failed to record task';
+      const looksNetwork = /failed to fetch|network|offline/i.test(msg);
+      if (looksNetwork) {
+        enqueueTaskEvent({ ...body, residentId: id });
+        setPending(pendingCount());
+        setError(`${msg} — queued offline for retry`);
+      } else {
+        setError(msg);
+      }
     } finally {
       setBusyId(null);
-    }
-  }
-
-  async function submitNote(e: FormEvent) {
-    e.preventDefault();
-    if (!id || !noteBody.trim()) return;
-    setError('');
-    try {
-      await api('/notes', {
-        method: 'POST',
-        body: JSON.stringify({
-          residentId: id,
-          body: noteBody.trim(),
-          occurredAt: new Date().toISOString(),
-          noteType: 'PROGRESS',
-        }),
-      });
-      setNoteBody('');
-      await load();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save note');
     }
   }
 
@@ -388,15 +383,23 @@ export function ResidentDetailPage({ timezone }: { timezone: string }) {
           Care plan
         </button>
         <button className={`btn ${tab === 'notes' ? '' : 'secondary'}`} onClick={() => setTab('notes')}>
-          Notes
+          Notes / Incidents
         </button>
       </div>
 
       {tab === 'meds' ? (
-        <div className="stack">
-          <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.75rem', flexWrap: 'wrap' }}>
+        <div className="stack med-pass-panel">
+          {syncNote ? (
+            <div className={`toast ${syncNote.includes('conflict') ? 'toast-warn' : 'toast-success'}`}>
+              {syncNote}
+              <button className="btn ghost" type="button" onClick={() => setSyncNote('')}>
+                Dismiss
+              </button>
+            </div>
+          ) : null}
+          <div className="med-pass-toolbar">
             <p className="meta" style={{ margin: 0 }}>
-              Record = ✓ given · Reject = X not given · PRN Record opens back-of-MAR form
+              Tap once — Record ✓ · Reject · Not given · Held. Works offline; syncs when back online.
             </p>
             <Link
               className="btn secondary"
@@ -406,26 +409,33 @@ export function ResidentDetailPage({ timezone }: { timezone: string }) {
             </Link>
           </div>
           {slots.length === 0 ? <p className="empty">No medications due today.</p> : null}
-          {slots.map((slot) => {
+          {[...slots]
+            .sort((a, b) => {
+              if (a.isPrn !== b.isPrn) return a.isPrn ? 1 : -1;
+              if (Boolean(a.administration) !== Boolean(b.administration)) {
+                return a.administration ? 1 : -1;
+              }
+              return (a.scheduledAt || '').localeCompare(b.scheduledAt || '');
+            })
+            .map((slot) => {
             const outcome = slot.administration?.outcome;
             const mark =
               outcome === 'GIVEN' ? '✓' : outcome === 'REFUSED' || outcome === 'HELD' ? 'X' : outcome === 'MISSED' ? '-' : null;
             return (
               <div
                 key={`${slot.order.id}-${slot.scheduledAt}`}
-                className="slot-row"
-                style={{ alignItems: 'stretch', flexDirection: 'column' }}
+                className={`slot-row med-slot ${mark ? 'med-slot-done' : 'med-slot-due'}`}
               >
-                <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap' }}>
+                <div className="med-slot-head">
                   <div>
-                    <strong style={{ fontSize: '1.25rem' }}>
+                    <strong className="med-slot-title">
                       {slot.order.drugName} {slot.order.dose}
                       {slot.isPrn ? ' · PRN' : ''}
                     </strong>
                     <div className="meta">
                       {slot.order.route}
                       {slot.isPrn
-                        ? ' · PRN'
+                        ? ' · As needed'
                         : ` · Due ${slot.scheduledAt ? formatInFacilityTz(slot.scheduledAt, timezone, { timeStyle: 'short' }) : ''}`}
                     </div>
                     {slot.order.instructions ? (
@@ -447,13 +457,13 @@ export function ResidentDetailPage({ timezone }: { timezone: string }) {
                     <span className="badge warn">DUE</span>
                   )}
                 </div>
-                <div className="outcome-grid med-record-grid">
+                <div className="outcome-grid med-record-grid med-pass-actions">
                   <button
-                    className="btn"
+                    className="btn med-btn-primary"
                     disabled={busyId !== null}
                     onClick={() => void record(slot, 'GIVEN')}
                   >
-                    Record ✓
+                    {slot.isPrn ? 'PRN Record ✓' : 'Record ✓'}
                   </button>
                   <button
                     className="btn danger"
@@ -537,51 +547,50 @@ export function ResidentDetailPage({ timezone }: { timezone: string }) {
 
       {tab === 'plan' ? (
         <div className="stack">
+          <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <p className="meta" style={{ margin: 0 }}>
+              Negotiated Care Plan template (Word form)
+            </p>
+            <Link className="btn secondary" to={`/residents/${id}/care-plan`}>
+              Open care plans
+            </Link>
+          </div>
           {plans.length === 0 ? <p className="empty">No care plan on file.</p> : null}
           {plans.map((p) => (
             <div key={p.id} className="note-row" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap' }}>
                 <strong style={{ fontSize: '1.2rem' }}>{p.title}</strong>
                 <span className={`badge ${p.status === 'ACTIVE' ? 'ok' : 'neutral'}`}>{p.status}</span>
               </div>
               {p.goals ? <p style={{ margin: '0.5rem 0' }}>{p.goals}</p> : null}
               <div className="meta">Tasks: {p.careTasks.map((t) => t.title).join(' · ') || '—'}</div>
+              <div style={{ marginTop: '0.75rem' }}>
+                <Link className="btn secondary" to={`/residents/${id}/care-plan/${p.id}`}>
+                  Edit negotiated care plan
+                </Link>
+              </div>
             </div>
           ))}
         </div>
       ) : null}
 
-      {tab === 'notes' ? (
-        <div>
-          {!isFamily ? (
-            <form onSubmit={submitNote} style={{ marginBottom: '1.25rem' }}>
-              <div className="field">
-                <label htmlFor="note">New progress note</label>
-                <textarea
-                  id="note"
-                  value={noteBody}
-                  onChange={(e) => setNoteBody(e.target.value)}
-                  placeholder="Document care observations…"
-                  required
-                />
-              </div>
-              <button className="btn" type="submit">
-                Save note
-              </button>
-            </form>
-          ) : null}
-          <div className="stack">
-            {notes.map((n) => (
-              <div key={n.id} className="note-row" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
-                <div className="meta">
-                  {formatInFacilityTz(n.occurredAt, timezone)} · {n.author.firstName} {n.author.lastName} ·{' '}
-                  {n.noteType}
-                </div>
-                <div style={{ whiteSpace: 'pre-wrap', fontSize: '1.1rem' }}>{n.body}</div>
-              </div>
-            ))}
-          </div>
-        </div>
+      {tab === 'notes' && id ? (
+        <CbhsReportPanel
+          timezone={timezone}
+          lockedResidentId={id}
+          lockedResident={
+            resident
+              ? {
+                  id: resident.id,
+                  firstName: resident.firstName,
+                  lastName: resident.lastName,
+                  dateOfBirth: resident.dateOfBirth,
+                }
+              : null
+          }
+          heading="Notes & incident reports"
+          subheading="Same CBHS form and Incident database as the facility Incidents page"
+        />
       ) : null}
 
       {prnSlot ? (

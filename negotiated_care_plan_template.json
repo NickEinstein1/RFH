@@ -1,0 +1,47 @@
+{
+  "source": "Raysheal M. Ellis_Negotiated_Care_Plan.docx",
+  "documentTitle": "NEGOTIATED CARE PLAN",
+  "headerFields": [
+    "RESIDENT NAME",
+    "PROVIDER NAME",
+    "CARE PLAN DATE",
+    "ADMISSION DATE",
+    "DISCHARGE DATE",
+    "DATE OF BIRTH",
+    "AGE",
+    "SSN",
+    "PRIMARY LANGUAGE",
+    "INTERESTED PARTY/PARTIES",
+    "NAME/ADDRESS",
+    "PHONE",
+    "PHYSICIAN",
+    "PHARMACY",
+    "DENTIST",
+    "ADVANCE DIRECTIVE",
+    "LEGAL DOCUMENTS",
+    "CURRENT MEDICAL STATUS",
+    "ALLERGIES",
+    "SPECIALTY NEEDS",
+    "DEMENTIA",
+    "MENTAL HEALTH",
+    "DEVELOPMENTAL DISABILITY",
+    "EMERGENCY EVACUATION",
+    "INDEPENDENT",
+    "ASSISTANCE REQUIRED",
+    "SPECIAL INSTRUCTIONS"
+  ],
+  "serviceColumnHeaders": [
+    "CARE AND SERVICES",
+    "RESIDENT STRENGTH/ RESIDENT NEEDS",
+    "WHAT STAFF DOES WHEN AND HOW"
+  ],
+  "signatureRoles": [
+    "PROVIDER",
+    "RESIDENT",
+    "REPRESENTATIVE",
+    "SURROGATE DECISION MAKER",
+    "CASE MANAGER",
+    "SOCIAL WORKER",
+    "OTHER HEALTH PROFESSIONAL"
+  ]
+}

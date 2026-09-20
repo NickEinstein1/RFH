@@ -130,12 +130,14 @@ enum IncidentStatus {
 }
 
 model Tenant {
-  id        String   @id @default(cuid())
-  name      String
-  timezone  String   @default("America/Los_Angeles")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             String   @id @default(cuid())
+  name           String
+  timezone       String   @default("America/Los_Angeles")
+  organizationId String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
+  organization       Organization?        @relation(fields: [organizationId], references: [id])
   users              User[]
   residents          Resident[]
   medicationOrders   MedicationOrder[]
@@ -150,23 +152,37 @@ model Tenant {
   credentialAlerts   CredentialAlert[]
   familyLinks        FamilyResidentLink[]
   incidents          Incident[]
+
+  @@index([organizationId])
+}
+
+model Organization {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tenants Tenant[]
 }
 
 model User {
-  id           String    @id @default(cuid())
-  tenantId     String
-  email        String
-  passwordHash String
-  role         Role
-  firstName    String
-  lastName     String
-  isActive     Boolean   @default(true)
-  deletedAt    DateTime?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  id               String    @id @default(cuid())
+  tenantId         String
+  email            String
+  passwordHash     String
+  role             Role
+  firstName        String
+  lastName         String
+  isActive         Boolean   @default(true)
+  failedLoginCount Int       @default(0)
+  lockedUntil      DateTime?
+  deletedAt        DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 
   tenant             Tenant               @relation(fields: [tenantId], references: [id])
   refreshTokens      RefreshToken[]
+  passwordResets     PasswordResetToken[]
   administrations    MedAdministration[]  @relation("AdministeredBy")
   acknowledgedAlerts MedAlert[]           @relation("AlertAcknowledgedBy")
   progressNotes      ProgressNote[]
@@ -193,6 +209,20 @@ model RefreshToken {
 
   @@index([userId])
   @@index([tokenHash])
+}
+
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([tokenHash])
+  @@index([userId])
 }
 
 model Resident {
@@ -357,6 +387,8 @@ model CarePlan {
   status        CarePlanStatus @default(ACTIVE)
   effectiveFrom DateTime       @db.Date
   effectiveTo   DateTime?      @db.Date
+  /// Full Negotiated Care Plan template payload (header, sections, signatures)
+  formData      Json?
   deletedAt     DateTime?
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
@@ -469,6 +501,9 @@ model Incident {
   /// AES-GCM encrypted narrative (enc:v1:…)
   narrative         String
   immediateActions  String?
+  /// CBHS / Word-template incident report payload (client info + behavior log rows)
+  formData          Json?
+  clientEventId     String?
   closedAt          DateTime?
   deletedAt         DateTime?
   createdAt         DateTime         @default(now())
@@ -478,6 +513,7 @@ model Incident {
   resident   Resident @relation(fields: [residentId], references: [id])
   reportedBy User     @relation("IncidentReportedBy", fields: [reportedById], references: [id])
 
+  @@unique([tenantId, clientEventId])
   @@index([tenantId, residentId, occurredAt])
   @@index([tenantId, status, deletedAt])
   @@index([tenantId, category, severity])

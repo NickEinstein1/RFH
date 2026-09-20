@@ -14,3 +14,13 @@ export function formatInFacilityTz(
 export function todayUtcDate() {
   return new Date().toISOString().slice(0, 10);
 }
+
+/** Facility-local calendar date (YYYY-MM-DD) for med pass / task boards. */
+export function todayInFacilityTz(timeZone: string) {
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).format(new Date());
+}

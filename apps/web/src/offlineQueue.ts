@@ -1,6 +1,8 @@
 import { api } from './api';
 
-const QUEUE_KEY = 'rfh_med_offline_queue';
+const MED_QUEUE_KEY = 'rfh_med_offline_queue';
+const NOTE_QUEUE_KEY = 'rfh_note_offline_queue';
+const TASK_QUEUE_KEY = 'rfh_task_offline_queue';
 const SNAPSHOT_PREFIX = 'rfh_med_snap_';
 
 export type QueuedMedEvent = {
@@ -12,29 +14,81 @@ export type QueuedMedEvent = {
   clientEventId: string;
   residentId: string;
   queuedAt: string;
+  prnReason?: string;
+  prnRouteSite?: string;
+  prnBmi?: string;
+  prnBmiOther?: string;
+  prnResult?: string;
+  prnMse?: string;
+  prnMseOther?: string;
+  prnPainScore?: number;
 };
 
-export function getOfflineQueue(): QueuedMedEvent[] {
+export type QueuedNoteEvent = {
+  clientEventId: string;
+  residentId: string;
+  occurredAt: string;
+  category: string;
+  severity: string;
+  title: string;
+  narrative: string;
+  immediateActions?: string;
+  formData?: Record<string, unknown>;
+  queuedAt: string;
+};
+
+export type QueuedTaskEvent = {
+  clientEventId: string;
+  careTaskId: string;
+  residentId: string;
+  scheduledAt: string;
+  completedAt?: string;
+  outcome: string;
+  notes?: string;
+  queuedAt: string;
+};
+
+function readQueue<T>(key: string): T[] {
   try {
-    return JSON.parse(localStorage.getItem(QUEUE_KEY) || '[]') as QueuedMedEvent[];
+    return JSON.parse(localStorage.getItem(key) || '[]') as T[];
   } catch {
     return [];
   }
 }
 
-function saveQueue(events: QueuedMedEvent[]) {
-  localStorage.setItem(QUEUE_KEY, JSON.stringify(events));
+function writeQueue(key: string, events: unknown[]) {
+  localStorage.setItem(key, JSON.stringify(events));
   window.dispatchEvent(new CustomEvent('rfh-offline-queue'));
+}
+
+export function getOfflineQueue(): QueuedMedEvent[] {
+  return readQueue<QueuedMedEvent>(MED_QUEUE_KEY);
 }
 
 export function enqueueMedEvent(event: Omit<QueuedMedEvent, 'queuedAt'>) {
   const queue = getOfflineQueue();
   queue.push({ ...event, queuedAt: new Date().toISOString() });
-  saveQueue(queue);
+  writeQueue(MED_QUEUE_KEY, queue);
+}
+
+export function enqueueNoteEvent(event: Omit<QueuedNoteEvent, 'queuedAt'>) {
+  const queue = readQueue<QueuedNoteEvent>(NOTE_QUEUE_KEY);
+  queue.push({ ...event, queuedAt: new Date().toISOString() });
+  writeQueue(NOTE_QUEUE_KEY, queue);
+}
+
+export function enqueueTaskEvent(event: Omit<QueuedTaskEvent, 'queuedAt'>) {
+  const queue = readQueue<QueuedTaskEvent>(TASK_QUEUE_KEY);
+  queue.push({ ...event, queuedAt: new Date().toISOString() });
+  writeQueue(TASK_QUEUE_KEY, queue);
 }
 
 export function pendingCount() {
-  return getOfflineQueue().length;
+  return (
+    readQueue(MED_QUEUE_KEY).length +
+    readQueue(NOTE_QUEUE_KEY).length +
+    readQueue(TASK_QUEUE_KEY).length
+  );
 }
 
 export function cacheSnapshot(residentId: string, date: string, data: unknown) {
@@ -77,12 +131,63 @@ export async function flushOfflineQueue(): Promise<{
   );
 
   const remaining = queue.filter((e) => !doneIds.has(e.clientEventId));
-  saveQueue(remaining);
+  writeQueue(MED_QUEUE_KEY, remaining);
 
   return {
     flushed: queue.length - remaining.length,
     conflicts: result.results.filter((r) => r.status === 'conflict').length,
     errors: result.results.filter((r) => r.status === 'error').length,
+  };
+}
+
+export async function flushNoteQueue() {
+  const queue = readQueue<QueuedNoteEvent>(NOTE_QUEUE_KEY);
+  if (!queue.length || !navigator.onLine) return { flushed: 0, errors: 0 };
+  const remaining: QueuedNoteEvent[] = [];
+  let flushed = 0;
+  let errors = 0;
+  for (const event of queue) {
+    try {
+      const { queuedAt: _q, ...body } = event;
+      await api('/incidents', { method: 'POST', body: JSON.stringify(body) });
+      flushed += 1;
+    } catch {
+      remaining.push(event);
+      errors += 1;
+    }
+  }
+  writeQueue(NOTE_QUEUE_KEY, remaining);
+  return { flushed, errors };
+}
+
+export async function flushTaskQueue() {
+  const queue = readQueue<QueuedTaskEvent>(TASK_QUEUE_KEY);
+  if (!queue.length || !navigator.onLine) return { flushed: 0, errors: 0 };
+  const remaining: QueuedTaskEvent[] = [];
+  let flushed = 0;
+  let errors = 0;
+  for (const event of queue) {
+    try {
+      const { queuedAt: _q, residentId: _r, ...body } = event;
+      await api('/care/completions', { method: 'POST', body: JSON.stringify(body) });
+      flushed += 1;
+    } catch {
+      remaining.push(event);
+      errors += 1;
+    }
+  }
+  writeQueue(TASK_QUEUE_KEY, remaining);
+  return { flushed, errors };
+}
+
+export async function flushAllOfflineQueues() {
+  const med = await flushOfflineQueue().catch(() => ({ flushed: 0, conflicts: 0, errors: 0 }));
+  const notes = await flushNoteQueue().catch(() => ({ flushed: 0, errors: 0 }));
+  const tasks = await flushTaskQueue().catch(() => ({ flushed: 0, errors: 0 }));
+  return {
+    flushed: med.flushed + notes.flushed + tasks.flushed,
+    conflicts: med.conflicts,
+    errors: med.errors + notes.errors + tasks.errors,
   };
 }
 
