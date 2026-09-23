@@ -18,6 +18,9 @@ import { ReportsPage } from './pages/ReportsPage';
 import { MarSheetPage } from './pages/MarSheetPage';
 import { CarePlanPage } from './pages/CarePlanPage';
 import { DownloadsPage } from './pages/DownloadsPage';
+import { FamilyPortalPage } from './pages/FamilyPortalPage';
+import { OrderIntakePage } from './pages/OrderIntakePage';
+import { CareAtmosphere } from './components/CareAtmosphere';
 
 function Shell() {
   const { user, logout, idleWarning, homes, switchHome } = useAuth();
@@ -44,15 +47,18 @@ function Shell() {
   }, []);
 
   if (!user) return <Navigate to="/login" replace />;
+  const isFamily = user.role === 'FAMILY_VIEWER';
   const showStaff = ['OWNER', 'ADMIN', 'NURSE', 'CAREGIVER'].includes(user.role);
-  const showMedAlerts = user.role !== 'FAMILY_VIEWER';
-  const showIncidents = user.role !== 'FAMILY_VIEWER';
+  const showMedAlerts = !isFamily;
+  const showIncidents = !isFamily;
   const showReports = ['OWNER', 'ADMIN', 'NURSE'].includes(user.role);
+  const showOrders = ['OWNER', 'ADMIN', 'NURSE'].includes(user.role);
   const showSecurity = ['OWNER', 'ADMIN'].includes(user.role);
   const multiHome = homes.length > 1;
 
   return (
     <div className="app-shell">
+      <CareAtmosphere variant="app" />
       <header className="topbar">
         <div className="brand-block">
           <div className="brand">
@@ -83,9 +89,15 @@ function Shell() {
           )}
         </div>
         <nav className="nav-actions">
-          <NavLink to="/" end className={({ isActive }) => `btn ${isActive ? '' : 'secondary'}`}>
-            Today
-          </NavLink>
+          {isFamily ? (
+            <NavLink to="/family" className={({ isActive }) => `btn ${isActive ? '' : 'secondary'}`}>
+              Family
+            </NavLink>
+          ) : (
+            <NavLink to="/" end className={({ isActive }) => `btn ${isActive ? '' : 'secondary'}`}>
+              Today
+            </NavLink>
+          )}
           <NavLink
             to="/residents"
             className={({ isActive }) => `btn ${isActive ? '' : 'secondary'}`}
@@ -110,17 +122,27 @@ function Shell() {
               Staff
             </NavLink>
           ) : null}
+          {showOrders ? (
+            <NavLink
+              to="/orders/intake"
+              className={({ isActive }) => `btn ${isActive ? '' : 'secondary'}`}
+            >
+              Orders
+            </NavLink>
+          ) : null}
           {showReports ? (
             <NavLink to="/reports" className={({ isActive }) => `btn ${isActive ? '' : 'secondary'}`}>
               Reports
             </NavLink>
           ) : null}
-          <NavLink
-            to="/downloads"
-            className={({ isActive }) => `btn ${isActive ? '' : 'secondary'}`}
-          >
-            Downloads
-          </NavLink>
+          {!isFamily ? (
+            <NavLink
+              to="/downloads"
+              className={({ isActive }) => `btn ${isActive ? '' : 'secondary'}`}
+            >
+              Downloads
+            </NavLink>
+          ) : null}
           <span className={`sync-chip ${online ? (pending ? 'warn' : 'ok') : 'danger'}`}>
             {!online ? 'Offline' : pending ? `${pending} to sync` : 'Synced'}
           </span>
@@ -161,6 +183,8 @@ function AppRoutes() {
       <Route path="/reset-password" element={<ResetPasswordPage />} />
       <Route element={<Shell />}>
         <Route index element={<HomePage timezone={tz} />} />
+        <Route path="family" element={<FamilyPortalPage timezone={tz} />} />
+        <Route path="orders/intake" element={<OrderIntakePage />} />
         <Route path="residents" element={<ResidentsPage timezone={tz} />} />
         <Route path="residents/:id" element={<ResidentDetailPage timezone={tz} />} />
         <Route path="residents/:id/mar" element={<MarSheetPage />} />

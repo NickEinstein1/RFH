@@ -19,13 +19,19 @@ export class PhiCryptoService implements OnModuleInit {
     const raw = (this.config.get<string>('PHI_FIELD_KEY') || '')
       .trim()
       .replace(/^["']|["']$/g, '');
+    const isProd = (this.config.get<string>('NODE_ENV') || '').toLowerCase() === 'production';
     if (!raw) {
+      if (isProd) {
+        throw new Error('PHI_FIELD_KEY is required in production');
+      }
       this.key = Buffer.from('0123456789abcdef0123456789abcdef', 'utf8');
       return;
     }
     const buf = Buffer.from(raw, 'base64');
     if (buf.length !== 32) {
-      // Prefer continuing in local/dev over hard-crashing the API
+      if (isProd) {
+        throw new Error(`PHI_FIELD_KEY must decode to 32 bytes (got ${buf.length})`);
+      }
       // eslint-disable-next-line no-console
       console.warn(
         `PHI_FIELD_KEY invalid length (${buf.length}); using ephemeral 32-byte fallback`,

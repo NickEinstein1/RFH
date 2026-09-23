@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { api, downloadFile } from '../api';
+import { useAuth } from '../auth';
 import { formatInFacilityTz } from '../time';
 import { Link } from 'react-router-dom';
 
@@ -10,6 +11,14 @@ type Pack = {
   surveyReadiness?: {
     score: number;
     label: string;
+    actions?: Array<{
+      findingId: string;
+      severity: 'warn' | 'critical';
+      title: string;
+      detail: string;
+      cta: string;
+      href: string;
+    }>;
     findings: Array<{
       id: string;
       label: string;
@@ -35,19 +44,50 @@ type Pack = {
   };
 };
 
+type Portfolio = {
+  organizationId: string | null;
+  organizationName: string | null;
+  homeCount: number;
+  portfolioScore: number | null;
+  homes: Array<{
+    tenantId: string;
+    tenantName: string;
+    isCurrent: boolean;
+    score: number;
+    label: string;
+    openIncidents: number;
+    missedDoseDetail: string;
+    credentialRisk: string;
+    topActions: Array<{ title: string; href: string; severity: string }>;
+  }>;
+};
+
 export function ReportsPage({ timezone }: { timezone: string }) {
+  const { homes, switchHome } = useAuth();
   const [pack, setPack] = useState<Pack | null>(null);
+  const [portfolio, setPortfolio] = useState<Portfolio | null>(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
+  const [switching, setSwitching] = useState(false);
 
   useEffect(() => {
     const to = new Date().toISOString();
     const from = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
-    api<Pack>(`/reports/inspection-pack?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`)
-      .then(setPack)
+    Promise.all([
+      api<Pack>(
+        `/reports/inspection-pack?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`,
+      ),
+      homes.length > 1
+        ? api<Portfolio>('/reports/portfolio-benchmarks').catch(() => null)
+        : Promise.resolve(null),
+    ])
+      .then(([p, pf]) => {
+        setPack(p);
+        setPortfolio(pf);
+      })
       .catch((e) => setError(e instanceof Error ? e.message : 'Failed to load report'))
       .finally(() => setLoading(false));
-  }, []);
+  }, [homes.length]);
 
   function downloadJson() {
     if (!pack) return;
@@ -67,6 +107,62 @@ export function ReportsPage({ timezone }: { timezone: string }) {
       <h1 className="page-title">Inspection pack</h1>
       <p className="page-sub">Live survey readiness + last 30 days summary with audit trail.</p>
       {error ? <div className="error">{error}</div> : null}
+
+      {portfolio && portfolio.homeCount > 1 ? (
+        <section className="survey-score-card page-enter" style={{ marginBottom: '1.25rem' }}>
+          <div className="survey-score-num">{portfolio.portfolioScore ?? '—'}%</div>
+          <div>
+            <strong>{portfolio.organizationName || 'Portfolio'} benchmarks</strong>
+            <p className="meta" style={{ margin: '0.35rem 0 0' }}>
+              Average survey readiness across {portfolio.homeCount} homes. Switch to dig into each
+              home’s fix-it queue.
+            </p>
+          </div>
+          <div className="stack" style={{ gridColumn: '1 / -1', marginTop: '0.75rem' }}>
+            {portfolio.homes.map((h) => (
+              <div key={h.tenantId} className="home-row" style={{ cursor: 'default' }}>
+                <div>
+                  <strong>
+                    {h.tenantName}
+                    {h.isCurrent ? ' · current' : ''}
+                  </strong>
+                  <div className="meta">
+                    {h.label} · {h.openIncidents} open incidents · {h.missedDoseDetail} · credentials{' '}
+                    {h.credentialRisk}
+                  </div>
+                  {h.topActions[0] ? (
+                    <div className="meta">Next: {h.topActions[0].title}</div>
+                  ) : null}
+                </div>
+                <div style={{ display: 'flex', gap: '0.35rem', alignItems: 'center' }}>
+                  <span
+                    className={`badge ${h.score >= 90 ? 'ok' : h.score >= 75 ? 'warn' : 'danger'}`}
+                  >
+                    {h.score}%
+                  </span>
+                  {!h.isCurrent ? (
+                    <button
+                      className="btn secondary"
+                      type="button"
+                      disabled={switching}
+                      onClick={() => {
+                        setSwitching(true);
+                        void switchHome(h.tenantId).finally(() => {
+                          setSwitching(false);
+                          window.location.reload();
+                        });
+                      }}
+                    >
+                      Switch
+                    </button>
+                  ) : null}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
       {pack ? (
         <>
           {pack.surveyReadiness ? (
@@ -75,9 +171,26 @@ export function ReportsPage({ timezone }: { timezone: string }) {
               <div>
                 <strong>{pack.surveyReadiness.label}</strong>
                 <p className="meta" style={{ margin: '0.35rem 0 0' }}>
-                  State-survey readiness from credentials, med alerts, incident follow-up, and missed-dose rate.
+                  State-survey readiness from credentials, med alerts, incident follow-up, and
+                  missed-dose rate.
                 </p>
               </div>
+              {pack.surveyReadiness.actions?.length ? (
+                <div className="stack" style={{ gridColumn: '1 / -1', marginTop: '0.75rem' }}>
+                  <strong>Fix-it queue</strong>
+                  {pack.surveyReadiness.actions.map((a) => (
+                    <Link key={a.findingId} className="home-row action-row" to={a.href}>
+                      <div>
+                        <strong>{a.title}</strong>
+                        <div className="meta">{a.detail}</div>
+                      </div>
+                      <span className={`badge ${a.severity === 'critical' ? 'danger' : 'warn'}`}>
+                        {a.cta}
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              ) : null}
               <div className="stack" style={{ gridColumn: '1 / -1', marginTop: '0.75rem' }}>
                 {pack.surveyReadiness.findings.map((f) => (
                   <div key={f.id} className="home-row" style={{ cursor: 'default' }}>
@@ -149,12 +262,15 @@ export function ReportsPage({ timezone }: { timezone: string }) {
             <div className="note-row" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
               <strong>Incidents — {pack.incidents.count}</strong>
               <div className="meta">
-                {pack.incidents.items.map((i) => `${i.title} (${i.category}/${i.severity})`).join(' · ') ||
-                  'None'}
+                {pack.incidents.items
+                  .map((i) => `${i.title} (${i.category}/${i.severity})`)
+                  .join(' · ') || 'None'}
               </div>
             </div>
             <div className="note-row" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
-              <strong>Credentials expiring/expired — {pack.credentials.expiringOrExpiredCount}</strong>
+              <strong>
+                Credentials expiring/expired — {pack.credentials.expiringOrExpiredCount}
+              </strong>
               <div className="meta">
                 {pack.credentials.items
                   .map(

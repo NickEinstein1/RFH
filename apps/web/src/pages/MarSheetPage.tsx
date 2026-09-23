@@ -3,7 +3,9 @@ import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { api, downloadFile } from '../api';
 import { useAuth } from '../auth';
 import { PrnRecordModal } from '../components/PrnRecordModal';
+import { SafetyConfirmModal } from '../components/SafetyConfirmModal';
 import { BMI_CODES, MSE_CODES, PAIN_SCALE, RESULT_CODES, prnPayloadFromForm } from '../marBackGuides';
+import { safetyWarningsFromError, type SafetyWarning } from '../safetyTypes';
 import { formatUsDate } from '../usDate';
 
 type MarCell = {
@@ -123,6 +125,11 @@ export function MarSheetPage() {
   const [busyKey, setBusyKey] = useState<string | null>(null);
   const [selected, setSelected] = useState<SelectedCell | null>(null);
   const [prnPending, setPrnPending] = useState<SelectedCell | null>(null);
+  const [safety, setSafety] = useState<{
+    warnings: SafetyWarning[];
+    body: Record<string, unknown>;
+    safetyChallengeToken?: string;
+  } | null>(null);
 
   const load = useCallback(async () => {
     if (!id) return;
@@ -165,28 +172,39 @@ export function MarSheetPage() {
     const key = `${target.orderId}-${target.cell.day}-${target.time}-${outcome}`;
     setBusyKey(key);
     setError('');
+    const body = {
+      orderId: target.orderId,
+      scheduledAt: target.cell.scheduledAt,
+      outcome,
+      administeredAt: outcome === 'GIVEN' ? new Date().toISOString() : undefined,
+      clientEventId: crypto.randomUUID(),
+      notes:
+        outcome === 'REFUSED'
+          ? 'Rejected / not given'
+          : outcome === 'MISSED'
+            ? 'Not given at all'
+            : undefined,
+      ...prn,
+    };
     try {
       await api('/emar/administrations', {
         method: 'POST',
-        body: JSON.stringify({
-          orderId: target.orderId,
-          scheduledAt: target.cell.scheduledAt,
-          outcome,
-          administeredAt: outcome === 'GIVEN' ? new Date().toISOString() : undefined,
-          clientEventId: crypto.randomUUID(),
-          notes:
-            outcome === 'REFUSED'
-              ? 'Rejected / not given'
-              : outcome === 'MISSED'
-                ? 'Not given at all'
-                : undefined,
-          ...prn,
-        }),
+        body: JSON.stringify(body),
       });
       setSelected(null);
       setPrnPending(null);
+      setSafety(null);
       await load();
     } catch (e) {
+      const warnings = safetyWarningsFromError(e);
+      if (warnings && outcome === 'GIVEN') {
+        setSafety({
+          warnings: warnings.warnings,
+          body,
+          safetyChallengeToken: warnings.safetyChallengeToken,
+        });
+        return;
+      }
       setError(e instanceof Error ? e.message : 'Failed to update MAR cell');
     } finally {
       setBusyKey(null);
@@ -622,6 +640,36 @@ export function MarSheetPage() {
           busy={busyKey !== null}
           onCancel={() => setPrnPending(null)}
           onSubmit={(fields) => postAdmin(prnPending, 'GIVEN', fields)}
+        />
+      ) : null}
+
+      {safety ? (
+        <SafetyConfirmModal
+          warnings={safety.warnings}
+          busy={busyKey !== null}
+          onCancel={() => setSafety(null)}
+          onConfirm={() => {
+            void (async () => {
+              setBusyKey('safety-ack');
+              try {
+                await api('/emar/administrations', {
+                  method: 'POST',
+                  body: JSON.stringify({
+                    ...safety.body,
+                    safetyChallengeToken: safety.safetyChallengeToken,
+                  }),
+                });
+                setSafety(null);
+                setSelected(null);
+                setPrnPending(null);
+                await load();
+              } catch (e) {
+                setError(e instanceof Error ? e.message : 'Failed after acknowledge');
+              } finally {
+                setBusyKey(null);
+              }
+            })();
+          }}
         />
       ) : null}
     </div>

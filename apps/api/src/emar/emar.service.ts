@@ -1,10 +1,11 @@
 import {
   BadRequestException,
+  ConflictException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { MedAlertType, MedOrderStatus, MedOutcome } from '@prisma/client';
+import { MedAlertType, MedOrderStatus, MedOutcome, type MedicationOrder } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuditService } from '../audit/audit.service';
 import { AuthUser } from '../common/decorators/current-user.decorator';
@@ -16,13 +17,22 @@ import {
   facilityTodayYmd,
 } from '../common/time/facility-time';
 
+import { SafetyChallengeService } from '../common/security/safety-challenge.service';
+
 const LATE_GRACE_MINUTES = 60;
+
+export type SafetyWarning = {
+  code: string;
+  severity: 'warn' | 'critical';
+  message: string;
+};
 
 @Injectable()
 export class EmarService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly audit: AuditService,
+    private readonly safetyChallenge: SafetyChallengeService,
   ) {}
 
   async createOrder(user: AuthUser, dto: CreateMedOrderDto, req?: Request) {
@@ -44,6 +54,12 @@ export class EmarService {
         endDate: dto.endDate ? new Date(dto.endDate) : null,
         isPrn: dto.isPrn ?? false,
         instructions: dto.instructions,
+        brand: dto.brand,
+        rxNumber: dto.rxNumber,
+        imprint: dto.imprint,
+        categoryLabel: dto.categoryLabel,
+        prescriber: dto.prescriber,
+        highAlert: dto.highAlert ?? false,
       },
     });
 
@@ -156,6 +172,44 @@ export class EmarService {
     });
     if (!order) throw new NotFoundException('Medication order not found');
 
+    if (dto.outcome === MedOutcome.GIVEN) {
+      const warnings = await this.evaluateSafetyWarnings(user, order, dto);
+      if (warnings.length) {
+        const tokenOk = this.safetyChallenge.verify(
+          dto.safetyChallengeToken,
+          user,
+          order.id,
+          dto.scheduledAt,
+          warnings,
+        );
+        if (!tokenOk) {
+          throw new ConflictException({
+            code: 'SAFETY_WARNINGS',
+            message: 'Safety warnings require acknowledgment',
+            warnings,
+            safetyChallengeToken: this.safetyChallenge.issue(
+              user,
+              order.id,
+              dto.scheduledAt,
+              warnings,
+            ),
+          });
+        }
+        await this.audit.logForUser(
+          user,
+          'med_admin.safety_override',
+          'MedicationOrder',
+          order.id,
+          {
+            residentId: order.residentId,
+            warnings,
+            scheduledAt: dto.scheduledAt,
+          },
+          req,
+        );
+      }
+    }
+
     const prnData = this.normalizePrnFields(order.isPrn, dto);
 
     if (dto.clientEventId) {
@@ -240,6 +294,119 @@ export class EmarService {
     }, req);
 
     return admin;
+  }
+
+  /**
+   * Soft safety checks — never hard-block care; require explicit acknowledge.
+   */
+  async evaluateSafetyWarnings(
+    user: AuthUser,
+    order: MedicationOrder,
+    dto: RecordMedAdminDto,
+  ): Promise<SafetyWarning[]> {
+    const warnings: SafetyWarning[] = [];
+    const resident = await this.prisma.db.resident.findFirst({
+      where: { id: order.residentId, tenantId: user.tenantId, deletedAt: null },
+    });
+    if (!resident) return warnings;
+
+    const drugLower = order.drugName.toLowerCase();
+    for (const allergy of resident.allergies || []) {
+      const a = allergy.trim().toLowerCase();
+      if (!a) continue;
+      if (drugLower.includes(a) || a.includes(drugLower.split(/\s+/)[0] || '')) {
+        warnings.push({
+          code: 'ALLERGY',
+          severity: 'critical',
+          message: `Possible allergy match: resident listed “${allergy}” and order is ${order.drugName}.`,
+        });
+      }
+    }
+
+    const tenant = await this.prisma.db.tenant.findUniqueOrThrow({
+      where: { id: user.tenantId },
+    });
+    const today = facilityTodayYmd(tenant.timezone);
+    const dayStart = facilityLocalToUtc(today, '00:00', tenant.timezone);
+    const dayEnd = facilityLocalToUtc(addDaysYmd(today, 1), '00:00', tenant.timezone);
+
+    const givenToday = await this.prisma.db.medAdministration.findMany({
+      where: {
+        tenantId: user.tenantId,
+        orderId: order.id,
+        outcome: MedOutcome.GIVEN,
+        scheduledAt: { gte: dayStart, lt: dayEnd },
+      },
+    });
+
+    const scheduledAt = new Date(dto.scheduledAt);
+    const alreadyThisSlot = givenToday.some(
+      (a) => a.scheduledAt.getTime() === scheduledAt.getTime(),
+    );
+    if (alreadyThisSlot) {
+      warnings.push({
+        code: 'DUPLICATE_SLOT',
+        severity: 'critical',
+        message: `${order.drugName} already recorded as GIVEN for this scheduled time.`,
+      });
+    } else if (!order.isPrn && givenToday.length >= Math.max(1, order.scheduleTimes.length)) {
+      warnings.push({
+        code: 'DUPLICATE_DOSE',
+        severity: 'warn',
+        message: `${order.drugName} already given ${givenToday.length}× today (schedule has ${order.scheduleTimes.length} slot(s)).`,
+      });
+    } else if (order.isPrn && givenToday.length >= 3) {
+      warnings.push({
+        code: 'PRN_FREQUENCY',
+        severity: 'warn',
+        message: `${order.drugName} already given ${givenToday.length}× today as PRN.`,
+      });
+    }
+
+    if (dto.administeredAt && !order.isPrn) {
+      const adminAt = new Date(dto.administeredAt).getTime();
+      const schedAt = scheduledAt.getTime();
+      const deltaMin = Math.abs(adminAt - schedAt) / 60_000;
+      if (deltaMin > 120) {
+        warnings.push({
+          code: 'UNUSUAL_TIME',
+          severity: 'warn',
+          message: `Administering ${Math.round(deltaMin)} min from scheduled time for ${order.drugName}.`,
+        });
+      }
+    }
+
+    if (order.highAlert) {
+      warnings.push({
+        code: 'HIGH_ALERT',
+        severity: 'warn',
+        message: `${order.drugName} is marked high-alert — verify drug, dose, and resident.`,
+      });
+    }
+
+    const controlled =
+      /controlled|c-?ii|c-?iii|c-?iv|c-?v|narcotic|opioid/i.test(
+        order.categoryLabel || '',
+      ) || /\b(morphine|oxycodone|fentanyl|hydrocodone|lorazepam|alprazolam)\b/i.test(order.drugName);
+    if (controlled) {
+      const expected = order.isPrn ? null : order.scheduleTimes.length;
+      const given = givenToday.length + (alreadyThisSlot ? 0 : 1);
+      if (expected != null && given > expected) {
+        warnings.push({
+          code: 'CONTROLLED_COUNT',
+          severity: 'critical',
+          message: `Controlled/high-risk ${order.drugName}: giving would exceed today’s scheduled count (${expected}).`,
+        });
+      } else {
+        warnings.push({
+          code: 'CONTROLLED_CHECK',
+          severity: 'warn',
+          message: `Verify controlled count for ${order.drugName} before giving.`,
+        });
+      }
+    }
+
+    return warnings;
   }
 
   /** Back-of-MAR PRN fields — required when giving a PRN medication */

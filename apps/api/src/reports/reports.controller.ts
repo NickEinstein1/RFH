@@ -30,4 +30,10 @@ export class ReportsController {
       new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
     return this.reports.inspectionPack(user, start, end, req);
   }
+
+  @Get('portfolio-benchmarks')
+  @RequirePermissions(Permissions.REPORTS_READ)
+  portfolioBenchmarks(@CurrentUser() user: AuthUser, @Req() req: Request) {
+    return this.reports.portfolioBenchmarks(user, req);
+  }
 }

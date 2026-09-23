@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { api } from '../api';
 import { useAuth } from '../auth';
 import { formatInFacilityTz } from '../time';
@@ -33,6 +33,22 @@ type DueSlot = {
   scheduledAt: string;
 };
 
+type SurveyAction = {
+  findingId: string;
+  severity: 'warn' | 'critical';
+  title: string;
+  detail: string;
+  cta: string;
+  href: string;
+};
+
+type Survey = {
+  score: number;
+  label: string;
+  actions?: SurveyAction[];
+  actionCount?: number;
+};
+
 function currentMonthYm() {
   const now = new Date();
   return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
@@ -45,7 +61,7 @@ export function HomePage({ timezone }: { timezone: string }) {
   const [due, setDue] = useState<DueSlot[]>([]);
   const [error, setError] = useState('');
   const [syncPending, setSyncPending] = useState(pendingCount());
-  const [survey, setSurvey] = useState<{ score: number; label: string } | null>(null);
+  const [survey, setSurvey] = useState<Survey | null>(null);
   const month = currentMonthYm();
   const isFamily = user?.role === 'FAMILY_VIEWER';
   const showReports = ['OWNER', 'ADMIN', 'NURSE'].includes(user?.role || '');
@@ -57,12 +73,11 @@ export function HomePage({ timezone }: { timezone: string }) {
   }, []);
 
   useEffect(() => {
+    if (isFamily) return;
     void (async () => {
       try {
         const [alertRows, incidentRows, residents, readiness] = await Promise.all([
-          isFamily
-            ? Promise.resolve([] as MedAlert[])
-            : api<MedAlert[]>('/emar/alerts').catch(() => [] as MedAlert[]),
+          api<MedAlert[]>('/emar/alerts').catch(() => [] as MedAlert[]),
           api<Incident[]>('/incidents').catch(() => [] as Incident[]),
           api<
             Array<{
@@ -73,17 +88,13 @@ export function HomePage({ timezone }: { timezone: string }) {
             }>
           >('/residents'),
           showReports
-            ? api<{ score: number; label: string }>('/reports/survey-readiness').catch(() => null)
+            ? api<Survey>('/reports/survey-readiness').catch(() => null)
             : Promise.resolve(null),
         ]);
 
-        if (readiness) setSurvey({ score: readiness.score, label: readiness.label });
+        if (readiness) setSurvey(readiness);
         setAlerts(alertRows.slice(0, 6));
-        setIncidents(
-          incidentRows
-            .filter((i) => i.status !== 'CLOSED')
-            .slice(0, 5),
-        );
+        setIncidents(incidentRows.filter((i) => i.status !== 'CLOSED').slice(0, 5));
 
         const slots: DueSlot[] = [];
         const sample = residents.slice(0, 8);
@@ -113,7 +124,7 @@ export function HomePage({ timezone }: { timezone: string }) {
                 });
               }
             } catch {
-              /* skip resident if pass unavailable */
+              /* skip */
             }
           }),
         );
@@ -126,13 +137,16 @@ export function HomePage({ timezone }: { timezone: string }) {
     })();
   }, [isFamily, showReports]);
 
+  if (isFamily) return <Navigate to="/family" replace />;
+
   return (
     <div className="home-today page-enter">
       <header className="home-hero">
         <p className="home-eyebrow">{user?.tenantName}</p>
         <h1 className="page-title">Today’s care</h1>
         <p className="page-sub">
-          Due meds, open alerts, and recent CBHS notes — one place to start your shift.
+          Start with who’s due, what’s open, and what families need — then move through the home with
+          calm focus.
           {syncPending ? ` · ${syncPending} pending offline sync` : ''}
         </p>
         {survey ? (
@@ -145,11 +159,9 @@ export function HomePage({ timezone }: { timezone: string }) {
           <Link className="btn" to="/residents">
             Residents
           </Link>
-          {!isFamily ? (
-            <Link className="btn secondary" to="/alerts">
-              Med alerts
-            </Link>
-          ) : null}
+          <Link className="btn secondary" to="/alerts">
+            Med alerts
+          </Link>
           <Link className="btn ghost" to="/downloads">
             Downloads
           </Link>
@@ -157,6 +169,28 @@ export function HomePage({ timezone }: { timezone: string }) {
       </header>
 
       {error ? <div className="error">{error}</div> : null}
+
+      {survey?.actions?.length ? (
+        <section className="home-section">
+          <h2>Survey fix-it queue ({survey.actionCount ?? survey.actions.length})</h2>
+          <p className="meta" style={{ marginTop: '-0.35rem', marginBottom: '0.75rem' }}>
+            Close these gaps to raise readiness. Tap through to the work.
+          </p>
+          <div className="stack">
+            {survey.actions.map((a) => (
+              <Link key={a.findingId} className="home-row action-row" to={a.href}>
+                <div>
+                  <strong>{a.title}</strong>
+                  <div className="meta">{a.detail}</div>
+                </div>
+                <span className={`badge ${a.severity === 'critical' ? 'danger' : 'warn'}`}>
+                  {a.cta}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       <section className="home-section">
         <h2>Due medications</h2>
@@ -187,31 +221,29 @@ export function HomePage({ timezone }: { timezone: string }) {
         ) : null}
       </section>
 
-      {!isFamily ? (
-        <section className="home-section">
-          <h2>Open alerts</h2>
-          <div className="stack">
-            {alerts.length === 0 ? <p className="empty">No open med alerts.</p> : null}
-            {alerts.map((a) => (
-              <Link key={a.id} className="home-row" to="/alerts">
-                <div>
-                  <strong>{a.type}</strong>
-                  <div className="meta">
-                    {a.administration?.resident
-                      ? `${a.administration.resident.lastName}, ${a.administration.resident.firstName}`
-                      : 'Resident'}
-                    {a.administration?.order?.drugName
-                      ? ` · ${a.administration.order.drugName}`
-                      : ''}{' '}
-                    · {formatInFacilityTz(a.triggeredAt, timezone)}
-                  </div>
+      <section className="home-section">
+        <h2>Open alerts</h2>
+        <div className="stack">
+          {alerts.length === 0 ? <p className="empty">No open med alerts.</p> : null}
+          {alerts.map((a) => (
+            <Link key={a.id} className="home-row" to="/alerts">
+              <div>
+                <strong>{a.type}</strong>
+                <div className="meta">
+                  {a.administration?.resident
+                    ? `${a.administration.resident.lastName}, ${a.administration.resident.firstName}`
+                    : 'Resident'}
+                  {a.administration?.order?.drugName
+                    ? ` · ${a.administration.order.drugName}`
+                    : ''}{' '}
+                  · {formatInFacilityTz(a.triggeredAt, timezone)}
                 </div>
-                <span className="badge danger">Open</span>
-              </Link>
-            ))}
-          </div>
-        </section>
-      ) : null}
+              </div>
+              <span className="badge danger">Open</span>
+            </Link>
+          ))}
+        </div>
+      </section>
 
       <section className="home-section">
         <h2>Recent CBHS notes</h2>
@@ -226,7 +258,11 @@ export function HomePage({ timezone }: { timezone: string }) {
                   {formatInFacilityTz(i.occurredAt, timezone)}
                 </div>
               </div>
-              <span className={`badge ${i.severity === 'CRITICAL' || i.severity === 'HIGH' ? 'danger' : 'warn'}`}>
+              <span
+                className={`badge ${
+                  i.severity === 'CRITICAL' || i.severity === 'HIGH' ? 'danger' : 'warn'
+                }`}
+              >
                 {i.status}
               </span>
             </Link>

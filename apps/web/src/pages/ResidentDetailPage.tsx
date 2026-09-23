@@ -15,7 +15,9 @@ import {
 import { fileToResidentPhotoDataUrl } from '../residentPhoto';
 import { PrnRecordModal } from '../components/PrnRecordModal';
 import { CbhsReportPanel } from '../components/CbhsReportPanel';
+import { SafetyConfirmModal } from '../components/SafetyConfirmModal';
 import { prnPayloadFromForm } from '../marBackGuides';
+import { safetyWarningsFromError, type SafetyWarning } from '../safetyTypes';
 
 type Resident = {
   id: string;
@@ -84,6 +86,11 @@ export function ResidentDetailPage({ timezone }: { timezone: string }) {
   const [photoBusy, setPhotoBusy] = useState(false);
   const [syncNote, setSyncNote] = useState('');
   const [prnSlot, setPrnSlot] = useState<Slot | null>(null);
+  const [safety, setSafety] = useState<{
+    warnings: SafetyWarning[];
+    body: Record<string, unknown>;
+    safetyChallengeToken?: string;
+  } | null>(null);
 
   const load = useCallback(async () => {
     if (!id) return;
@@ -205,6 +212,7 @@ export function ResidentDetailPage({ timezone }: { timezone: string }) {
           ),
         );
         setPrnSlot(null);
+        setSafety(null);
         setError('Saved offline — will sync when connection returns.');
         return;
       }
@@ -213,8 +221,18 @@ export function ResidentDetailPage({ timezone }: { timezone: string }) {
         body: JSON.stringify(body),
       });
       setPrnSlot(null);
+      setSafety(null);
       await load();
     } catch (e) {
+      const warnings = safetyWarningsFromError(e);
+      if (warnings && outcome === 'GIVEN') {
+        setSafety({
+          warnings: warnings.warnings,
+          body,
+          safetyChallengeToken: warnings.safetyChallengeToken,
+        });
+        return;
+      }
       const msg = e instanceof Error ? e.message : 'Failed to record dose';
       const looksNetwork =
         !navigator.onLine || /failed to fetch|networkerror|load failed|offline/i.test(msg);
@@ -399,8 +417,11 @@ export function ResidentDetailPage({ timezone }: { timezone: string }) {
           ) : null}
           <div className="med-pass-toolbar">
             <p className="meta" style={{ margin: 0 }}>
-              Tap once — Record ✓ · Reject · Not given · Held. Works offline; syncs when back online.
+              Tap once — Record ✓ · Reject · Not given · Held. Soft safety checks before give.
             </p>
+            <Link className="btn secondary" to={`/orders/intake?residentId=${id}`}>
+              Order intake
+            </Link>
             <Link
               className="btn secondary"
               to={`/residents/${id}/mar?month=${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}`}
@@ -605,6 +626,36 @@ export function ResidentDetailPage({ timezone }: { timezone: string }) {
           busy={busyId !== null}
           onCancel={() => setPrnSlot(null)}
           onSubmit={(fields) => record(prnSlot, 'GIVEN', fields)}
+        />
+      ) : null}
+
+      {safety ? (
+        <SafetyConfirmModal
+          warnings={safety.warnings}
+          busy={busyId !== null}
+          onCancel={() => setSafety(null)}
+          onConfirm={() => {
+            void (async () => {
+              setBusyId('safety-ack');
+              setError('');
+              try {
+                await api('/emar/administrations', {
+                  method: 'POST',
+                  body: JSON.stringify({
+                    ...safety.body,
+                    safetyChallengeToken: safety.safetyChallengeToken,
+                  }),
+                });
+                setSafety(null);
+                setPrnSlot(null);
+                await load();
+              } catch (e) {
+                setError(e instanceof Error ? e.message : 'Failed to record after acknowledge');
+              } finally {
+                setBusyId(null);
+              }
+            })();
+          }}
         />
       ) : null}
     </div>

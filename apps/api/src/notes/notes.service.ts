@@ -50,9 +50,16 @@ export class NotesService {
 
   async listForResident(user: AuthUser, residentId: string, req?: Request) {
     await this.familyAccess.assertCanAccessResident(user, residentId);
+    const isFamily = user.role === 'FAMILY_VIEWER';
     const notes = await this.prisma.db.progressNote.findMany({
-      where: { tenantId: user.tenantId, residentId, deletedAt: null },
+      where: {
+        tenantId: user.tenantId,
+        residentId,
+        deletedAt: null,
+        ...(isFamily ? { noteType: 'COMMUNICATION' as const } : {}),
+      },
       orderBy: { occurredAt: 'desc' },
+      ...(isFamily ? { take: 40 } : {}),
       include: {
         author: { select: { id: true, firstName: true, lastName: true, role: true } },
       },
@@ -60,6 +67,7 @@ export class NotesService {
     await this.audit.logForUser(user, 'note.list', 'ProgressNote', null, {
       residentId,
       count: notes.length,
+      familyScoped: isFamily,
     }, req);
     return notes.map((n) => this.reveal(n));
   }
@@ -73,6 +81,9 @@ export class NotesService {
     });
     if (!note) throw new NotFoundException('Note not found');
     await this.familyAccess.assertCanAccessResident(user, note.residentId);
+    if (user.role === 'FAMILY_VIEWER' && note.noteType !== 'COMMUNICATION') {
+      throw new NotFoundException('Note not found');
+    }
     await this.audit.logForUser(user, 'note.read', 'ProgressNote', id, undefined, req);
     return this.reveal(note);
   }

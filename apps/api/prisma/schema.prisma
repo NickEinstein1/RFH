@@ -33,6 +33,14 @@ enum MedOrderStatus {
   DISCONTINUED
 }
 
+enum MedOrderIntakeStatus {
+  UPLOADED
+  EXTRACTED
+  PENDING_APPROVAL
+  APPROVED
+  REJECTED
+}
+
 enum MedOutcome {
   GIVEN
   REFUSED
@@ -152,6 +160,7 @@ model Tenant {
   credentialAlerts   CredentialAlert[]
   familyLinks        FamilyResidentLink[]
   incidents          Incident[]
+  medOrderIntakes    MedOrderIntake[]
 
   @@index([organizationId])
 }
@@ -192,6 +201,8 @@ model User {
   ackCredentialAlerts CredentialAlert[]   @relation("CredentialAlertAckBy")
   familyLinks        FamilyResidentLink[]
   incidentsReported  Incident[]           @relation("IncidentReportedBy")
+  medOrderIntakesUploaded MedOrderIntake[] @relation("MedOrderIntakeUploadedBy")
+  medOrderIntakesReviewed MedOrderIntake[] @relation("MedOrderIntakeReviewedBy")
 
   @@unique([tenantId, email])
   @@index([tenantId, deletedAt])
@@ -251,9 +262,38 @@ model Resident {
   taskCompletions    TaskCompletion[]
   familyLinks        FamilyResidentLink[]
   incidents          Incident[]
+  medOrderIntakes    MedOrderIntake[]
 
   @@index([tenantId, deletedAt, status])
   @@index([tenantId, lastName, firstName])
+}
+
+model MedOrderIntake {
+  id            String               @id @default(cuid())
+  tenantId      String
+  residentId    String
+  uploadedById  String
+  fileName      String
+  contentType   String
+  dataUrl       String?              @db.Text
+  rawText       String?              @db.Text
+  drafts        Json?
+  status        MedOrderIntakeStatus @default(UPLOADED)
+  extractNote   String?
+  reviewNotes   String?
+  reviewedById  String?
+  reviewedAt    DateTime?
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+
+  tenant     Tenant   @relation(fields: [tenantId], references: [id])
+  resident   Resident @relation(fields: [residentId], references: [id])
+  uploadedBy User     @relation("MedOrderIntakeUploadedBy", fields: [uploadedById], references: [id])
+  reviewedBy User?    @relation("MedOrderIntakeReviewedBy", fields: [reviewedById], references: [id])
+  orders     MedicationOrder[]
+
+  @@index([tenantId, residentId, status])
+  @@index([tenantId, createdAt])
 }
 
 model FamilyResidentLink {
@@ -294,15 +334,18 @@ model MedicationOrder {
   prescriber    String?
   highAlert     Boolean        @default(false)
   status        MedOrderStatus @default(ACTIVE)
+  intakeId      String?
   deletedAt     DateTime?
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
 
   tenant          Tenant              @relation(fields: [tenantId], references: [id])
   resident        Resident            @relation(fields: [residentId], references: [id])
+  intake          MedOrderIntake?     @relation(fields: [intakeId], references: [id])
   administrations MedAdministration[]
 
   @@index([tenantId, residentId, status, deletedAt])
+  @@index([intakeId])
 }
 
 model MedAdministration {

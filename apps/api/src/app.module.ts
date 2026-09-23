@@ -16,6 +16,7 @@ import { IncidentsModule } from './incidents/incidents.module';
 import { ReportsModule } from './reports/reports.module';
 import { DownloadsModule } from './downloads/downloads.module';
 import { MailModule } from './mail/mail.module';
+import { FamilyModule } from './family/family.module';
 import { TenancyModule } from './tenancy/tenancy.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { PermissionsGuard } from './common/guards/permissions.guard';
@@ -47,6 +48,7 @@ import { HealthController } from './health.controller';
     IncidentsModule,
     ReportsModule,
     DownloadsModule,
+    FamilyModule,
   ],
   controllers: [HealthController],
   providers: [

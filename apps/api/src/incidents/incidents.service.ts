@@ -5,6 +5,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { AuditService } from '../audit/audit.service';
 import { PhiCryptoService } from '../common/crypto/phi-crypto.service';
 import { MailService } from '../mail/mail.service';
+import { FamilyAccessService } from '../tenancy/family-access.service';
 import type { AuthUser } from '../common/decorators/current-user.decorator';
 import { CreateIncidentDto, UpdateIncidentDto } from './dto/incident.dto';
 
@@ -15,10 +16,27 @@ export class IncidentsService {
     private readonly audit: AuditService,
     private readonly phi: PhiCryptoService,
     private readonly mail: MailService,
+    private readonly familyAccess: FamilyAccessService,
   ) {}
 
   private reveal<T extends { narrative: string }>(row: T): T {
     return { ...row, narrative: this.phi.decrypt(row.narrative) ?? '' };
+  }
+
+  /** Family viewers get metadata only — no narrative / form PHI. */
+  private familySafe<T extends { narrative: string }>(row: T): T {
+    return {
+      ...row,
+      narrative: '' as T['narrative'],
+      formData: null,
+      immediateActions: null,
+      familyRedacted: true,
+    } as T & { familyRedacted: true };
+  }
+
+  private present<T extends { narrative: string }>(user: AuthUser, row: T): T {
+    if (user.role === Role.FAMILY_VIEWER) return this.familySafe(row);
+    return this.reveal(row);
   }
 
   async create(user: AuthUser, dto: CreateIncidentDto, req?: Request) {
@@ -35,7 +53,7 @@ export class IncidentsService {
           resident: { select: { id: true, firstName: true, lastName: true, room: true } },
         },
       });
-      if (existing) return this.reveal(existing);
+      if (existing) return this.present(user, existing);
     }
 
     const incident = await this.prisma.db.incident.create({
@@ -91,7 +109,7 @@ export class IncidentsService {
       });
     }
 
-    return this.reveal(incident);
+    return this.present(user, incident);
   }
 
   async list(
@@ -99,14 +117,26 @@ export class IncidentsService {
     opts: { residentId?: string; status?: IncidentStatus } = {},
     req?: Request,
   ) {
+    const linked = await this.familyAccess.linkedResidentIds(user);
+    if (linked !== null) {
+      if (opts.residentId && !linked.includes(opts.residentId)) {
+        return [];
+      }
+    }
+
     const rows = await this.prisma.db.incident.findMany({
       where: {
         tenantId: user.tenantId,
         deletedAt: null,
-        ...(opts.residentId ? { residentId: opts.residentId } : {}),
+        ...(opts.residentId
+          ? { residentId: opts.residentId }
+          : linked
+            ? { residentId: { in: linked } }
+            : {}),
         ...(opts.status ? { status: opts.status } : {}),
       },
       orderBy: { occurredAt: 'desc' },
+      ...(linked ? { take: 50 } : {}),
       include: {
         reportedBy: { select: { id: true, firstName: true, lastName: true, role: true } },
         resident: { select: { id: true, firstName: true, lastName: true, room: true } },
@@ -115,8 +145,9 @@ export class IncidentsService {
     await this.audit.logForUser(user, 'incident.list', 'Incident', null, {
       count: rows.length,
       residentId: opts.residentId ?? null,
+      familyScoped: linked !== null,
     }, req);
-    return rows.map((r) => this.reveal(r));
+    return rows.map((r) => this.present(user, r));
   }
 
   async findOne(user: AuthUser, id: string, req?: Request) {
@@ -128,8 +159,11 @@ export class IncidentsService {
       },
     });
     if (!row) throw new NotFoundException('Incident not found');
-    await this.audit.logForUser(user, 'incident.read', 'Incident', id, undefined, req);
-    return this.reveal(row);
+    await this.familyAccess.assertCanAccessResident(user, row.residentId);
+    await this.audit.logForUser(user, 'incident.read', 'Incident', id, {
+      familyRedacted: user.role === Role.FAMILY_VIEWER,
+    }, req);
+    return this.present(user, row);
   }
 
   async update(user: AuthUser, id: string, dto: UpdateIncidentDto, req?: Request) {
@@ -158,7 +192,7 @@ export class IncidentsService {
     await this.audit.logForUser(user, 'incident.update', 'Incident', id, {
       fields: Object.keys(dto),
     }, req);
-    return this.reveal(row);
+    return this.present(user, row);
   }
 
   async close(user: AuthUser, id: string, req?: Request) {
@@ -172,7 +206,7 @@ export class IncidentsService {
       },
     });
     await this.audit.logForUser(user, 'incident.close', 'Incident', id, undefined, req);
-    return this.reveal(row);
+    return this.present(user, row);
   }
 
   async softDelete(user: AuthUser, id: string, req?: Request) {
@@ -182,6 +216,6 @@ export class IncidentsService {
       data: { deletedAt: new Date() },
     });
     await this.audit.logForUser(user, 'incident.soft_delete', 'Incident', id, undefined, req);
-    return this.reveal(row);
+    return this.present(user, row);
   }
 }

@@ -20,7 +20,11 @@ export class ReportsService {
     private readonly audit: AuditService,
   ) {}
 
-  async surveyReadiness(user: AuthUser, req?: Request) {
+  async surveyReadiness(
+    user: AuthUser,
+    req?: Request,
+    opts?: { skipAudit?: boolean },
+  ) {
     const now = new Date();
     const in30d = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
     const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
@@ -212,6 +216,58 @@ export class ReportsService {
     const penalty = findings.reduce((sum, f) => sum + f.penalty, 0);
     const score = Math.max(0, Math.min(100, 100 - penalty));
 
+    const actionMap: Record<
+      string,
+      { title: string; cta: string; href: string; priority: number }
+    > = {
+      credentials_expired: {
+        title: 'Renew expired staff credentials',
+        cta: 'Open staff credentials',
+        href: '/staff',
+        priority: 1,
+      },
+      credentials_expiring: {
+        title: 'Clear expiring credentials / open credential alerts',
+        cta: 'Review staff alerts',
+        href: '/staff',
+        priority: 2,
+      },
+      open_med_alerts: {
+        title: 'Acknowledge open med alerts',
+        cta: 'Open med alerts',
+        href: '/alerts',
+        priority: 1,
+      },
+      open_high_incidents: {
+        title: 'Close or update high/critical incidents',
+        cta: 'Open notes & incidents',
+        href: '/incidents',
+        priority: 1,
+      },
+      stale_incidents: {
+        title: 'Complete follow-up on open incidents >7 days',
+        cta: 'Review open incidents',
+        href: '/incidents',
+        priority: 2,
+      },
+      missed_dose_rate: {
+        title: 'Reduce missed doses — review med pass / MAR',
+        cta: 'Open residents',
+        href: '/residents',
+        priority: 2,
+      },
+    };
+
+    const actions = findings
+      .filter((f) => f.severity !== 'ok' && actionMap[f.id])
+      .map((f) => ({
+        findingId: f.id,
+        severity: f.severity,
+        detail: f.detail,
+        ...actionMap[f.id],
+      }))
+      .sort((a, b) => a.priority - b.priority || a.title.localeCompare(b.title));
+
     const result = {
       generatedAt: now.toISOString(),
       score,
@@ -225,16 +281,20 @@ export class ReportsService {
               : 'Not survey-ready',
       openIncidentsTotal,
       findings,
+      actions,
+      actionCount: actions.length,
     };
 
-    await this.audit.logForUser(
-      user,
-      'report.survey_readiness',
-      'Report',
-      null,
-      { score: result.score },
-      req,
-    );
+    if (!opts?.skipAudit) {
+      await this.audit.logForUser(
+        user,
+        'report.survey_readiness',
+        'Report',
+        null,
+        { score: result.score },
+        req,
+      );
+    }
 
     return result;
   }
@@ -383,5 +443,105 @@ export class ReportsService {
     }, req);
 
     return pack;
+  }
+
+  /**
+   * Cross-home benchmarks for organization portfolio owners/admins.
+   */
+  async portfolioBenchmarks(user: AuthUser, req?: Request) {
+    if (!['OWNER', 'ADMIN'].includes(user.role)) {
+      return {
+        organizationId: null as string | null,
+        organizationName: null as string | null,
+        homeCount: 0,
+        portfolioScore: null as number | null,
+        homes: [] as Array<Record<string, unknown>>,
+        note: 'Portfolio benchmarks are available to OWNER and ADMIN roles.',
+      };
+    }
+
+    return this.prisma.runWithBypass(async () => {
+      const me = await this.prisma.db.user.findFirst({
+        where: { id: user.id, deletedAt: null },
+        include: { tenant: { include: { organization: true } } },
+      });
+      const org = me?.tenant.organization;
+      if (!org) {
+        return {
+          organizationId: null as string | null,
+          organizationName: null as string | null,
+          homeCount: 0,
+          portfolioScore: null as number | null,
+          homes: [] as Array<Record<string, unknown>>,
+          note: 'This facility is not linked to a multi-home organization.',
+        };
+      }
+
+      const tenants = await this.prisma.db.tenant.findMany({
+        where: { organizationId: org.id },
+        orderBy: { name: 'asc' },
+      });
+
+      const homes = await Promise.all(
+        tenants.map(async (t) => {
+          const scopedUser: AuthUser = { ...user, tenantId: t.id };
+          const readiness = await this.surveyReadiness(scopedUser, undefined, {
+            skipAudit: true,
+          });
+          const missedFinding = readiness.findings.find((f) => f.id === 'missed_dose_rate');
+          const openMed = readiness.findings.find((f) => f.id === 'open_med_alerts');
+          const credExpired = readiness.findings.find((f) => f.id === 'credentials_expired');
+          const credExpiring = readiness.findings.find((f) => f.id === 'credentials_expiring');
+          return {
+            tenantId: t.id,
+            tenantName: t.name,
+            timezone: t.timezone,
+            isCurrent: t.id === user.tenantId,
+            score: readiness.score,
+            label: readiness.label,
+            openIncidents: readiness.openIncidentsTotal,
+            actionCount: readiness.actionCount,
+            missedDoseDetail: missedFinding?.detail ?? 'n/a',
+            medAlertSeverity: openMed?.severity ?? 'ok',
+            credentialRisk:
+              credExpired?.severity === 'critical' || credExpiring?.severity === 'critical'
+                ? 'critical'
+                : credExpired?.severity === 'warn' || credExpiring?.severity === 'warn'
+                  ? 'warn'
+                  : 'ok',
+            topActions: (readiness.actions || []).slice(0, 3).map((a) => ({
+              title: a.title,
+              href: a.href,
+              severity: a.severity,
+            })),
+          };
+        }),
+      );
+
+      const portfolioScore =
+        homes.length > 0
+          ? Math.round(homes.reduce((s, h) => s + h.score, 0) / homes.length)
+          : null;
+
+      const result = {
+        organizationId: org.id,
+        organizationName: org.name,
+        homeCount: homes.length,
+        portfolioScore,
+        homes,
+        generatedAt: new Date().toISOString(),
+      };
+
+      await this.audit.logForUser(
+        user,
+        'report.portfolio_benchmarks',
+        'Report',
+        null,
+        { organizationId: org.id, homeCount: homes.length, portfolioScore },
+        req,
+      );
+
+      return result;
+    });
   }
 }

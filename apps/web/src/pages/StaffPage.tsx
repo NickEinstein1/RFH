@@ -27,8 +27,24 @@ const ROLES = ['CAREGIVER', 'NURSE', 'ADMIN', 'OWNER', 'FAMILY_VIEWER'] as const
 export function StaffPage({ timezone }: { timezone: string }) {
   const { user } = useAuth();
   const canInvite = ['OWNER', 'ADMIN'].includes(user?.role || '');
+  const canFamilyLinks = canInvite;
   const [creds, setCreds] = useState<Credential[]>([]);
   const [alerts, setAlerts] = useState<CredAlert[]>([]);
+  const [familyLinks, setFamilyLinks] = useState<
+    Array<{
+      id: string;
+      relationship: string;
+      user: { id: string; firstName: string; lastName: string; email: string };
+      resident: { id: string; firstName: string; lastName: string; room: string | null };
+    }>
+  >([]);
+  const [familyUsers, setFamilyUsers] = useState<
+    Array<{ id: string; email: string; firstName: string; lastName: string; role: string }>
+  >([]);
+  const [residents, setResidents] = useState<
+    Array<{ id: string; firstName: string; lastName: string; room: string | null }>
+  >([]);
+  const [linkForm, setLinkForm] = useState({ userId: '', residentId: '', relationship: 'Family' });
   const [error, setError] = useState('');
   const [inviteMsg, setInviteMsg] = useState('');
   const [busy, setBusy] = useState(false);
@@ -49,6 +65,25 @@ export function StaffPage({ timezone }: { timezone: string }) {
       ]);
       setCreds(c);
       setAlerts(a);
+      if (canFamilyLinks) {
+        const [links, users, res] = await Promise.all([
+          api<typeof familyLinks>('/staff/family-links'),
+          canInvite
+            ? api<typeof familyUsers>('/staff/users').catch(() => [] as typeof familyUsers)
+            : Promise.resolve([] as typeof familyUsers),
+          api<typeof residents>('/residents'),
+        ]);
+        setFamilyLinks(links);
+        setFamilyUsers(users.filter((u) => u.role === 'FAMILY_VIEWER'));
+        setResidents(res);
+        if (!linkForm.userId && users.find((u) => u.role === 'FAMILY_VIEWER')) {
+          setLinkForm((f) => ({
+            ...f,
+            userId: users.find((u) => u.role === 'FAMILY_VIEWER')!.id,
+            residentId: res[0]?.id || '',
+          }));
+        }
+      }
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Failed to load staff data');
     }
@@ -92,12 +127,30 @@ export function StaffPage({ timezone }: { timezone: string }) {
     }
   }
 
+  async function createFamilyLink(e: FormEvent) {
+    e.preventDefault();
+    setBusy(true);
+    setError('');
+    try {
+      await api('/staff/family-links', {
+        method: 'POST',
+        body: JSON.stringify(linkForm),
+      });
+      setInviteMsg('Family link saved.');
+      await load();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to link family');
+    } finally {
+      setBusy(false);
+    }
+  }
+
   const now = Date.now();
 
   return (
     <div className="page-enter">
       <h1 className="page-title">Staff</h1>
-      <p className="page-sub">Credentials, alerts, and SMTP staff invites.</p>
+      <p className="page-sub">Credentials, family portal links, and SMTP invites.</p>
       {error ? <div className="error">{error}</div> : null}
       {inviteMsg ? <div className="toast toast-success">{inviteMsg}</div> : null}
 
@@ -106,7 +159,7 @@ export function StaffPage({ timezone }: { timezone: string }) {
           <h2>Invite staff</h2>
           <p className="meta">
             Password must be 12+ with upper, lower, number, and symbol. An invite email is attempted
-            via SMTP.
+            via SMTP. Use role FAMILY_VIEWER for family portal accounts.
           </p>
           <div className="download-controls">
             <div className="field">
@@ -164,6 +217,76 @@ export function StaffPage({ timezone }: { timezone: string }) {
             </button>
           </div>
         </form>
+      ) : null}
+
+      {canFamilyLinks ? (
+        <section className="download-panel" style={{ marginBottom: '1.5rem' }}>
+          <h2>Family portal links</h2>
+          <p className="meta">
+            Link a FAMILY_VIEWER account to a resident so they see today’s given meds, notes, and can
+            message the nurse.
+          </p>
+          <form className="download-controls" onSubmit={createFamilyLink}>
+            <div className="field">
+              <label>Family account</label>
+              <select
+                value={linkForm.userId}
+                onChange={(e) => setLinkForm((f) => ({ ...f, userId: e.target.value }))}
+                required
+              >
+                <option value="">Select…</option>
+                {familyUsers.map((u) => (
+                  <option key={u.id} value={u.id}>
+                    {u.lastName}, {u.firstName} · {u.email}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="field">
+              <label>Resident</label>
+              <select
+                value={linkForm.residentId}
+                onChange={(e) => setLinkForm((f) => ({ ...f, residentId: e.target.value }))}
+                required
+              >
+                <option value="">Select…</option>
+                {residents.map((r) => (
+                  <option key={r.id} value={r.id}>
+                    {r.lastName}, {r.firstName}
+                    {r.room ? ` · Rm ${r.room}` : ''}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="field">
+              <label>Relationship</label>
+              <input
+                value={linkForm.relationship}
+                onChange={(e) => setLinkForm((f) => ({ ...f, relationship: e.target.value }))}
+                required
+              />
+            </div>
+            <button className="btn" type="submit" disabled={busy || !familyUsers.length}>
+              Link family
+            </button>
+          </form>
+          <div className="stack" style={{ marginTop: '1rem' }}>
+            {familyLinks.length === 0 ? <p className="empty">No family links yet.</p> : null}
+            {familyLinks.map((l) => (
+              <div key={l.id} className="home-row" style={{ cursor: 'default' }}>
+                <div>
+                  <strong>
+                    {l.user.lastName}, {l.user.firstName}
+                  </strong>
+                  <div className="meta">
+                    {l.user.email} · {l.relationship} · resident {l.resident.lastName},{' '}
+                    {l.resident.firstName}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
       ) : null}
 
       <h2 style={{ fontFamily: 'var(--font-display)', marginTop: '1.5rem' }}>Open alerts</h2>

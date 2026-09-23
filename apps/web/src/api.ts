@@ -100,6 +100,18 @@ async function tryRefresh(): Promise<boolean> {
   return refreshInFlight;
 }
 
+export class ApiError extends Error {
+  status: number;
+  body: Record<string, unknown>;
+
+  constructor(message: string, status: number, body: Record<string, unknown>) {
+    super(message);
+    this.name = 'ApiError';
+    this.status = status;
+    this.body = body;
+  }
+}
+
 export async function api<T>(
   path: string,
   options: RequestInit = {},
@@ -116,10 +128,16 @@ export async function api<T>(
     if (ok) return api<T>(path, options, true);
   }
   if (!res.ok) {
-    const body = await res.json().catch(() => ({}));
+    const body = (await res.json().catch(() => ({}))) as Record<string, unknown>;
     const raw = body.message;
-    const message = Array.isArray(raw) ? raw.join(', ') : raw || `Request failed (${res.status})`;
-    throw new Error(message);
+    const message = Array.isArray(raw)
+      ? raw.join(', ')
+      : typeof raw === 'string'
+        ? raw
+        : raw && typeof raw === 'object' && 'message' in (raw as object)
+          ? String((raw as { message: unknown }).message)
+          : `Request failed (${res.status})`;
+    throw new ApiError(message, res.status, body);
   }
   if (res.status === 204) return undefined as T;
   return res.json() as Promise<T>;

@@ -45,6 +45,7 @@ export function DownloadsPage() {
 
   const showReports = ['OWNER', 'ADMIN', 'NURSE'].includes(user?.role || '');
   const showAudit = ['OWNER', 'ADMIN', 'NURSE'].includes(user?.role || '');
+  const canMar = user?.role !== 'FAMILY_VIEWER';
 
   useEffect(() => {
     void (async () => {
@@ -109,46 +110,48 @@ export function DownloadsPage() {
       {error ? <div className="error">{error}</div> : null}
       {toast ? <div className="toast toast-success">{toast}</div> : null}
 
-      <section className="download-panel">
-        <h2>Monthly MAR</h2>
-        <p className="meta">Front page marks plus PRN back log.</p>
-        <div className="download-controls">
-          <div className="field">
-            <label>Resident</label>
-            <select value={residentId} onChange={(e) => setResidentId(e.target.value)}>
-              {residents.map((r) => (
-                <option key={r.id} value={r.id}>
-                  {r.lastName}, {r.firstName}
-                  {r.room ? ` · Rm ${r.room}` : ''}
-                </option>
-              ))}
-            </select>
+      {canMar ? (
+        <section className="download-panel">
+          <h2>Monthly MAR</h2>
+          <p className="meta">Front page marks plus PRN back log.</p>
+          <div className="download-controls">
+            <div className="field">
+              <label>Resident</label>
+              <select value={residentId} onChange={(e) => setResidentId(e.target.value)}>
+                {residents.map((r) => (
+                  <option key={r.id} value={r.id}>
+                    {r.lastName}, {r.firstName}
+                    {r.room ? ` · Rm ${r.room}` : ''}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="field">
+              <label>Month</label>
+              <input type="month" value={month} onChange={(e) => setMonth(e.target.value)} />
+            </div>
+            <button
+              className="btn"
+              type="button"
+              disabled={busy || !residentId}
+              onClick={() =>
+                void run(
+                  'MAR PDF',
+                  `/downloads/mar?residentId=${encodeURIComponent(residentId)}&month=${encodeURIComponent(month)}`,
+                  `MAR_${month}.pdf`,
+                )
+              }
+            >
+              Download MAR PDF
+            </button>
+            {residentId ? (
+              <Link className="btn secondary" to={`/residents/${residentId}/mar?month=${month}`}>
+                Open MAR
+              </Link>
+            ) : null}
           </div>
-          <div className="field">
-            <label>Month</label>
-            <input type="month" value={month} onChange={(e) => setMonth(e.target.value)} />
-          </div>
-          <button
-            className="btn"
-            type="button"
-            disabled={busy || !residentId}
-            onClick={() =>
-              void run(
-                'MAR PDF',
-                `/downloads/mar?residentId=${encodeURIComponent(residentId)}&month=${encodeURIComponent(month)}`,
-                `MAR_${month}.pdf`,
-              )
-            }
-          >
-            Download MAR PDF
-          </button>
-          {residentId ? (
-            <Link className="btn secondary" to={`/residents/${residentId}/mar?month=${month}`}>
-              Open MAR
-            </Link>
-          ) : null}
-        </div>
-      </section>
+        </section>
+      ) : null}
 
       <section className="download-panel">
         <h2>Negotiated Care Plan</h2>

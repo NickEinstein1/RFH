@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { Navigate } from 'react-router-dom';
 import { api } from '../api';
 import { useAuth } from '../auth';
+import { CareAtmosphere } from '../components/CareAtmosphere';
 
 const FACILITIES = [
   {
@@ -21,6 +22,12 @@ const FACILITIES = [
     name: 'Loving Garden AFH',
     email: 'owner@portfolio.demo',
     label: 'Portfolio owner (multi-home)',
+  },
+  {
+    id: 'sunrise-family',
+    name: 'Sunrise Adult Family Home',
+    email: 'family@sunrise.demo',
+    label: 'Family portal (Sunrise)',
   },
 ] as const;
 
@@ -67,12 +74,13 @@ export function LoginPage() {
 
   return (
     <div className="login-wrap">
+      <CareAtmosphere variant="login" />
       <form className="login-panel page-enter" onSubmit={onSubmit}>
         <div className="login-brand">RFH Care</div>
         <h1>{facility.label}</h1>
         <p className="page-sub">
           {mode === 'login'
-            ? 'Facility gate for med pass, MAR, and care notes.'
+            ? 'Quiet tools for med pass, notes, and family trust — built for adult family homes.'
             : 'Request a password reset email for this facility.'}
         </p>
         {error ? <div className="error">{error}</div> : null}

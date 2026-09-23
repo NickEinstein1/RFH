@@ -1,4 +1,5 @@
 import {
+  ArrayMaxSize,
   ArrayMinSize,
   IsArray,
   IsBoolean,
@@ -51,6 +52,30 @@ export class CreateMedOrderDto {
   @IsOptional()
   @IsString()
   instructions?: string;
+
+  @IsOptional()
+  @IsString()
+  brand?: string;
+
+  @IsOptional()
+  @IsString()
+  rxNumber?: string;
+
+  @IsOptional()
+  @IsString()
+  imprint?: string;
+
+  @IsOptional()
+  @IsString()
+  categoryLabel?: string;
+
+  @IsOptional()
+  @IsString()
+  prescriber?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  highAlert?: boolean;
 }
 
 export class RecordMedAdminDto {
@@ -110,11 +135,17 @@ export class RecordMedAdminDto {
   @Min(0)
   @Max(10)
   prnPainScore?: number;
+
+  /** Set after reviewing soft safety warnings — must be the server-issued challenge token */
+  @IsOptional()
+  @IsString()
+  safetyChallengeToken?: string;
 }
 
 export class SyncBatchDto {
   @IsArray()
   @ArrayMinSize(1)
+  @ArrayMaxSize(40)
   @ValidateNested({ each: true })
   @Type(() => RecordMedAdminDto)
   events!: RecordMedAdminDto[];
