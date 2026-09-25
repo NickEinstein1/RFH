@@ -296,7 +296,7 @@ export function CbhsReportPanel({
         {error ? <div className="error">{error}</div> : null}
 
         <section className="tpl-section">
-          <h2>Client information</h2>
+          <h2>Client Information</h2>
           <div className="tpl-grid">
             {!lockedResidentId ? (
               <div className="field">
@@ -378,7 +378,7 @@ export function CbhsReportPanel({
               flexWrap: 'wrap',
             }}
           >
-            <h2 style={{ margin: 0 }}>Behaviors and standard interventions</h2>
+            <h2 style={{ margin: 0 }}>Behaviors and Standard Interventions</h2>
             <button
               type="button"
               className="btn secondary"
@@ -394,9 +394,9 @@ export function CbhsReportPanel({
               <thead>
                 <tr>
                   <th>Date</th>
-                  <th>Time interval</th>
-                  <th>Behavior observed</th>
-                  <th>Standard intervention applied (first-person)</th>
+                  <th>Time Interval</th>
+                  <th>Behavior Observed</th>
+                  <th>Standard Intervention Applied (First-Person)</th>
                   <th />
                 </tr>
               </thead>

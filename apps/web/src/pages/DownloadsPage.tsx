@@ -182,7 +182,11 @@ export function DownloadsPage() {
       </section>
 
       <section className="download-panel">
-        <h2>CBHS note / incident</h2>
+          <h2>CBHS note / incident</h2>
+          <p className="meta">
+            PDF matches the original CBHS Word layout — Client Information (Field / Entry) plus the
+            Date · Time Interval · Behavior Observed · Standard Intervention Applied table.
+          </p>
         <p className="meta">Shared Notes & Incidents form export.</p>
         <div className="download-controls">
           <div className="field">

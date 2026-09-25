@@ -10,6 +10,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import type { AuthUser } from '../common/decorators/current-user.decorator';
 import { formatUsDate } from '../common/time/us-date';
 import { renderMarPdf } from './mar-pdf.builder';
+import { renderCbhsPdf } from './cbhs-pdf.builder';
 
 @Injectable()
 export class DownloadsService {
@@ -130,7 +131,6 @@ export class DownloadsService {
   async incidentPdf(user: AuthUser, incidentId: string, res: Response, req?: Request) {
     const incident = await this.incidents.findOne(user, incidentId, req);
     const form = (incident.formData || {}) as Record<string, any>;
-    const client = form.client || {};
     const name = `${incident.resident.lastName}_${incident.resident.firstName}`;
     const filename = `CBHS_${name}_${incident.id.slice(0, 8)}.pdf`;
 
@@ -143,47 +143,37 @@ export class DownloadsService {
       req,
     );
 
-    const doc = new PDFDocument({ margin: 40, size: 'LETTER', layout: 'landscape' });
+    // Landscape matches the wide 4-column Word CBHS behavior log.
+    const doc = new PDFDocument({
+      margin: 36,
+      size: 'LETTER',
+      layout: 'landscape',
+      autoFirstPage: true,
+    });
     this.pipePdf(res, doc, filename);
 
-    doc
-      .fontSize(14)
-      .text(form.documentTitle || incident.title || 'CBHS Note / Incident Report');
-    doc
-      .fontSize(10)
-      .text(`Status: ${incident.status} · Severity: ${incident.severity} · Category: ${incident.category}`)
-      .moveDown(0.4);
-
-    doc.fontSize(11).text('Client information');
-    const fields = [
-      ['Full legal name', client.fullLegalName],
-      ['DOB', formatUsDate(client.dateOfBirth)],
-      ['ProviderOne ID', client.providerOneId],
-      ['Facility', client.facilityName],
-      ['Address', client.facilityAddress],
-      ['Tier', client.tierLevel],
-      ['Month/year services', client.monthYearServices],
-      ['Caregiver initials', client.caregiverInitials],
-    ];
-    for (const [label, value] of fields) {
-      if (value) doc.fontSize(9).text(`${label}: ${value}`);
-    }
-
-    doc.moveDown(0.5).fontSize(11).text('Behaviors and standard interventions');
-    const entries = form.entries || [];
-    if (!entries.length) {
-      doc.fontSize(9).text(incident.narrative?.slice(0, 2000) || 'No behavior rows recorded.');
-    } else {
-      for (const e of entries) {
-        if (!e.behaviorObserved && !e.interventionApplied) continue;
-        doc
-          .fontSize(8)
-          .text(
-            `${e.date} | ${e.timeInterval} | ${e.behaviorObserved || '—'} → ${e.interventionApplied || '—'}`,
-            { width: 720 },
-          );
-      }
-    }
+    renderCbhsPdf(doc, {
+      documentTitle: form.documentTitle || incident.title,
+      client: {
+        ...(form.client || {}),
+        fullLegalName:
+          form.client?.fullLegalName ||
+          `${incident.resident.lastName}, ${incident.resident.firstName}`,
+        dateOfBirth:
+          form.client?.dateOfBirth ||
+          (incident.resident as { dateOfBirth?: string }).dateOfBirth ||
+          '',
+        facilityName: form.client?.facilityName || '',
+      },
+      entries: form.entries || [],
+      letter: form.letter || undefined,
+      narrativeFallback: incident.narrative,
+      meta: {
+        status: incident.status,
+        severity: incident.severity,
+        category: incident.category,
+      },
+    });
 
     doc.end();
   }
