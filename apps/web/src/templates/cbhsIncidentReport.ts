@@ -1,3 +1,5 @@
+import { formatUsDate } from '../usDate';
+
 /**
  * Blank CBHS Incident / Behavior Report template matching
  * Ray_filled_Incidence_Report.docx structure.
@@ -46,7 +48,7 @@ export function blankCbhsIncidentForm(opts?: {
   monthYearServices?: string;
   caregiverInitials?: string;
 }): CbhsIncidentForm {
-  const today = new Date().toISOString().slice(0, 10);
+  const today = formatUsDate(new Date());
   return {
     documentTitle: 'Community Behavioral Health Supports (CBHS) — Note / Incident Report',
     client: {

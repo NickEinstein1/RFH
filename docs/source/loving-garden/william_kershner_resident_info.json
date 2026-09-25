@@ -1,0 +1,91 @@
+{
+  "source": "RESIDENT INFORMATION SHEET.docx",
+  "facility": "Loving Garden AFH",
+  "resident": {
+    "preferredName": "Bill",
+    "firstName": "William",
+    "lastName": "Kershner",
+    "sex": "MALE",
+    "dateOfBirth": "01/13/1956",
+    "admitDate": "06/30/2025",
+    "maritalStatus": "Single",
+    "weight": "190 lbs",
+    "height": "5'3\"",
+    "allergies": [],
+    "advanceDirective": "CPR (not DNAR)",
+    "diagnoses": [
+      "Autism spectrum disorder",
+      "Age-related osteoporosis with current pathological fracture",
+      "Barrett’s esophagus with dysplasia",
+      "Bipolar disorder",
+      "Cataracts bilateral",
+      "Elevated alkaline phosphatase level",
+      "Epilepsy",
+      "Hearing loss right",
+      "Hyperlipidemia",
+      "Long-term current use of antipsychotic medication",
+      "Nonverbal",
+      "Hypothyroidism",
+      "Polyp of colon",
+      "Positive FIT",
+      "Purpura",
+      "Senile nuclear sclerosis",
+      "ADHD",
+      "Wandering",
+      "Developmental disabilities / mental illness history"
+    ],
+    "mrn": "LGAFH005",
+    "room": "005"
+  },
+  "primaryContact": {
+    "name": "Halina Catlett",
+    "relationship": "Guardian",
+    "email": "halina@abaci.org",
+    "homePhone": "206-408-2040",
+    "workPhone": "253-278-8516",
+    "preference": "Text/call"
+  },
+  "secondaryContact": {
+    "name": "Sam Maleski",
+    "relationship": "Guardian",
+    "address": "PO Box 13682, Des Moines WA 98198",
+    "email": "sam@abaci.org",
+    "homePhone": "206-408-2040",
+    "workPhone": "360-434-6426",
+    "preference": "Text"
+  },
+  "physicians": [
+    {
+      "name": "Hannah Legerwood",
+      "specialty": "Primary medicine",
+      "clinic": "MultiCare",
+      "address": "1112 6th Ave Ste 305, Tacoma, WA 98405",
+      "primary": true
+    },
+    {
+      "name": "Forchu Veronica",
+      "specialty": "Mental health",
+      "city": "Puyallup, WA",
+      "phone": "253-881-1020",
+      "fax": "360-872-1042",
+      "primary": false
+    }
+  ],
+  "preferredHospital": "MultiCare",
+  "insurance": {
+    "primaryCarrier": "Coordinate Care",
+    "secondaryCarrier": "Community Health Plan",
+    "policyId": "4WQ0-WU5-MW18",
+    "groups": ["Medicare health insurance", "Part A / Part B dating 01/01/1976"],
+    "preAuthRequired": false
+  },
+  "mortuary": "Not known",
+  "facilityAdmissionAgreement": {
+    "source": "MEDICAID ADMISSION AGREEMENT (11).docx",
+    "facilityLegalName": "LOVING GARDEN AFH LLC",
+    "address": "609 144th St S, Tacoma, WA 98444",
+    "licenseNo": "756970",
+    "servicesStartDate": "02/28/2025",
+    "provider": "Jane Mburu"
+  }
+}

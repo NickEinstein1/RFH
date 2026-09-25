@@ -1,0 +1,82 @@
+{
+  "source": "Julia_Jager_Negotiated_Care_Plan.docx",
+  "facility": "Loving Garden AFH",
+  "providerName": "Jane Mburu",
+  "resident": {
+    "firstName": "Julia",
+    "lastName": "Jager",
+    "preferredName": "Julia",
+    "dateOfBirth": "02/20/1940",
+    "age": 85,
+    "sex": "FEMALE",
+    "admitDate": "",
+    "primaryLanguage": "English",
+    "allergies": [
+      "Levofloxacin",
+      "Milk",
+      "Statins"
+    ],
+    "mrn": "LGAFH001",
+    "room": "001",
+    "diagnoses": [
+      "Sleep Apnea",
+      "Asthma",
+      "Non-insulin Dependent Diabetes Mellitus",
+      "Congestive Heart Failure",
+      "Morbid Obesity",
+      "Hypopotassemia",
+      "Atrial Fibrillation",
+      "Backache",
+      "Long term use of Anticoagulant",
+      "Hyperlipidemia",
+      "COPD",
+      "Arthritis",
+      "Osteoarthritis",
+      "Hypertension",
+      "Edema",
+      "Bladder Infection (Chronic)"
+    ]
+  },
+  "carePlan": {
+    "documentTitle": "NEGOTIATED CARE PLAN",
+    "carePlanDate": "",
+    "header": {
+      "residentName": "Julia Jager",
+      "providerName": "Jane Mburu",
+      "carePlanDate": "",
+      "admissionDate": "",
+      "dischargeDate": "",
+      "dateOfBirth": "02/20/1940",
+      "age": "85",
+      "ssn": "",
+      "primaryLanguage": "English",
+      "interestedParties": "Bryan Webber (Adult Child \u2014 Emergency Contact/Payee/Representative); Victoria LaForge (Adult Child \u2014 Emergency Contact/Personal NSA)",
+      "contactNameAddress": "Bryan Webber, 17717 24th Ave Ct, Tacoma WA 98445; Victoria LaForge",
+      "contactPhone": "858-245-4725; 360-640-4912",
+      "physician": "Minh Le; Franciscan Heart and Vascular Association; St Joseph Anticoagulation Clinic; Franciscan Urology Associates",
+      "physicianPhone": "253-274-7503; 253-627-1244; 253-426-4727; 253-207-4200",
+      "pharmacy": "Lincoln Pharmacy",
+      "pharmacyPhone": "253-883-1664",
+      "pharmacyFax": "",
+      "dentist": "",
+      "currentMedicalStatus": "Sleep Apnea, Asthma, Non-insulin Dependent Diabetes Mellitus, Congestive Heart Failure, Morbid Obesity, Hypopotassemia, Atrial Fibrillation, Backache, Long term use of Anticoagulant, Hyperlipidemia, COPD, Arthritis, Osteoarthritis, Hypertension, Edema, Bladder Infection (Chronic)",
+      "allergies": "Levofloxacin, Milk, Statins",
+      "specialtyNeeds": "DM; anticoagulation; oxygen/CPAP",
+      "dementia": "No",
+      "mentalHealth": "No",
+      "developmentalDisability": "No",
+      "emergencyEvacuation": "Assistance required \u2014 assistive device; physical assistance and supervision",
+      "independent": "No",
+      "assistanceRequired": "Yes",
+      "specialInstructions": "Julia is dependent with the use of assistive device to get out of emergency; she needs physical assistance and supervision to evacuate. Cue her to evacuate, assist and keep her within staff line of sight.",
+      "providerContact": "Loving Garden AFH"
+    },
+    "highlights": {
+      "caseManager": "Brandi Wiley",
+      "medManagement": "Nurse Delegation medication administration; complex regimen; blood thinner monitoring",
+      "mobility": "Assistance / standby with assistive device; fall risk",
+      "oxygen": "Supervise oxygen use; follow up CPAP replacement",
+      "evacuation": "Physical assistance and supervision required"
+    }
+  }
+}

@@ -1,0 +1,1326 @@
+{
+  "documentTitle": "Community Behavioral Health Supports (CBHS) \u2014 Note / Incident Report",
+  "client": {
+    "fullLegalName": "William \u201cBill\u201d Richard Kershner",
+    "dateOfBirth": "01/13/1956",
+    "providerOneId": "",
+    "facilityName": "Loving Garden AFH LLC - 01",
+    "facilityAddress": "609 144th St S, Tacoma, WA 98444",
+    "tierLevel": "Tier 3 (6.1\u201310)",
+    "monthYearServices": "August 2026",
+    "caregiverInitials": "J.M."
+  },
+  "entries": [
+    {
+      "id": "e_0001",
+      "date": "08/01/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "William stopped at every gate, touching the metal and humming. He attempted to enter a small kiosk by pulling the door handle repeatedly.",
+      "interventionApplied": "I held his hand, redirected him gently, and changed his diaper afterward."
+    },
+    {
+      "id": "e_0002",
+      "date": "08/01/2026",
+      "timeInterval": "4 PM \u2013 6 PM (Community Outing)",
+      "behaviorObserved": "At the supermarket, he touched packaged food, tried to open a cereal box, removed his shirt once, and attempted to walk toward the exit with bread.",
+      "interventionApplied": "I kept his shirt on, redirected him from exits, and held his hand throughout."
+    },
+    {
+      "id": "e_0003",
+      "date": "08/01/2026",
+      "timeInterval": "8 PM \u2013 10 PM",
+      "behaviorObserved": "He paced near the hallway, tapping the wall corners and humming softly.",
+      "interventionApplied": "I guided him to a quieter area and reduced stimulation."
+    },
+    {
+      "id": "e_0004",
+      "date": "08/01/2026",
+      "timeInterval": "10 PM \u2013 2 AM",
+      "behaviorObserved": "He ran to the kitchen repeatedly, opening the fridge and smelling food items without eating.",
+      "interventionApplied": "I offered safe snacks and supervised closely."
+    },
+    {
+      "id": "e_0005",
+      "date": "08/01/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "He locked himself in the bathroom and sat fully clothed without voiding.",
+      "interventionApplied": "I unlocked the door and redirected him calmly."
+    },
+    {
+      "id": "e_0006",
+      "date": "08/01/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "Restless sleep with occasional murmuring.",
+      "interventionApplied": "I monitored quietly and ensured comfort."
+    },
+    {
+      "id": "e_0007",
+      "date": "08/02/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "He pressed his face against shop windows, humming at his reflection. He attempted to enter a barber shop by pulling the door repeatedly.",
+      "interventionApplied": "I redirected him gently and held his hand throughout."
+    },
+    {
+      "id": "e_0008",
+      "date": "08/02/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "He sat on the living room floor sliding a cup back and forth, humming with each movement.",
+      "interventionApplied": "I offered a soft sensory item and redirected him."
+    },
+    {
+      "id": "e_0009",
+      "date": "08/02/2026",
+      "timeInterval": "8 PM \u2013 10 PM",
+      "behaviorObserved": "He removed his shirt and placed it inside the kitchen drawer.",
+      "interventionApplied": "I dressed him and secured the drawer."
+    },
+    {
+      "id": "e_0010",
+      "date": "08/02/2026",
+      "timeInterval": "10 PM \u2013 2 AM",
+      "behaviorObserved": "He wandered into the hallway sliding his hands along the floor tiles, tracing grout lines.",
+      "interventionApplied": "I stayed close and redirected him to a padded chair."
+    },
+    {
+      "id": "e_0011",
+      "date": "08/02/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "He locked himself in the bathroom and ran the tap continuously.",
+      "interventionApplied": "I unlocked the door, turned off the tap, and supervised closely."
+    },
+    {
+      "id": "e_0012",
+      "date": "08/02/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "He attempted to head outside barefoot while humming.",
+      "interventionApplied": "I secured the door and redirected him."
+    },
+    {
+      "id": "e_0013",
+      "date": "08/03/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "He touched every fence post and hummed at the vibration of metal.",
+      "interventionApplied": "I redirected him gently and changed his diaper afterward."
+    },
+    {
+      "id": "e_0014",
+      "date": "08/03/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "He paced between rooms, tapping doorframes and humming.",
+      "interventionApplied": "I guided him to a quiet corner and reduced stimuli."
+    },
+    {
+      "id": "e_0015",
+      "date": "08/03/2026",
+      "timeInterval": "8 PM \u2013 10 PM",
+      "behaviorObserved": "He ran to the kitchen and placed spoons inside his pockets.",
+      "interventionApplied": "I removed items and supervised closely."
+    },
+    {
+      "id": "e_0016",
+      "date": "08/03/2026",
+      "timeInterval": "10 PM \u2013 2 AM",
+      "behaviorObserved": "He locked himself in the bathroom and placed toilet paper into the sink.",
+      "interventionApplied": "I unlocked the door and removed items."
+    },
+    {
+      "id": "e_0017",
+      "date": "08/03/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "He wandered into the hallway touching wall corners.",
+      "interventionApplied": "I redirected him gently."
+    },
+    {
+      "id": "e_0018",
+      "date": "08/03/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "Restless sleep with frequent repositioning.",
+      "interventionApplied": "I monitored quietly."
+    },
+    {
+      "id": "e_0019",
+      "date": "08/04/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "He attempted to enter a small shop, reaching for displayed biscuits.",
+      "interventionApplied": "I redirected him gently and held his hand."
+    },
+    {
+      "id": "e_0020",
+      "date": "08/04/2026",
+      "timeInterval": "4 PM \u2013 6 PM (Community Outing)",
+      "behaviorObserved": "At the electronics store, he touched display screens, tried to pick up boxed items, and removed his shirt once.",
+      "interventionApplied": "I kept his shirt on and redirected him from restricted areas."
+    },
+    {
+      "id": "e_0021",
+      "date": "08/04/2026",
+      "timeInterval": "8 PM \u2013 10 PM",
+      "behaviorObserved": "He hummed loudly while touching the cold surface of the fridge door.",
+      "interventionApplied": "I redirected him and offered a soft sensory item."
+    },
+    {
+      "id": "e_0022",
+      "date": "08/04/2026",
+      "timeInterval": "10 PM \u2013 2 AM",
+      "behaviorObserved": "He wandered into the hallway and tapped the tiles with his fingertips.",
+      "interventionApplied": "I guided him to a calmer area."
+    },
+    {
+      "id": "e_0023",
+      "date": "08/04/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "He locked himself in the bathroom and sat without voiding.",
+      "interventionApplied": "I unlocked the door and redirected him."
+    },
+    {
+      "id": "e_0024",
+      "date": "08/04/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "He attempted to head outside holding a towel.",
+      "interventionApplied": "I secured the door and redirected him."
+    },
+    {
+      "id": "e_0025",
+      "date": "08/05/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "He followed shadows on the ground, stepping only where the shade fell.",
+      "interventionApplied": "I guided him gently along the path."
+    },
+    {
+      "id": "e_0026",
+      "date": "08/05/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "He removed his pants and placed them on the dining table.",
+      "interventionApplied": "I dressed him and secured clothing."
+    },
+    {
+      "id": "e_0027",
+      "date": "08/05/2026",
+      "timeInterval": "8 PM \u2013 10 PM",
+      "behaviorObserved": "He ran to the kitchen repeatedly, opening drawers and placing forks on the floor.",
+      "interventionApplied": "I removed items and redirected him."
+    },
+    {
+      "id": "e_0028",
+      "date": "08/05/2026",
+      "timeInterval": "10 PM \u2013 2 AM",
+      "behaviorObserved": "He locked himself in the bathroom and flushed a sock.",
+      "interventionApplied": "I unlocked the door and supervised closely."
+    },
+    {
+      "id": "e_0029",
+      "date": "08/05/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "He paced near the hallway humming and touching wall corners.",
+      "interventionApplied": "I redirected him to a quieter area."
+    },
+    {
+      "id": "e_0030",
+      "date": "08/05/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "Restless sleep with occasional humming.",
+      "interventionApplied": "I monitored quietly."
+    },
+    {
+      "id": "e_0031",
+      "date": "08/06/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "He touched every wall along the path, dragging his fingers across rough surfaces.",
+      "interventionApplied": "I redirected him gently and held his hand."
+    },
+    {
+      "id": "e_0032",
+      "date": "08/06/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "He paced near the hallway humming and touching wall corners.",
+      "interventionApplied": "I guided him to a quieter area."
+    },
+    {
+      "id": "e_0033",
+      "date": "08/06/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "He ran to the kitchen and sniffed food items without eating.",
+      "interventionApplied": "I offered safe snacks and supervised closely."
+    },
+    {
+      "id": "e_0034",
+      "date": "08/06/2026",
+      "timeInterval": "10 PM \u2013 2 AM",
+      "behaviorObserved": "He locked himself in the bathroom and sat fully clothed without voiding.",
+      "interventionApplied": "I unlocked the door and redirected him."
+    },
+    {
+      "id": "e_0035",
+      "date": "08/06/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "He wandered into the hallway tapping tiles with his fingertips.",
+      "interventionApplied": "I redirected him gently."
+    },
+    {
+      "id": "e_0036",
+      "date": "08/06/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "He attempted to head outside barefoot.",
+      "interventionApplied": "I secured the door and redirected him."
+    },
+    {
+      "id": "e_0037",
+      "date": "08/07/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "He tried to enter a kiosk, reaching for displayed fruit.",
+      "interventionApplied": "I redirected him and held his hand."
+    },
+    {
+      "id": "e_0038",
+      "date": "08/07/2026",
+      "timeInterval": "4 PM \u2013 6 PM (Community Outing)",
+      "behaviorObserved": "At the clothing store, he touched fabric, tried to wear a jacket, and attempted to walk behind the counter.",
+      "interventionApplied": "I kept him close and redirected him."
+    },
+    {
+      "id": "e_0039",
+      "date": "08/07/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "He rocked on the recliner while humming softly.",
+      "interventionApplied": "I stayed close and reduced stimuli."
+    },
+    {
+      "id": "e_0040",
+      "date": "08/07/2026",
+      "timeInterval": "10 PM \u2013 2 AM",
+      "behaviorObserved": "He wandered into the hallway and lined up shoes along the wall.",
+      "interventionApplied": "I reorganized items and redirected him."
+    },
+    {
+      "id": "e_0041",
+      "date": "08/07/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "He locked himself in the bathroom and ran the tap continuously.",
+      "interventionApplied": "I unlocked the door and supervised closely."
+    },
+    {
+      "id": "e_0042",
+      "date": "08/07/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "Restless sleep with frequent repositioning.",
+      "interventionApplied": "I monitored quietly."
+    },
+    {
+      "id": "e_0043",
+      "date": "08/08/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "He touched every fence and hummed at the vibration.",
+      "interventionApplied": "I redirected him gently."
+    },
+    {
+      "id": "e_0044",
+      "date": "08/08/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "He paced between rooms tapping doorframes.",
+      "interventionApplied": "I guided him to a quiet corner."
+    },
+    {
+      "id": "e_0045",
+      "date": "08/08/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "He ran to the kitchen and placed spoons inside his pockets.",
+      "interventionApplied": "I removed items and supervised closely."
+    },
+    {
+      "id": "e_0046",
+      "date": "08/08/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "He locked himself in the bathroom and flushed toilet paper.",
+      "interventionApplied": "I unlocked the door and supervised closely."
+    },
+    {
+      "id": "e_0047",
+      "date": "08/08/2026",
+      "timeInterval": "2 AM \u20134 AM",
+      "behaviorObserved": "He attempted to head outside holding a cup.",
+      "interventionApplied": "I secured the door and redirected him."
+    },
+    {
+      "id": "e_0048",
+      "date": "08/08/2026",
+      "timeInterval": "4 AM \u20136 AM",
+      "behaviorObserved": "Restless sleep with occasional murmuring.",
+      "interventionApplied": "I monitored quietly."
+    },
+    {
+      "id": "e_0049",
+      "date": "08/09/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "He followed sidewalk patterns, stepping only on darker tiles.",
+      "interventionApplied": "I guided him gently along the path."
+    },
+    {
+      "id": "e_0050",
+      "date": "08/09/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "He removed his pants and placed them on the couch.",
+      "interventionApplied": "I dressed him and secured clothing."
+    },
+    {
+      "id": "e_0051",
+      "date": "08/09/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "He wandered into the hallway tapping tiles with his fingertips.",
+      "interventionApplied": "I redirected him gently."
+    },
+    {
+      "id": "e_0052",
+      "date": "08/09/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "He locked himself in the bathroom and sat without voiding.",
+      "interventionApplied": "I unlocked the door and redirected him."
+    },
+    {
+      "id": "e_0053",
+      "date": "08/09/2026",
+      "timeInterval": "2 AM \u20134 AM",
+      "behaviorObserved": "He paced near the hallway humming softly.",
+      "interventionApplied": "I guided him to a quieter area."
+    },
+    {
+      "id": "e_0054",
+      "date": "08/09/2026",
+      "timeInterval": "4 AM \u20136 AM",
+      "behaviorObserved": "Restless sleep with occasional humming.",
+      "interventionApplied": "I monitored quietly."
+    },
+    {
+      "id": "e_0055",
+      "date": "08/10/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "He attempted to enter a small shop, reaching for displayed snacks.",
+      "interventionApplied": "I redirected him and held his hand."
+    },
+    {
+      "id": "e_0056",
+      "date": "08/10/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "He paced near the hallway humming and touching wall corners.",
+      "interventionApplied": "I redirected him to a quieter area."
+    },
+    {
+      "id": "e_0057",
+      "date": "08/10/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "He ran to the kitchen and opened the fridge repeatedly.",
+      "interventionApplied": "I offered safe snacks and supervised closely."
+    },
+    {
+      "id": "e_0058",
+      "date": "08/10/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "He locked himself in the bathroom and placed toilet paper into the sink.",
+      "interventionApplied": "I unlocked the door and removed items."
+    },
+    {
+      "id": "e_0059",
+      "date": "08/10/2026",
+      "timeInterval": "2 AM \u20134 AM",
+      "behaviorObserved": "He attempted to head outside barefoot.",
+      "interventionApplied": "I secured the door and redirected him."
+    },
+    {
+      "id": "e_0060",
+      "date": "08/10/2026",
+      "timeInterval": "4 AM \u20136 AM",
+      "behaviorObserved": "Restless sleep with occasional murmuring.",
+      "interventionApplied": "I monitored quietly."
+    },
+    {
+      "id": "e_0061",
+      "date": "08/11/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "William followed sidewalk cracks, dragging his fingers along the edges and humming.",
+      "interventionApplied": "I held his hand, redirected him gently, and changed his diaper afterward."
+    },
+    {
+      "id": "e_0062",
+      "date": "08/11/2026",
+      "timeInterval": "4 PM \u2013 6 PM (Community Outing)",
+      "behaviorObserved": "At the supermarket, he touched freezer doors, removed his shirt once, and attempted to walk toward the exit with packaged bread.",
+      "interventionApplied": "I kept his shirt on, redirected him from exits, and held his hand throughout."
+    },
+    {
+      "id": "e_0063",
+      "date": "08/11/2026",
+      "timeInterval": "8 PM \u2013 10 PM",
+      "behaviorObserved": "He paced near the hallway, tapping wall corners and humming softly",
+      "interventionApplied": "I guided him to a quieter area and reduced stimulation."
+    },
+    {
+      "id": "e_0064",
+      "date": "08/11/2026",
+      "timeInterval": "10 PM \u2013 2 AM",
+      "behaviorObserved": "He ran to the kitchen repeatedly, opening the fridge and smelling food items without eating.",
+      "interventionApplied": "I offered safe snacks and supervised closely."
+    },
+    {
+      "id": "e_0065",
+      "date": "08/11/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "He locked himself in the bathroom and sat fully clothed without voiding.",
+      "interventionApplied": "I unlocked the door and redirected him calmly."
+    },
+    {
+      "id": "e_0066",
+      "date": "08/11/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "Restless sleep with occasional murmuring.",
+      "interventionApplied": "I monitored quietly and ensured comfort."
+    },
+    {
+      "id": "e_0067",
+      "date": "08/12/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "He pressed his face against shop windows, humming at his reflection. He attempted to enter a barber shop by pulling the door repeatedly.",
+      "interventionApplied": "I redirected him gently and held his hand throughout."
+    },
+    {
+      "id": "e_0068",
+      "date": "08/12/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "He sat on the living room floor sliding a cup back and forth, humming with each movement.",
+      "interventionApplied": "I offered a soft sensory item and redirected him."
+    },
+    {
+      "id": "e_0069",
+      "date": "08/12/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "He removed his shirt and placed it inside the kitchen drawer.",
+      "interventionApplied": "I dressed him and secured the drawer."
+    },
+    {
+      "id": "e_0070",
+      "date": "08/12/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "He wandered into the hallway sliding his hands along the floor tiles, tracing grout lines.",
+      "interventionApplied": "I stayed close and redirected him to a padded chair."
+    },
+    {
+      "id": "e_0071",
+      "date": "08/12/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "He locked himself in the bathroom and ran the tap continuously.",
+      "interventionApplied": "I unlocked the door, turned off the tap, and supervised closely."
+    },
+    {
+      "id": "e_0072",
+      "date": "08/12/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "He attempted to head outside barefoot while humming.",
+      "interventionApplied": "I secured the door and redirected him."
+    },
+    {
+      "id": "e_0073",
+      "date": "08/13/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "He touched every fence post and hummed at the vibration of metal.",
+      "interventionApplied": "I redirected him gently and changed his diaper afterward."
+    },
+    {
+      "id": "e_0074",
+      "date": "08/13/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "He paced between rooms, tapping doorframes and humming.",
+      "interventionApplied": "I guided him to a quiet corner and reduced stimuli."
+    },
+    {
+      "id": "e_0075",
+      "date": "08/13/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "He ran to the kitchen and placed spoons inside his pockets.",
+      "interventionApplied": "I removed items and supervised closely."
+    },
+    {
+      "id": "e_0076",
+      "date": "08/13/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "He locked himself in the bathroom and placed toilet paper into the sink.",
+      "interventionApplied": "I unlocked the door and removed items."
+    },
+    {
+      "id": "e_0077",
+      "date": "08/13/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "He wandered into the hallway touching wall corners.",
+      "interventionApplied": "I redirected him gently."
+    },
+    {
+      "id": "e_0078",
+      "date": "08/13/2026",
+      "timeInterval": "4 AM \u20136 AM",
+      "behaviorObserved": "Restless sleep with frequent repositioning.",
+      "interventionApplied": "I monitored quietly."
+    },
+    {
+      "id": "e_0079",
+      "date": "08/14/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "He attempted to enter a small shop, reaching for displayed biscuits.",
+      "interventionApplied": "I redirected him gently and held his hand."
+    },
+    {
+      "id": "e_0080",
+      "date": "08/14/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "He hummed loudly while touching the cold surface of the fridge door.",
+      "interventionApplied": "I redirected him and offered a soft sensory item."
+    },
+    {
+      "id": "e_0081",
+      "date": "08/14/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "He wandered into the hallway and tapped the tiles with his fingertips.",
+      "interventionApplied": "I guided him to a calmer area."
+    },
+    {
+      "id": "e_0082",
+      "date": "08/14/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "He locked himself in the bathroom and sat without voiding.",
+      "interventionApplied": "I unlocked the door and redirected him."
+    },
+    {
+      "id": "e_0083",
+      "date": "08/14/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "He attempted to head outside holding a towel.",
+      "interventionApplied": "I secured the door and redirected him."
+    },
+    {
+      "id": "e_0084",
+      "date": "08/14/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "Restless sleep with occasional murmuring.",
+      "interventionApplied": "I monitored quietly."
+    },
+    {
+      "id": "e_0085",
+      "date": "08/15/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "He followed shadows on the ground, stepping only where the shade fell.",
+      "interventionApplied": "I guided him gently along the path."
+    },
+    {
+      "id": "e_0086",
+      "date": "08/15/2026",
+      "timeInterval": "4 PM \u2013 6 PM (Community Outing)",
+      "behaviorObserved": "At the grocery store, he grabbed fruit from displays, attempted to open packaged bread, and tried to walk toward the exit.",
+      "interventionApplied": "I held his hand, redirected him, and kept him close."
+    },
+    {
+      "id": "e_0087",
+      "date": "08/15/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "He removed his pants and placed them on the dining table.",
+      "interventionApplied": "I dressed him and secured clothing."
+    },
+    {
+      "id": "e_0088",
+      "date": "08/15/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "He ran to the kitchen repeatedly, opening drawers and placing forks on the floor.",
+      "interventionApplied": "I removed items and redirected him."
+    },
+    {
+      "id": "e_0089",
+      "date": "08/15/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "He locked himself in the bathroom and flushed a sock.",
+      "interventionApplied": "I unlocked the door and supervised closely."
+    },
+    {
+      "id": "e_0090",
+      "date": "08/15/2026",
+      "timeInterval": "4 AM \u20136 AM",
+      "behaviorObserved": "Restless sleep with occasional humming.",
+      "interventionApplied": "I monitored quietly."
+    },
+    {
+      "id": "e_0091",
+      "date": "08/16/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "He touched every wall along the path, dragging his fingers across rough surfaces.",
+      "interventionApplied": "I redirected him gently and held his hand."
+    },
+    {
+      "id": "e_0092",
+      "date": "08/16/2026",
+      "timeInterval": "4 PM \u2013 6 PM (Community Outing)",
+      "behaviorObserved": "At the supermarket, he touched freezer doors, removed his shirt once, and attempted to walk toward the exit with packaged bread.",
+      "interventionApplied": "I kept his shirt on, redirected him from exits, and held his hand throughout."
+    },
+    {
+      "id": "e_0093",
+      "date": "08/16/2026",
+      "timeInterval": "8 PM \u2013 10 PM",
+      "behaviorObserved": "He paced near the hallway humming and touching wall corners",
+      "interventionApplied": "I guided him to a quieter area."
+    },
+    {
+      "id": "e_0094",
+      "date": "08/16/2026",
+      "timeInterval": "10 PM \u2013 2 AM",
+      "behaviorObserved": "He locked himself in the bathroom and sat fully clothed without voiding",
+      "interventionApplied": "I unlocked the door and redirected him."
+    },
+    {
+      "id": "e_0095",
+      "date": "08/16/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "He wandered into the hallway tapping tiles with his fingertips.",
+      "interventionApplied": "I redirected him gently."
+    },
+    {
+      "id": "e_0096",
+      "date": "08/16/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "He stood at the front door staring at the knob, humming softly. He twisted the knob repeatedly, paced back and forth, and attempted to pull the door open several times.",
+      "interventionApplied": "I blocked the exit, used calm gestures, and redirected him using visual cues."
+    },
+    {
+      "id": "e_0097",
+      "date": "08/17/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "He tried to enter a kiosk, reaching for displayed fruit.",
+      "interventionApplied": "I redirected him and held his hand."
+    },
+    {
+      "id": "e_0098",
+      "date": "08/17/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "He rocked on the recliner while humming softly.",
+      "interventionApplied": "I stayed close and reduced stimuli."
+    },
+    {
+      "id": "e_0099",
+      "date": "08/17/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "He wandered into the hallway and lined up shoes along the wall.",
+      "interventionApplied": "I reorganized items and redirected him."
+    },
+    {
+      "id": "e_0100",
+      "date": "08/17/2026",
+      "timeInterval": "10 PM \u2013 2 AM",
+      "behaviorObserved": "He locked himself in the bathroom and ran the tap continuously.",
+      "interventionApplied": "I unlocked the door and supervised closely."
+    },
+    {
+      "id": "e_0101",
+      "date": "08/17/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "He attempted to head outside holding a cup.",
+      "interventionApplied": "I secured the door and redirected him."
+    },
+    {
+      "id": "e_0102",
+      "date": "08/17/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "He stood at the door, pulling the knob repeatedly, pacing between the door and the hallway.",
+      "interventionApplied": "I stayed beside him and redirected him calmly."
+    },
+    {
+      "id": "e_0103",
+      "date": "08/18/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "He touched every fence and hummed at the vibration.",
+      "interventionApplied": "I redirected him gently."
+    },
+    {
+      "id": "e_0104",
+      "date": "08/18/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "He paced between rooms tapping doorframes.",
+      "interventionApplied": "I guided him to a quiet corner."
+    },
+    {
+      "id": "e_0105",
+      "date": "08/18/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "He ran to the kitchen and placed spoons inside his pockets.",
+      "interventionApplied": "I removed items and supervised closely."
+    },
+    {
+      "id": "e_0106",
+      "date": "08/18/2026",
+      "timeInterval": "10 PM \u2013 2 AM",
+      "behaviorObserved": "He locked himself in the bathroom and flushed toilet paper.",
+      "interventionApplied": "I unlocked the door and supervised closely."
+    },
+    {
+      "id": "e_0107",
+      "date": "08/18/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "He attempted to head outside holding a towel.",
+      "interventionApplied": "I secured the door and redirected him."
+    },
+    {
+      "id": "e_0108",
+      "date": "08/18/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "He stared at the door, humming, pulling the knob, and pacing back and forth.",
+      "interventionApplied": "I blocked the exit and redirected him with gestures."
+    },
+    {
+      "id": "e_0109",
+      "date": "08/19/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "He followed sidewalk patterns, stepping only on darker tiles.",
+      "interventionApplied": "I guided him gently along the path."
+    },
+    {
+      "id": "e_0110",
+      "date": "08/19/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "He removed his pants and placed them on the couch.",
+      "interventionApplied": "I dressed him and secured clothing."
+    },
+    {
+      "id": "e_0111",
+      "date": "08/19/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "He wandered into the hallway tapping tiles with his fingertips.",
+      "interventionApplied": "I redirected him gently."
+    },
+    {
+      "id": "e_0112",
+      "date": "08/19/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "He locked himself in the bathroom and sat without voiding.",
+      "interventionApplied": "I unlocked the door and redirected him."
+    },
+    {
+      "id": "e_0113",
+      "date": "08/19/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "He paced near the hallway humming softly.",
+      "interventionApplied": "I guided him to a quieter area."
+    },
+    {
+      "id": "e_0114",
+      "date": "08/19/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "He stood at the door twisting the knob and pacing rapidly.",
+      "interventionApplied": "I blocked the exit and redirected him calmly."
+    },
+    {
+      "id": "e_0115",
+      "date": "08/20/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "He attempted to enter a small shop, reaching for displayed snacks.",
+      "interventionApplied": "I redirected him and held his hand."
+    },
+    {
+      "id": "e_0116",
+      "date": "08/20/2026",
+      "timeInterval": "4 PM \u2013 6 PM (Community Outing)",
+      "behaviorObserved": "At the openair market, he touched produce, tried to pick up baskets, and attempted to walk behind a vendor stall.",
+      "interventionApplied": "I guided him away from stalls and kept him close."
+    },
+    {
+      "id": "e_0117",
+      "date": "08/20/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "He ran to the kitchen and opened the fridge repeatedly.",
+      "interventionApplied": "I offered safe snacks and supervised closely."
+    },
+    {
+      "id": "e_0118",
+      "date": "08/20/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "He locked himself in the bathroom and placed toilet paper into the sink.",
+      "interventionApplied": "I unlocked the door and removed items."
+    },
+    {
+      "id": "e_0119",
+      "date": "08/20/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "He attempted to head outside barefoot.",
+      "interventionApplied": "I secured the door and redirected him."
+    },
+    {
+      "id": "e_0120",
+      "date": "08/20/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "He stood at the door humming loudly, pulling the knob, and pacing in short bursts.",
+      "interventionApplied": "I stayed beside him and redirected him with visual cues."
+    },
+    {
+      "id": "e_0121",
+      "date": "08/21/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "He touched every fence and hummed softly while dragging his fingers along the metal.",
+      "interventionApplied": "I redirected him gently."
+    },
+    {
+      "id": "e_0122",
+      "date": "08/21/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "He paced between rooms tapping doorframes.",
+      "interventionApplied": "I guided him to a quiet corner."
+    },
+    {
+      "id": "e_0123",
+      "date": "08/21/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "He wandered into the hallway and lined up shoes along the wall.",
+      "interventionApplied": "I reorganized items and redirected him."
+    },
+    {
+      "id": "e_0124",
+      "date": "08/21/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "He locked himself in the bathroom and ran the tap continuously.",
+      "interventionApplied": "I unlocked the door and supervised closely."
+    },
+    {
+      "id": "e_0125",
+      "date": "08/21/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "He attempted to head outside holding a cup.",
+      "interventionApplied": "I secured the door and redirected him."
+    },
+    {
+      "id": "e_0126",
+      "date": "08/21/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "He stood at the door twisting the knob repeatedly, pacing between the door and the hallway.",
+      "interventionApplied": "I blocked the exit and redirected him calmly."
+    },
+    {
+      "id": "e_0127",
+      "date": "08/22/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "He followed shadows on the ground, stepping only where the shade fell.",
+      "interventionApplied": "I guided him gently along the path."
+    },
+    {
+      "id": "e_0128",
+      "date": "08/22/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "He rocked on the recliner while humming softly.",
+      "interventionApplied": "I stayed close and reduced stimuli."
+    },
+    {
+      "id": "e_0129",
+      "date": "08/22/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "He ran to the kitchen and placed spoons inside his pockets.",
+      "interventionApplied": "I removed items and supervised closely."
+    },
+    {
+      "id": "e_0130",
+      "date": "08/22/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "He locked himself in the bathroom and sat without voiding.",
+      "interventionApplied": "I unlocked the door and redirected him."
+    },
+    {
+      "id": "e_0131",
+      "date": "08/22/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "He attempted to head outside barefoot.",
+      "interventionApplied": "I secured the door and redirected him."
+    },
+    {
+      "id": "e_0132",
+      "date": "08/22/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "He stood at the door humming, pulling the knob, and pacing back and forth.",
+      "interventionApplied": "I stayed beside him and redirected him calmly."
+    },
+    {
+      "id": "e_0133",
+      "date": "08/23/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "He touched every wall along the path, dragging his fingers across rough surfaces.",
+      "interventionApplied": "I redirected him gently."
+    },
+    {
+      "id": "e_0134",
+      "date": "08/23/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "He paced near the hallway humming and touching wall corners.",
+      "interventionApplied": "I guided him to a quieter area."
+    },
+    {
+      "id": "e_0135",
+      "date": "08/23/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "He wandered into the hallway tapping tiles with his fingertips.",
+      "interventionApplied": "I redirected him gently."
+    },
+    {
+      "id": "e_0136",
+      "date": "08/23/2026",
+      "timeInterval": "10 PM \u2013 2 AM",
+      "behaviorObserved": "He locked himself in the bathroom and ran the tap continuously.",
+      "interventionApplied": "I unlocked the door and supervised closely."
+    },
+    {
+      "id": "e_0137",
+      "date": "08/23/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "He attempted to head outside holding a towel.",
+      "interventionApplied": "I secured the door and redirected him."
+    },
+    {
+      "id": "e_0138",
+      "date": "08/23/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "He stood at the door twisting the knob and pacing rapidly.",
+      "interventionApplied": "I blocked the exit and redirected him calmly."
+    },
+    {
+      "id": "e_0139",
+      "date": "08/24/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "He tried to enter a kiosk, reaching for displayed fruit.",
+      "interventionApplied": "I redirected him and held his hand."
+    },
+    {
+      "id": "e_0140",
+      "date": "08/24/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "He rocked on the recliner humming softly.",
+      "interventionApplied": "I stayed close and reduced stimuli."
+    },
+    {
+      "id": "e_0141",
+      "date": "08/24/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "He ran to the kitchen and opened the fridge repeatedly.",
+      "interventionApplied": "I offered safe snacks and supervised closely."
+    },
+    {
+      "id": "e_0142",
+      "date": "08/24/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "He locked himself in the bathroom and placed toilet paper into the sink.",
+      "interventionApplied": "I unlocked the door and removed items."
+    },
+    {
+      "id": "e_0143",
+      "date": "08/24/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "He attempted to head outside barefoot.",
+      "interventionApplied": "I secured the door and redirected him."
+    },
+    {
+      "id": "e_0144",
+      "date": "08/24/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "He stood at the door humming loudly, pulling the knob, and pacing in short bursts.",
+      "interventionApplied": "I stayed beside him and redirected him with visual cues."
+    },
+    {
+      "id": "e_0145",
+      "date": "08/25/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "He followed sidewalk cracks, dragging his fingers along the edges.",
+      "interventionApplied": "I redirected him gently."
+    },
+    {
+      "id": "e_0146",
+      "date": "08/25/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "He paced between rooms tapping doorframes.",
+      "interventionApplied": "I guided him to a quiet corner."
+    },
+    {
+      "id": "e_0147",
+      "date": "08/25/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "He wandered into the hallway and lined up shoes along the wall.",
+      "interventionApplied": "I reorganized items and redirected him."
+    },
+    {
+      "id": "e_0148",
+      "date": "08/25/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "He locked himself in the bathroom and ran the tap continuously.",
+      "interventionApplied": "I unlocked the door and supervised closely."
+    },
+    {
+      "id": "e_0149",
+      "date": "08/25/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "He attempted to head outside holding a cup.",
+      "interventionApplied": "I secured the door and redirected him."
+    },
+    {
+      "id": "e_0150",
+      "date": "08/25/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "He stood at the door twisting the knob repeatedly, pacing between the door and the hallway.",
+      "interventionApplied": "I blocked the exit and redirected him calmly."
+    },
+    {
+      "id": "e_0151",
+      "date": "08/26/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "He touched every fence and hummed softly.",
+      "interventionApplied": "I redirected him gently."
+    },
+    {
+      "id": "e_0152",
+      "date": "08/26/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "He paced near the hallway humming and touching wall corners.",
+      "interventionApplied": "I guided him to a quieter area."
+    },
+    {
+      "id": "e_0153",
+      "date": "08/26/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "He ran to the kitchen and placed spoons inside his pockets.",
+      "interventionApplied": "I removed items and supervised closely."
+    },
+    {
+      "id": "e_0154",
+      "date": "08/26/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "He locked himself in the bathroom and sat without voiding.",
+      "interventionApplied": "I unlocked the door and redirected him."
+    },
+    {
+      "id": "e_0155",
+      "date": "08/26/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "He attempted to head outside barefoot.",
+      "interventionApplied": "I secured the door and redirected him."
+    },
+    {
+      "id": "e_0156",
+      "date": "08/26/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "He stood at the door humming, pulling the knob, and pacing back and forth.",
+      "interventionApplied": "I stayed beside him and redirected him calmly."
+    },
+    {
+      "id": "e_0157",
+      "date": "08/27/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "He attempted to enter a small shop, reaching for displayed snacks.",
+      "interventionApplied": "I redirected him and held his hand."
+    },
+    {
+      "id": "e_0158",
+      "date": "08/27/2026",
+      "timeInterval": "4 PM \u2013 6 PM (Community Outing)",
+      "behaviorObserved": "At the clothing store, he touched fabric, tried to wear a jacket, and attempted to walk behind the counter.",
+      "interventionApplied": "I kept him close and redirected him."
+    },
+    {
+      "id": "e_0159",
+      "date": "08/27/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "He wandered into the hallway tapping tiles with his fingertips.",
+      "interventionApplied": "I redirected him gently."
+    },
+    {
+      "id": "e_0160",
+      "date": "08/27/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "He locked himself in the bathroom and ran the tap continuously.",
+      "interventionApplied": "I unlocked the door and supervised closely."
+    },
+    {
+      "id": "e_0161",
+      "date": "08/27/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "He attempted to head outside holding a towel.",
+      "interventionApplied": "I secured the door and redirected him."
+    },
+    {
+      "id": "e_0162",
+      "date": "08/27/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "He stood at the door twisting the knob and pacing rapidly.",
+      "interventionApplied": "I blocked the exit and redirected him calmly."
+    },
+    {
+      "id": "e_0163",
+      "date": "08/28/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "He followed shadows on the ground, stepping only where the shade fell.",
+      "interventionApplied": "I guided him gently along the path."
+    },
+    {
+      "id": "e_0164",
+      "date": "08/28/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "He rocked on the recliner while humming softly.",
+      "interventionApplied": "I stayed close and reduced stimuli."
+    },
+    {
+      "id": "e_0165",
+      "date": "08/28/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "He ran to the kitchen and opened the fridge repeatedly.",
+      "interventionApplied": "I offered safe snacks and supervised closely."
+    },
+    {
+      "id": "e_0166",
+      "date": "08/28/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "He locked himself in the bathroom and placed toilet paper into the sink.",
+      "interventionApplied": "I unlocked the door and removed items."
+    },
+    {
+      "id": "e_0167",
+      "date": "08/28/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "He attempted to head outside barefoot.",
+      "interventionApplied": "I secured the door and redirected him."
+    },
+    {
+      "id": "e_0168",
+      "date": "08/28/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "He stood at the door humming loudly, pulling the knob, and pacing in short bursts.",
+      "interventionApplied": "I stayed beside him and redirected him with visual cues."
+    },
+    {
+      "id": "e_0169",
+      "date": "08/29/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "He touched every wall along the path, dragging his fingers across rough surfaces.",
+      "interventionApplied": "I redirected him gently."
+    },
+    {
+      "id": "e_0170",
+      "date": "08/29/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "He paced near the hallway humming and touching wall corners.",
+      "interventionApplied": "I guided him to a quieter area."
+    },
+    {
+      "id": "e_0171",
+      "date": "08/29/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "He wandered into the hallway tapping tiles with his fingertips.",
+      "interventionApplied": "I redirected him gently."
+    },
+    {
+      "id": "e_0172",
+      "date": "08/29/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "He locked himself in the bathroom and ran the tap continuously.",
+      "interventionApplied": "I unlocked the door and supervised closely."
+    },
+    {
+      "id": "e_0173",
+      "date": "08/29/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "He attempted to head outside holding a cup.",
+      "interventionApplied": "I secured the door and redirected him."
+    },
+    {
+      "id": "e_0174",
+      "date": "08/29/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "He stood at the door twisting the knob repeatedly, pacing between the door and the hallway.",
+      "interventionApplied": "I blocked the exit and redirected him calmly."
+    },
+    {
+      "id": "e_0175",
+      "date": "08/30/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "He followed sidewalk cracks, dragging his fingers along the edges and humming softly.",
+      "interventionApplied": "I redirected him gently and guided him along the path."
+    },
+    {
+      "id": "e_0176",
+      "date": "08/30/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "He paced between rooms tapping doorframes and briefly staring at the kitchen doorway.",
+      "interventionApplied": "I guided him to a quiet corner and reduced stimulation."
+    },
+    {
+      "id": "e_0177",
+      "date": "08/30/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "He ran to the kitchen and placed spoons inside his pockets.",
+      "interventionApplied": "I removed items and supervised closely."
+    },
+    {
+      "id": "e_0178",
+      "date": "08/30/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "He locked himself in the bathroom and sat fully clothed without voiding.",
+      "interventionApplied": "I unlocked the door and redirected him calmly."
+    },
+    {
+      "id": "e_0179",
+      "date": "08/30/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "He paced near the hallway, tapping tiles with his fingertips and humming.",
+      "interventionApplied": "I redirected him gently."
+    },
+    {
+      "id": "e_0180",
+      "date": "08/30/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "He stood at the front door twisting the knob repeatedly, pacing between the door and the hallway.",
+      "interventionApplied": "I blocked the exit and redirected him calmly."
+    },
+    {
+      "id": "e_0181",
+      "date": "08/31/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "He touched every fence along the path, humming at the vibration and briefly pulling at a loose wire.",
+      "interventionApplied": "I redirected his hands gently and held his hand for the rest of the walk."
+    },
+    {
+      "id": "e_0182",
+      "date": "08/31/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "He rocked on the recliner while humming softly, occasionally looking toward the door.",
+      "interventionApplied": "I stayed close and reduced background noise."
+    },
+    {
+      "id": "e_0183",
+      "date": "08/31/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "He ran to the kitchen and opened the fridge repeatedly, touching each shelf without taking food.",
+      "interventionApplied": "I offered a safe snack and supervised closely."
+    },
+    {
+      "id": "e_0184",
+      "date": "08/31/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "He locked himself in the bathroom and placed toilet paper into the sink, then tapped the faucet with curiosity.",
+      "interventionApplied": "I unlocked the door and removed items."
+    },
+    {
+      "id": "e_0185",
+      "date": "08/31/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "He attempted to head outside barefoot, walking quickly toward the door several times.",
+      "interventionApplied": "I secured the door and redirected him calmly."
+    },
+    {
+      "id": "e_0186",
+      "date": "08/31/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "He stood at the door staring at the knob, twisting it repeatedly, pacing back and forth, and humming with increasing intensity.",
+      "interventionApplied": "I remained beside him, prevented elopement, and redirected him using visual cues."
+    }
+  ],
+  "entryCount": 186,
+  "source": "Bill_August_Incidence_Report.docx",
+  "seed": {
+    "title": "CBHS note \u2014 William Kershner (August 2026)",
+    "occurredAt": "2026-08-01",
+    "category": "BEHAVIOR",
+    "severity": "MEDIUM",
+    "clientEventId": "william_kershner_cbhs_august_2026"
+  }
+}

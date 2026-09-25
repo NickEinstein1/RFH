@@ -110,18 +110,18 @@ async function main() {
     });
   }
 
-  const passwordHash = await bcrypt.hash('Password123!', 12);
+  const passwordHash = await bcrypt.hash('LovinggardenAFH_2026', 12);
 
   const users = [
+    { email: 'lovinggardenafh@gmail.com', role: Role.OWNER, firstName: 'Jane', lastName: 'Mburu' },
     { email: 'owner@lovinggarden.demo', role: Role.OWNER, firstName: 'Logan', lastName: 'Owner' },
     { email: 'nurse@lovinggarden.demo', role: Role.NURSE, firstName: 'Nina', lastName: 'Nurse' },
-    { email: 'care@lovinggarden.demo', role: Role.CAREGIVER, firstName: 'Casey', lastName: 'Caregiver' },
   ] as const;
 
   for (const u of users) {
     await prisma.user.upsert({
       where: { tenantId_email: { tenantId: tenant.id, email: u.email } },
-      update: {},
+      update: { firstName: u.firstName, lastName: u.lastName, role: u.role, passwordHash },
       create: {
         tenantId: tenant.id,
         email: u.email,
@@ -214,7 +214,7 @@ async function main() {
     orders: orderCount,
     month: mar.mar_month,
     logins: users.map((u) => u.email),
-    password: 'Password123!',
+    password: 'LovinggardenAFH_2026',
   });
 
   const org =
@@ -228,11 +228,15 @@ async function main() {
   });
   await prisma.user.upsert({
     where: { tenantId_email: { tenantId: tenant.id, email: 'owner@portfolio.demo' } },
-    update: { passwordHash, role: Role.OWNER, isActive: true },
+    update: {
+      passwordHash: await bcrypt.hash('Password123!', 12),
+      role: Role.OWNER,
+      isActive: true,
+    },
     create: {
       tenantId: tenant.id,
       email: 'owner@portfolio.demo',
-      passwordHash,
+      passwordHash: await bcrypt.hash('Password123!', 12),
       role: Role.OWNER,
       firstName: 'Pat',
       lastName: 'Portfolio',

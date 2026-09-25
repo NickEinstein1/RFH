@@ -83,11 +83,11 @@ export class UpdateResidentDto {
 }
 
 export class UploadResidentPhotoDto {
-  /** JPEG/PNG/WebP data URL from client (resized before upload) */
+  /** JPEG/PNG/WebP data URL from client, or a routed /api/media path for seeded photos */
   @IsString()
   @MaxLength(900_000)
-  @Matches(/^data:image\/(jpeg|jpg|png|webp);base64,/, {
-    message: 'photoUrl must be a jpeg, png, or webp data URL',
+  @Matches(/^(data:image\/(jpeg|jpg|png|webp);base64,|\/api\/media\/residents\/)/, {
+    message: 'photoUrl must be a jpeg/png/webp data URL or /api/media/residents/… path',
   })
   photoUrl!: string;
 }

@@ -142,7 +142,7 @@ export class IncidentsService {
         resident: { select: { id: true, firstName: true, lastName: true, room: true } },
       },
     });
-    await this.audit.logForUser(user, 'incident.list', 'Incident', null, {
+    this.audit.logForUserDeferred(user, 'incident.list', 'Incident', null, {
       count: rows.length,
       residentId: opts.residentId ?? null,
       familyScoped: linked !== null,

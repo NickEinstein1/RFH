@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { api } from '../api';
 import { useAuth } from '../auth';
 import { formatInFacilityTz, todayInFacilityTz } from '../time';
+import { formatUsDate } from '../usDate';
 import {
   cacheSnapshot,
   enqueueMedEvent,
@@ -323,7 +324,7 @@ export function ResidentDetailPage({ timezone }: { timezone: string }) {
 
   return (
     <div>
-      <Link to="/" className="meta">
+      <Link to="/residents" className="meta">
         ← Residents
       </Link>
 
@@ -377,6 +378,7 @@ export function ResidentDetailPage({ timezone }: { timezone: string }) {
           <p className="page-sub">
             {user?.tenantName ? `${user.tenantName} · ` : ''}
             Room {resident?.room || '—'}
+            {resident?.dateOfBirth ? ` · DOB ${formatUsDate(resident.dateOfBirth)}` : ''}
             {resident?.allergies?.length ? ` · Allergies: ${resident.allergies.join(', ')}` : ''}
             {!isFamily
               ? ` · ${online ? 'Online' : 'Offline'}${pending ? ` · ${pending} queued` : ''}`

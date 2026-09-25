@@ -1,0 +1,13 @@
+{
+  "facility": "Loving Garden AFH",
+  "sourceFolder": "Images_Loving_Garden",
+  "mediaBase": "/api/media/residents/loving-garden",
+  "webFallbackBase": "/residents/loving-garden",
+  "photos": [
+    { "file": "Bill.jpeg", "slug": "bill", "resident": "William Kershner", "mrn": "LGAFH005" },
+    { "file": "Cody.jpeg", "slug": "cody", "resident": "Cody DeVries", "mrn": "LGAFH002" },
+    { "file": "Julia.jpeg", "slug": "julia", "resident": "Julia Jager", "mrn": "LGAFH001" },
+    { "file": "Raysheal.jpeg", "slug": "raysheal", "resident": "Raysheal Ellis", "mrn": "LGAFH006" },
+    { "file": "Steven.jpeg", "slug": "steven", "resident": "Steven Watson", "mrn": "LGAFH003" }
+  ]
+}

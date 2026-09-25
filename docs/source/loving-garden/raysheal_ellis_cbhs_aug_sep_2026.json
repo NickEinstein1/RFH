@@ -1,0 +1,2124 @@
+{
+  "documentTitle": "Community Behavioral Health Supports (CBHS) \u2014 Note / Incident Report",
+  "client": {
+    "fullLegalName": "Ellis, Raysheal M",
+    "dateOfBirth": "12/12/2000",
+    "providerOneId": "100429271WA",
+    "facilityName": "Loving Garden AFH LLC - 01",
+    "facilityAddress": "609 144th St S, Tacoma, WA 98444",
+    "tierLevel": "Not documented in records (CBHS/1915i referral submitted 03/16/2026)",
+    "monthYearServices": "August\u2013September 2026",
+    "caregiverInitials": "J.M."
+  },
+  "entries": [
+    {
+      "id": "e_0001",
+      "date": "08/12/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She asked several times mid-walk if she could keep walking instead of returning at the set time.",
+      "interventionApplied": "I redirected her gently through conversation as we walked together."
+    },
+    {
+      "id": "e_0002",
+      "date": "08/12/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She paced and spoke rapidly, jumping between topics and requiring gentle redirection.",
+      "interventionApplied": "I offered a soft sensory item and suggested a calmer activity."
+    },
+    {
+      "id": "e_0003",
+      "date": "08/12/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She refused evening hygiene care and paced near her dresser, talking about wanting to go back outside.",
+      "interventionApplied": "I reminded her it was time to get dressed and checked in with her shortly after."
+    },
+    {
+      "id": "e_0004",
+      "date": "08/12/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She spoke continuously about various topics and paced, showing difficulty settling down.",
+      "interventionApplied": "I stayed nearby and invited her to sit with me in a quiet seating area."
+    },
+    {
+      "id": "e_0005",
+      "date": "08/12/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She paced and talked about going back outside, repeatedly approaching the door overnight.",
+      "interventionApplied": "I briefly opened the door with her, checked in on the bathroom, and reminded her of the overnight schedule."
+    },
+    {
+      "id": "e_0006",
+      "date": "08/12/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She tested the door lock and asked to go back outdoors, unsettled after her earlier walk.",
+      "interventionApplied": "I reminded her calmly that the door stays secured overnight and redirected her attention."
+    },
+    {
+      "id": "e_0007",
+      "date": "08/13/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She walked with quick, restless steps and kept asking to go further, even after covering the planned distance.",
+      "interventionApplied": "I redirected her gently through conversation and walked with her back to the building afterward."
+    },
+    {
+      "id": "e_0008",
+      "date": "08/13/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She talked over staff repeatedly and paced the room, appearing keyed up.",
+      "interventionApplied": "I invited her to a quiet corner with fewer distractions."
+    },
+    {
+      "id": "e_0009",
+      "date": "08/13/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She was resistant to bathing and paced the room while talking continuously.",
+      "interventionApplied": "I reminded her of house guidelines about shared belongings and checked in with her shortly after."
+    },
+    {
+      "id": "e_0010",
+      "date": "08/13/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She stood at the door pacing and asking to be let outside.",
+      "interventionApplied": "I briefly opened the door with her and reminded her of the overnight schedule."
+    },
+    {
+      "id": "e_0011",
+      "date": "08/13/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She talked rapidly and continuously during her walk and resisted turning back at the scheduled time.",
+      "interventionApplied": "I redirected her gently through calm conversation."
+    },
+    {
+      "id": "e_0012",
+      "date": "08/13/2026",
+      "timeInterval": "4 AM \u20136 AM",
+      "behaviorObserved": "Restless sleep with frequent repositioning.",
+      "interventionApplied": "I checked in quietly from a short distance."
+    },
+    {
+      "id": "e_0013",
+      "date": "08/14/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She was talkative and energetic on her walk, pulling ahead and asking to stay outdoors longer.",
+      "interventionApplied": "I redirected her gently through calm conversation as we walked."
+    },
+    {
+      "id": "e_0014",
+      "date": "08/14/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She paced the hallway while talking loudly to herself and others nearby.",
+      "interventionApplied": "I redirected her attention through conversation and offered a soft sensory item."
+    },
+    {
+      "id": "e_0015",
+      "date": "08/14/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She was restless and talkative, pacing near the window and asking repeatedly to go back outside.",
+      "interventionApplied": "I invited her to a calmer area to talk."
+    },
+    {
+      "id": "e_0016",
+      "date": "08/14/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She asked persistently to step outside at night, pacing and talking about wanting fresh air.",
+      "interventionApplied": "I briefly opened the door with her, then calmly redirected her attention back inside."
+    },
+    {
+      "id": "e_0017",
+      "date": "08/14/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She was fixated on going outdoors again overnight and paced the hallway near the door.",
+      "interventionApplied": "I reminded her calmly that the door stays secured overnight and redirected her attention."
+    },
+    {
+      "id": "e_0018",
+      "date": "08/14/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She paced intermittently and talked quietly to herself but gradually settled with quiet monitoring.",
+      "interventionApplied": "I checked in quietly from a short distance."
+    },
+    {
+      "id": "e_0019",
+      "date": "08/15/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She paced in circles near the walking path, talking about wanting to stay out longer.",
+      "interventionApplied": "I walked alongside her and engaged her in conversation along the path."
+    },
+    {
+      "id": "e_0020",
+      "date": "08/15/2026",
+      "timeInterval": "4 PM \u2013 6 PM (Community Outing)",
+      "behaviorObserved": "She spoke at length with vendors/strangers and needed reminders to stay with the group.",
+      "interventionApplied": "I stayed close and redirected her attention through calm conversation."
+    },
+    {
+      "id": "e_0021",
+      "date": "08/15/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She resisted the evening hygiene routine, talking continuously about wanting a snack instead.",
+      "interventionApplied": "I reminded her it was time to get dressed and checked in with her shortly after."
+    },
+    {
+      "id": "e_0022",
+      "date": "08/15/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She pushed back on showering, saying she wasn't ready, and paced while talking about her day.",
+      "interventionApplied": "I reminded her of house guidelines about shared belongings and redirected the conversation."
+    },
+    {
+      "id": "e_0023",
+      "date": "08/15/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She tried the door handle several times and talked about wanting fresh air outside.",
+      "interventionApplied": "I briefly opened the door with her, then reminded her it was not yet time to go out."
+    },
+    {
+      "id": "e_0024",
+      "date": "08/15/2026",
+      "timeInterval": "4 AM \u20136 AM",
+      "behaviorObserved": "She continued pacing on and off, mumbling about going outside, before finally settling.",
+      "interventionApplied": "I checked in quietly from a short distance."
+    },
+    {
+      "id": "e_0025",
+      "date": "08/16/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She paced quickly ahead during her walk and asked to keep going well past the planned route.",
+      "interventionApplied": "I redirected her gently through calm conversation as we walked."
+    },
+    {
+      "id": "e_0026",
+      "date": "08/16/2026",
+      "timeInterval": "4 PM \u2013 6 PM (Community Outing)",
+      "behaviorObserved": "She paced around the venue and asked repeatedly to visit additional places during the outing.",
+      "interventionApplied": "I stayed near her, gently redirected her attention from the exits, and kept the group together."
+    },
+    {
+      "id": "e_0027",
+      "date": "08/16/2026",
+      "timeInterval": "8 PM \u2013 10 PM",
+      "behaviorObserved": "She talked rapidly and paced back and forth, appearing unable to settle in one place.",
+      "interventionApplied": "I invited her to a quieter area to talk."
+    },
+    {
+      "id": "e_0028",
+      "date": "08/16/2026",
+      "timeInterval": "10 PM \u2013 2 AM",
+      "behaviorObserved": "She paced by the door and repeatedly asked to go back outside, even though her scheduled walk had already occurred.",
+      "interventionApplied": "I briefly opened the door with her, then calmly redirected her attention back inside."
+    },
+    {
+      "id": "e_0029",
+      "date": "08/16/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She was in high spirits and chatty throughout the walk, but became insistent about not wanting to stop.",
+      "interventionApplied": "I redirected her gently through calm conversation."
+    },
+    {
+      "id": "e_0030",
+      "date": "08/16/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She paced near the exit overnight, asking again to go back outside despite the late hour.",
+      "interventionApplied": "I reminded her calmly that it was not time to go outside and redirected her attention with calm verbal cues."
+    },
+    {
+      "id": "e_0031",
+      "date": "08/17/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She talked about wanting to keep walking and became mildly frustrated when redirected back inside.",
+      "interventionApplied": "I redirected her attention through calm conversation as we continued walking."
+    },
+    {
+      "id": "e_0032",
+      "date": "08/17/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She was fidgety and talkative, moving from room to room and asking to go back outdoors.",
+      "interventionApplied": "I stayed nearby and suggested moving to a calmer, quieter space."
+    },
+    {
+      "id": "e_0033",
+      "date": "08/17/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She was argumentative about showering and paced the hallway talking to herself.",
+      "interventionApplied": "I reminded her of house guidelines about shared belongings and redirected the conversation."
+    },
+    {
+      "id": "e_0034",
+      "date": "08/17/2026",
+      "timeInterval": "10 PM \u2013 2 AM",
+      "behaviorObserved": "She repeatedly requested to go outside overnight, unsettled despite completing her earlier walk.",
+      "interventionApplied": "I briefly opened the door with her, then reminded her it was not yet time to go out."
+    },
+    {
+      "id": "e_0035",
+      "date": "08/17/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She attempted to open the door and insisted on going outdoors again after her walk.",
+      "interventionApplied": "I reminded her calmly that the door stays secured overnight and redirected her attention."
+    },
+    {
+      "id": "e_0036",
+      "date": "08/17/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She was very talkative and paced the common area, needing redirection to a calmer space.",
+      "interventionApplied": "I stayed nearby and redirected her attention calmly through conversation."
+    },
+    {
+      "id": "e_0037",
+      "date": "08/18/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She asked repeatedly to extend her time outside and paced impatiently when told it was time to head in.",
+      "interventionApplied": "I redirected her gently through calm conversation."
+    },
+    {
+      "id": "e_0038",
+      "date": "08/18/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She was animated and talkative, pacing near the door and asking about going back outside.",
+      "interventionApplied": "I invited her to a quiet corner to talk."
+    },
+    {
+      "id": "e_0039",
+      "date": "08/18/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She declined to shower and continued talking rapidly about unrelated topics instead of preparing for bed.",
+      "interventionApplied": "I reminded her of house guidelines about shared belongings and checked in with her shortly after."
+    },
+    {
+      "id": "e_0040",
+      "date": "08/18/2026",
+      "timeInterval": "10 PM \u2013 2 AM",
+      "behaviorObserved": "She was fixated on going outdoors again overnight and paced the hallway near the door.",
+      "interventionApplied": "I briefly opened the door with her, then reminded her it was not yet time to go out."
+    },
+    {
+      "id": "e_0041",
+      "date": "08/18/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She repeatedly requested to go outside overnight, unsettled despite completing her earlier walk.",
+      "interventionApplied": "I reminded her calmly that the door stays secured overnight and redirected her attention."
+    },
+    {
+      "id": "e_0042",
+      "date": "08/18/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She paced by the door and repeatedly asked to go back outside, even though her scheduled walk had already occurred.",
+      "interventionApplied": "I reminded her calmly that it was not time to go outside and redirected her attention."
+    },
+    {
+      "id": "e_0043",
+      "date": "08/19/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She lingered outside after the walk ended, pacing near the entrance and asking for more time outdoors.",
+      "interventionApplied": "I walked alongside her and engaged her in conversation along the path."
+    },
+    {
+      "id": "e_0044",
+      "date": "08/19/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She delayed her shower repeatedly, talking rapidly and pacing between her room and the hallway.",
+      "interventionApplied": "I reminded her it was time to get dressed and checked in with her shortly after."
+    },
+    {
+      "id": "e_0045",
+      "date": "08/19/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She was talkative and energetic on her walk, pulling ahead and asking to stay outdoors longer.",
+      "interventionApplied": "I redirected her gently through calm conversation."
+    },
+    {
+      "id": "e_0046",
+      "date": "08/19/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She tried the door handle several times and talked about wanting fresh air outside.",
+      "interventionApplied": "I briefly opened the door with her, then calmly redirected her attention back inside."
+    },
+    {
+      "id": "e_0047",
+      "date": "08/19/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She chattered continuously about unrelated topics while pacing near the common area.",
+      "interventionApplied": "I invited her to a quieter area to talk."
+    },
+    {
+      "id": "e_0048",
+      "date": "08/19/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She tested the door lock and asked to go back outdoors, unsettled after her earlier walk.",
+      "interventionApplied": "I reminded her calmly that it was not time to go outside and redirected her attention."
+    },
+    {
+      "id": "e_0049",
+      "date": "08/20/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She talked rapidly and continuously during her walk and resisted turning back at the scheduled time.",
+      "interventionApplied": "I redirected her attention through calm conversation as we continued walking."
+    },
+    {
+      "id": "e_0050",
+      "date": "08/20/2026",
+      "timeInterval": "4 PM \u2013 6 PM (Community Outing)",
+      "behaviorObserved": "She talked rapidly to people nearby and tried to wander off during the community outing.",
+      "interventionApplied": "I gently invited her back to the group when she wandered toward the stalls."
+    },
+    {
+      "id": "e_0051",
+      "date": "08/20/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She asked for food multiple times late at night and did not settle until reassured she could eat in the morning.",
+      "interventionApplied": "I let her know a reasonable snack option was available and checked in with her afterward."
+    },
+    {
+      "id": "e_0052",
+      "date": "08/20/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She attempted to open the door and insisted on going outdoors again after her walk.",
+      "interventionApplied": "I briefly opened the door with her and reminded her of the overnight schedule."
+    },
+    {
+      "id": "e_0053",
+      "date": "08/20/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She stood at the door pacing and asking to be let outside.",
+      "interventionApplied": "I reminded her calmly that the door stays secured overnight and redirected her attention."
+    },
+    {
+      "id": "e_0054",
+      "date": "08/20/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She paced and spoke rapidly, jumping between topics and requiring gentle redirection.",
+      "interventionApplied": "I stayed nearby and redirected her attention using calm verbal cues."
+    },
+    {
+      "id": "e_0055",
+      "date": "08/21/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She talked about wanting to keep walking and became mildly frustrated when redirected back inside.",
+      "interventionApplied": "I redirected her gently through calm conversation."
+    },
+    {
+      "id": "e_0056",
+      "date": "08/21/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She was very talkative and paced the common area, needing redirection to a calmer space.",
+      "interventionApplied": "I invited her to a quiet corner to talk."
+    },
+    {
+      "id": "e_0057",
+      "date": "08/21/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She avoided her shower by talking at length about other topics and pacing near the bathroom door.",
+      "interventionApplied": "I reminded her of house guidelines about shared belongings and redirected the conversation."
+    },
+    {
+      "id": "e_0058",
+      "date": "08/21/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She paced near the exit overnight, asking again to go back outside despite the late hour.",
+      "interventionApplied": "I briefly opened the door with her, then reminded her it was not yet time to go out."
+    },
+    {
+      "id": "e_0059",
+      "date": "08/21/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She asked persistently to step outside at night, pacing and talking about wanting fresh air.",
+      "interventionApplied": "I reminded her calmly that the door stays secured overnight and redirected her attention."
+    },
+    {
+      "id": "e_0060",
+      "date": "08/21/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She paced and talked about going back outside, repeatedly approaching the door overnight.",
+      "interventionApplied": "I reminded her calmly that it was not time to go outside and redirected her attention."
+    },
+    {
+      "id": "e_0061",
+      "date": "08/22/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She paced quickly ahead during her walk and asked to keep going well past the planned route.",
+      "interventionApplied": "I walked alongside her and engaged her in conversation along the path."
+    },
+    {
+      "id": "e_0062",
+      "date": "08/22/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She was fidgety and talkative, moving from room to room and asking to go back outdoors.",
+      "interventionApplied": "I stayed nearby and suggested moving to a calmer, quieter space."
+    },
+    {
+      "id": "e_0063",
+      "date": "08/22/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She refused to shower when prompted and became talkative, resisting redirection to her evening routine.",
+      "interventionApplied": "I reminded her of house guidelines about shared belongings and checked in with her shortly after."
+    },
+    {
+      "id": "e_0064",
+      "date": "08/22/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She tested the door lock and asked to go back outdoors, unsettled after her earlier walk.",
+      "interventionApplied": "I briefly opened the door with her, then calmly redirected her attention back inside."
+    },
+    {
+      "id": "e_0065",
+      "date": "08/22/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She stood at the door pacing and asking to be let outside.",
+      "interventionApplied": "I reminded her calmly that the door stays secured overnight and redirected her attention."
+    },
+    {
+      "id": "e_0066",
+      "date": "08/22/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She was restless and talkative, pacing near the window and asking repeatedly to go back outside.",
+      "interventionApplied": "I stayed nearby and redirected her attention calmly through conversation."
+    },
+    {
+      "id": "e_0067",
+      "date": "08/23/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She asked repeatedly to extend her time outside and paced impatiently when told it was time to head in.",
+      "interventionApplied": "I redirected her gently through calm conversation."
+    },
+    {
+      "id": "e_0068",
+      "date": "08/23/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She talked rapidly and paced back and forth, appearing unable to settle in one place.",
+      "interventionApplied": "I invited her to a quieter area to talk."
+    },
+    {
+      "id": "e_0069",
+      "date": "08/23/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She walked with quick, restless steps and kept asking to go further, even after covering the planned distance.",
+      "interventionApplied": "I redirected her gently through calm conversation."
+    },
+    {
+      "id": "e_0070",
+      "date": "08/23/2026",
+      "timeInterval": "10 PM \u2013 2 AM",
+      "behaviorObserved": "She attempted to open the door and insisted on going outdoors again after her walk.",
+      "interventionApplied": "I briefly opened the door with her, then reminded her it was not yet time to go out."
+    },
+    {
+      "id": "e_0071",
+      "date": "08/23/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She was fixated on going outdoors again overnight and paced the hallway near the door.",
+      "interventionApplied": "I reminded her calmly that the door stays secured overnight and redirected her attention."
+    },
+    {
+      "id": "e_0072",
+      "date": "08/23/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She paced by the door and repeatedly asked to go back outside, even though her scheduled walk had already occurred.",
+      "interventionApplied": "I reminded her calmly that it was not time to go outside and redirected her attention."
+    },
+    {
+      "id": "e_0073",
+      "date": "08/24/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She was in high spirits and chatty throughout the walk, but became insistent about not wanting to stop.",
+      "interventionApplied": "I redirected her attention through calm conversation as we continued walking."
+    },
+    {
+      "id": "e_0074",
+      "date": "08/24/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She chattered continuously about unrelated topics while pacing near the common area.",
+      "interventionApplied": "I stayed nearby and suggested moving to a calmer, quieter space."
+    },
+    {
+      "id": "e_0075",
+      "date": "08/24/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She was insistent about wanting more food overnight and talked at length about feeling hungry.",
+      "interventionApplied": "I let her know a reasonable snack option was available and checked in with her afterward."
+    },
+    {
+      "id": "e_0076",
+      "date": "08/24/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She repeatedly requested to go outside overnight, unsettled despite completing her earlier walk.",
+      "interventionApplied": "I briefly opened the door with her and reminded her of the overnight schedule."
+    },
+    {
+      "id": "e_0077",
+      "date": "08/24/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She tried the door handle several times and talked about wanting fresh air outside.",
+      "interventionApplied": "I reminded her calmly that the door stays secured overnight and redirected her attention."
+    },
+    {
+      "id": "e_0078",
+      "date": "08/24/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She paced the hallway while talking loudly to herself and others nearby.",
+      "interventionApplied": "I stayed nearby and redirected her attention using calm verbal cues."
+    },
+    {
+      "id": "e_0079",
+      "date": "08/25/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She lingered outside after the walk ended, pacing near the entrance and asking for more time outdoors.",
+      "interventionApplied": "I redirected her gently through calm conversation."
+    },
+    {
+      "id": "e_0080",
+      "date": "08/25/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She was animated and talkative, pacing near the door and asking about going back outside.",
+      "interventionApplied": "I invited her to a quiet corner to talk."
+    },
+    {
+      "id": "e_0081",
+      "date": "08/25/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She would not settle for her shower and needed repeated prompts, talking throughout.",
+      "interventionApplied": "I reminded her of house guidelines about shared belongings and redirected the conversation."
+    },
+    {
+      "id": "e_0082",
+      "date": "08/25/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She asked persistently to step outside at night, pacing and talking about wanting fresh air.",
+      "interventionApplied": "I briefly opened the door with her, then reminded her it was not yet time to go out."
+    },
+    {
+      "id": "e_0083",
+      "date": "08/25/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She paced and talked about going back outside, repeatedly approaching the door overnight.",
+      "interventionApplied": "I reminded her calmly that the door stays secured overnight and redirected her attention."
+    },
+    {
+      "id": "e_0084",
+      "date": "08/25/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She paced near the exit overnight, asking again to go back outside despite the late hour.",
+      "interventionApplied": "I reminded her calmly that it was not time to go outside and redirected her attention."
+    },
+    {
+      "id": "e_0085",
+      "date": "08/26/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She paced in circles near the walking path, talking about wanting to stay out longer.",
+      "interventionApplied": "I redirected her gently through calm conversation."
+    },
+    {
+      "id": "e_0086",
+      "date": "08/26/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She talked over staff repeatedly and paced the room, appearing keyed up.",
+      "interventionApplied": "I invited her to a quieter area to talk."
+    },
+    {
+      "id": "e_0087",
+      "date": "08/26/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She delayed her shower repeatedly, talking rapidly and pacing between her room and the hallway.",
+      "interventionApplied": "I reminded her of house guidelines about shared belongings and checked in with her shortly after."
+    },
+    {
+      "id": "e_0088",
+      "date": "08/26/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She was fixated on going outdoors again overnight and paced the hallway near the door.",
+      "interventionApplied": "I briefly opened the door with her, then calmly redirected her attention back inside."
+    },
+    {
+      "id": "e_0089",
+      "date": "08/26/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She repeatedly requested to go outside overnight, unsettled despite completing her earlier walk.",
+      "interventionApplied": "I reminded her calmly that the door stays secured overnight and redirected her attention."
+    },
+    {
+      "id": "e_0090",
+      "date": "08/26/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She spoke continuously about various topics and paced, showing difficulty settling down.",
+      "interventionApplied": "I stayed nearby and redirected her attention calmly through conversation."
+    },
+    {
+      "id": "e_0091",
+      "date": "08/27/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She asked several times mid-walk if she could keep walking instead of returning at the set time.",
+      "interventionApplied": "I redirected her attention through calm conversation as we continued walking."
+    },
+    {
+      "id": "e_0092",
+      "date": "08/27/2026",
+      "timeInterval": "4 PM \u2013 6 PM (Community Outing)",
+      "behaviorObserved": "She became overly talkative with strangers and drifted toward exits/stalls during the outing.",
+      "interventionApplied": "I stayed near her and redirected her attention calmly."
+    },
+    {
+      "id": "e_0093",
+      "date": "08/27/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She paced in circles near the walking path, talking about wanting to stay out longer.",
+      "interventionApplied": "I redirected her gently through calm conversation."
+    },
+    {
+      "id": "e_0094",
+      "date": "08/27/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She paced and talked about going back outside, repeatedly approaching the door overnight.",
+      "interventionApplied": "I briefly opened the door with her, then reminded her it was not yet time to go out."
+    },
+    {
+      "id": "e_0095",
+      "date": "08/27/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She tested the door lock and asked to go back outdoors, unsettled after her earlier walk.",
+      "interventionApplied": "I reminded her calmly that the door stays secured overnight and redirected her attention."
+    },
+    {
+      "id": "e_0096",
+      "date": "08/27/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She tried the door handle several times and talked about wanting fresh air outside.",
+      "interventionApplied": "I reminded her calmly that it was not time to go outside and redirected her attention."
+    },
+    {
+      "id": "e_0097",
+      "date": "08/28/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She paced quickly ahead during her walk and asked to keep going well past the planned route.",
+      "interventionApplied": "I walked alongside her and engaged her in conversation along the path."
+    },
+    {
+      "id": "e_0098",
+      "date": "08/28/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She talked rapidly and paced back and forth, appearing unable to settle in one place.",
+      "interventionApplied": "I stayed nearby and suggested moving to a calmer, quieter space."
+    },
+    {
+      "id": "e_0099",
+      "date": "08/28/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She wanted a large second helping of food late at night and talked persistently about being hungry.",
+      "interventionApplied": "I let her know a reasonable snack option was available and checked in with her afterward."
+    },
+    {
+      "id": "e_0100",
+      "date": "08/28/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She attempted to open the door and insisted on going outdoors again after her walk.",
+      "interventionApplied": "I briefly opened the door with her and reminded her of the overnight schedule."
+    },
+    {
+      "id": "e_0101",
+      "date": "08/28/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She stood at the door pacing and asking to be let outside.",
+      "interventionApplied": "I reminded her calmly that the door stays secured overnight and redirected her attention."
+    },
+    {
+      "id": "e_0102",
+      "date": "08/28/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She paced and spoke rapidly, jumping between topics and requiring gentle redirection.",
+      "interventionApplied": "I stayed nearby and redirected her attention using calm verbal cues."
+    },
+    {
+      "id": "e_0103",
+      "date": "08/29/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She talked about wanting to keep walking and became mildly frustrated when redirected back inside.",
+      "interventionApplied": "I redirected her gently through calm conversation."
+    },
+    {
+      "id": "e_0104",
+      "date": "08/29/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She talked over staff repeatedly and paced the room, appearing keyed up.",
+      "interventionApplied": "I invited her to a quieter area to talk."
+    },
+    {
+      "id": "e_0105",
+      "date": "08/29/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She asked several times mid-walk if she could keep walking instead of returning at the set time.",
+      "interventionApplied": "I redirected her gently through calm conversation."
+    },
+    {
+      "id": "e_0106",
+      "date": "08/29/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She asked persistently to step outside at night, pacing and talking about wanting fresh air.",
+      "interventionApplied": "I briefly opened the door with her, then reminded her it was not yet time to go out."
+    },
+    {
+      "id": "e_0107",
+      "date": "08/29/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She paced by the door and repeatedly asked to go back outside, even though her scheduled walk had already occurred.",
+      "interventionApplied": "I reminded her calmly that the door stays secured overnight and redirected her attention."
+    },
+    {
+      "id": "e_0108",
+      "date": "08/29/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She paced near the exit overnight, asking again to go back outside despite the late hour.",
+      "interventionApplied": "I reminded her calmly that it was not time to go outside and redirected her attention."
+    },
+    {
+      "id": "e_0109",
+      "date": "08/30/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She was in high spirits and chatty throughout the walk, but became insistent about not wanting to stop.",
+      "interventionApplied": "I redirected her gently through conversation as we continued along the path."
+    },
+    {
+      "id": "e_0110",
+      "date": "08/30/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She paced the hallway while talking loudly to herself and others nearby.",
+      "interventionApplied": "I invited her to a quiet corner with fewer distractions."
+    },
+    {
+      "id": "e_0111",
+      "date": "08/30/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She resisted the evening hygiene routine, talking continuously about wanting a snack instead.",
+      "interventionApplied": "I reminded her of house guidelines about shared belongings and checked in with her shortly after."
+    },
+    {
+      "id": "e_0112",
+      "date": "08/30/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She repeatedly requested to go outside overnight, unsettled despite completing her earlier walk.",
+      "interventionApplied": "I briefly opened the door with her, then calmly redirected her attention back inside."
+    },
+    {
+      "id": "e_0113",
+      "date": "08/30/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She talked rapidly and continuously during her walk and resisted turning back at the scheduled time.",
+      "interventionApplied": "I redirected her gently through calm conversation."
+    },
+    {
+      "id": "e_0114",
+      "date": "08/30/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She stood at the door pacing and asking to be let outside.",
+      "interventionApplied": "I reminded her calmly that it was not time to go outside and redirected her attention."
+    },
+    {
+      "id": "e_0115",
+      "date": "08/31/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She lingered outside after the walk ended, pacing near the entrance and asking for more time outdoors.",
+      "interventionApplied": "I redirected her attention gently through conversation for the rest of the walk."
+    },
+    {
+      "id": "e_0116",
+      "date": "08/31/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She was very talkative and paced the common area, needing redirection to a calmer space.",
+      "interventionApplied": "I stayed nearby and suggested moving somewhere quieter."
+    },
+    {
+      "id": "e_0117",
+      "date": "08/31/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She asked for more food at a late hour and paced near the kitchen area while waiting for a response.",
+      "interventionApplied": "I let her know a reasonable snack option was available and checked in with her afterward."
+    },
+    {
+      "id": "e_0118",
+      "date": "08/31/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She tried the door handle several times and talked about wanting fresh air outside.",
+      "interventionApplied": "I briefly opened the door with her and reminded her of the overnight schedule."
+    },
+    {
+      "id": "e_0119",
+      "date": "08/31/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She tested the door lock and asked to go back outdoors, unsettled after her earlier walk.",
+      "interventionApplied": "I reminded her calmly that the door stays secured overnight and redirected her attention."
+    },
+    {
+      "id": "e_0120",
+      "date": "08/31/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She was animated and talkative, pacing near the door and asking about going back outside.",
+      "interventionApplied": "I stayed close by, reminded her calmly of the overnight schedule, and redirected her attention with calm verbal cues."
+    },
+    {
+      "id": "e_0121",
+      "date": "09/01/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She wanted to keep going past the usual route and paced near the yard afterward.",
+      "interventionApplied": "I agreed to a brief extra loop around the yard, then encouraged her back inside at the agreed time."
+    },
+    {
+      "id": "e_0122",
+      "date": "09/01/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She paced near the window repeatedly, talking about wanting to go back outside.",
+      "interventionApplied": "I invited her to join a calming activity and gently steered the conversation to help her settle."
+    },
+    {
+      "id": "e_0123",
+      "date": "09/01/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She was reluctant to bathe and paced near the bathroom, talking about wanting to eat instead.",
+      "interventionApplied": "I gave her a few minutes to finish talking, then gently reminded her it was time for her shower."
+    },
+    {
+      "id": "e_0124",
+      "date": "09/01/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She was fixated on going back outdoors, pacing near the exit overnight.",
+      "interventionApplied": "I calmly explained it was nighttime and reminded her the door stays secured until morning."
+    },
+    {
+      "id": "e_0125",
+      "date": "09/01/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She stood near the door talking about going outside before being redirected.",
+      "interventionApplied": "I reassured her the outside would be there in the morning and encouraged her to return to bed."
+    },
+    {
+      "id": "e_0126",
+      "date": "09/01/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She paced briefly and talked quietly to herself before gradually settling.",
+      "interventionApplied": "I checked in on her periodically to see that she was resting comfortably."
+    },
+    {
+      "id": "e_0127",
+      "date": "09/02/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She lingered by the door after her walk, still asking to go back out.",
+      "interventionApplied": "I reminded her of the planned distance and kindly encouraged her to head back when she wanted to continue further."
+    },
+    {
+      "id": "e_0128",
+      "date": "09/02/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She talked at length about her day and paced near the common area entrance.",
+      "interventionApplied": "I stayed nearby, kept my tone calm, and suggested moving away from busier areas."
+    },
+    {
+      "id": "e_0129",
+      "date": "09/02/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She pushed back on the shower schedule, requesting food and talking continuously.",
+      "interventionApplied": "I checked in with her during her hygiene routine and offered calm reminders as needed."
+    },
+    {
+      "id": "e_0130",
+      "date": "09/02/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She paced the hallway near the exit, insisting she wanted to go back outside.",
+      "interventionApplied": "I reminded her the door stays secured overnight, sat with her briefly, and suggested a quiet activity."
+    },
+    {
+      "id": "e_0131",
+      "date": "09/02/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She asked repeatedly to step outside overnight, unsettled despite her earlier walk.",
+      "interventionApplied": "I reminded her calmly that it was not time to go outside and encouraged her back to her room."
+    },
+    {
+      "id": "e_0132",
+      "date": "09/02/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She remained a little restless but eventually quieted down and fell asleep.",
+      "interventionApplied": "I stayed nearby, spoke softly, and talked with her calmly until she resettled."
+    },
+    {
+      "id": "e_0133",
+      "date": "09/03/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She talked continuously about wanting to stay outside longer during her walk.",
+      "interventionApplied": "I acknowledged her wish to keep walking, then kindly reminded her it was time to head back."
+    },
+    {
+      "id": "e_0134",
+      "date": "09/03/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She was animated in conversation and paced the hallway between rooms.",
+      "interventionApplied": "I sat with her, listened actively, and gently steered the conversation to help her slow down."
+    },
+    {
+      "id": "e_0135",
+      "date": "09/03/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She asked for extra food before agreeing to shower, talking throughout the exchange.",
+      "interventionApplied": "I encouraged her shower by offering simple choices (timing, water temperature) to ease resistance."
+    },
+    {
+      "id": "e_0136",
+      "date": "09/03/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She tried the door handle and talked about wanting fresh air in the middle of the night.",
+      "interventionApplied": "I offered to sit and talk with her for a few minutes to ease her desire to go back outside."
+    },
+    {
+      "id": "e_0137",
+      "date": "09/03/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She paced toward the door overnight, asking again to go outside despite the hour.",
+      "interventionApplied": "I used a calm tone and simple verbal cues to redirect her attention away from the door."
+    },
+    {
+      "id": "e_0138",
+      "date": "09/03/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She was fidgety for a short period but resettled with minimal prompting.",
+      "interventionApplied": "I checked in on her quietly at intervals until she settled on her own."
+    },
+    {
+      "id": "e_0139",
+      "date": "09/04/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She was upbeat and talkative but resisted coming back indoors at the scheduled time.",
+      "interventionApplied": "I walked alongside her, matching her pace, and encouraged a steady rhythm through conversation."
+    },
+    {
+      "id": "e_0140",
+      "date": "09/04/2026",
+      "timeInterval": "4 PM \u2013 6 PM (Community Outing)",
+      "behaviorObserved": "She paced around the venue, asking to visit more stops than were planned for the outing.",
+      "interventionApplied": "I used calm verbal redirection and stayed beside her throughout the outing."
+    },
+    {
+      "id": "e_0141",
+      "date": "09/04/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She refused her shower initially, talking rapidly about other things to avoid the topic.",
+      "interventionApplied": "I let her know a small snack would be available afterward, then encouraged her to complete her hygiene routine."
+    },
+    {
+      "id": "e_0142",
+      "date": "09/04/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She was fixated on going back outdoors, pacing near the exit overnight.",
+      "interventionApplied": "I offered to sit and talk with her for a few minutes to ease her desire to go back outside."
+    },
+    {
+      "id": "e_0143",
+      "date": "09/04/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She paced toward the door overnight, asking again to go outside despite the hour.",
+      "interventionApplied": "I reminded her calmly that it was not time to go outside and encouraged her back to her room."
+    },
+    {
+      "id": "e_0144",
+      "date": "09/04/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She mumbled intermittently about going outside before finally settling for the night.",
+      "interventionApplied": "I offered brief reassurance and gave her space to settle on her own, checking in regularly."
+    },
+    {
+      "id": "e_0145",
+      "date": "09/05/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She asked twice mid-route whether she could keep walking instead of returning.",
+      "interventionApplied": "I engaged her in conversation about her day to help ease the transition back indoors."
+    },
+    {
+      "id": "e_0146",
+      "date": "09/05/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She was restless, talking continuously and pacing between the living room and her bedroom.",
+      "interventionApplied": "I offered her music, one of her preferred coping strategies, and suggested a seated activity."
+    },
+    {
+      "id": "e_0147",
+      "date": "09/05/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She asked for a late snack instead of showering and resisted the evening routine.",
+      "interventionApplied": "I offered to let her choose her pajamas/soap to increase her buy-in for showering."
+    },
+    {
+      "id": "e_0148",
+      "date": "09/05/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She tried the door handle and talked about wanting fresh air in the middle of the night.",
+      "interventionApplied": "I used a calm tone and simple verbal cues to redirect her attention away from the door."
+    },
+    {
+      "id": "e_0149",
+      "date": "09/05/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She stood near the door talking about going outside before being redirected.",
+      "interventionApplied": "I reassured her the outside would be there in the morning and encouraged her to return to bed."
+    },
+    {
+      "id": "e_0150",
+      "date": "09/05/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She remained a little restless but eventually quieted down and fell asleep.",
+      "interventionApplied": "I checked in on her periodically to see that she was resting comfortably."
+    },
+    {
+      "id": "e_0151",
+      "date": "09/06/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She was chatty throughout the walk and pushed back when told it was time to turn around.",
+      "interventionApplied": "I stayed nearby, used a calm tone, and encouraged her steps back toward the building."
+    },
+    {
+      "id": "e_0152",
+      "date": "09/06/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She spoke rapidly with staff/peers and had difficulty sitting still for more than a few minutes.",
+      "interventionApplied": "I suggested moving to a quieter space with less surrounding noise."
+    },
+    {
+      "id": "e_0153",
+      "date": "09/06/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She delayed showering by chatting at length and pacing between her room and the hallway.",
+      "interventionApplied": "I acknowledged her wish to keep talking, then gently talked her through the next steps of her routine."
+    },
+    {
+      "id": "e_0154",
+      "date": "09/06/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She paced the hallway near the exit, insisting she wanted to go back outside.",
+      "interventionApplied": "I calmly explained it was nighttime and reminded her the door stays secured until morning."
+    },
+    {
+      "id": "e_0155",
+      "date": "09/06/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She asked repeatedly to step outside overnight, unsettled despite her earlier walk.",
+      "interventionApplied": "I reminded her the door stays secured overnight, sat with her briefly, and suggested a quiet activity."
+    },
+    {
+      "id": "e_0156",
+      "date": "09/06/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She paced briefly and talked quietly to herself before gradually settling.",
+      "interventionApplied": "I stayed nearby, spoke softly, and talked with her calmly until she resettled."
+    },
+    {
+      "id": "e_0157",
+      "date": "09/07/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She kept a brisk pace and asked more than once to add extra time to the walk.",
+      "interventionApplied": "I redirected her calmly through conversation and walked alongside her for the remainder of the route."
+    },
+    {
+      "id": "e_0158",
+      "date": "09/07/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She was highly talkative, moving between topics quickly while pacing the living area.",
+      "interventionApplied": "I offered a preferred sensory item and suggested a calmer activity."
+    },
+    {
+      "id": "e_0159",
+      "date": "09/07/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She pushed back on the shower schedule, requesting food and talking continuously.",
+      "interventionApplied": "I checked in with her during her hygiene routine and offered calm reminders as needed."
+    },
+    {
+      "id": "e_0160",
+      "date": "09/07/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She stood near the door talking about going outside before being redirected.",
+      "interventionApplied": "I reassured her the outside would be there in the morning and encouraged her to return to bed."
+    },
+    {
+      "id": "e_0161",
+      "date": "09/07/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She paced toward the door overnight, asking again to go outside despite the hour.",
+      "interventionApplied": "I calmly explained it was nighttime and reminded her the door stays secured until morning."
+    },
+    {
+      "id": "e_0162",
+      "date": "09/07/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She mumbled intermittently about going outside before finally settling for the night.",
+      "interventionApplied": "I offered brief reassurance and gave her space to settle on her own, checking in regularly."
+    },
+    {
+      "id": "e_0163",
+      "date": "09/08/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She circled the walking path an extra time before agreeing to head back in.",
+      "interventionApplied": "I walked beside her and redirected her attention toward heading back on schedule."
+    },
+    {
+      "id": "e_0164",
+      "date": "09/08/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She spoke rapidly with staff/peers and had difficulty sitting still for more than a few minutes.",
+      "interventionApplied": "I stayed nearby, kept my tone calm, and suggested moving away from busier areas."
+    },
+    {
+      "id": "e_0165",
+      "date": "09/08/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She asked for extra food before agreeing to shower, talking throughout the exchange.",
+      "interventionApplied": "I gave her a few minutes to finish talking, then gently reminded her it was time for her shower."
+    },
+    {
+      "id": "e_0166",
+      "date": "09/08/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She asked repeatedly to step outside overnight, unsettled despite her earlier walk.",
+      "interventionApplied": "I used a calm tone and simple verbal cues to redirect her attention away from the door."
+    },
+    {
+      "id": "e_0167",
+      "date": "09/08/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She paced the hallway near the exit, insisting she wanted to go back outside.",
+      "interventionApplied": "I reminded her calmly that it was not time to go outside and encouraged her back to her room."
+    },
+    {
+      "id": "e_0168",
+      "date": "09/08/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She was fidgety for a short period but resettled with minimal prompting.",
+      "interventionApplied": "I checked in on her quietly at intervals until she settled on her own."
+    },
+    {
+      "id": "e_0169",
+      "date": "09/09/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She was chatty throughout the walk and pushed back when told it was time to turn around.",
+      "interventionApplied": "I acknowledged her wish to keep walking, then kindly reminded her it was time to head back."
+    },
+    {
+      "id": "e_0170",
+      "date": "09/09/2026",
+      "timeInterval": "4 PM \u2013 6 PM (Community Outing)",
+      "behaviorObserved": "She was very talkative with people during the outing and wandered toward the exit at one point.",
+      "interventionApplied": "I stayed near her, gently invited her back to the group when she wandered, and kept the group together."
+    },
+    {
+      "id": "e_0171",
+      "date": "09/09/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She was reluctant to bathe and paced near the bathroom, talking about wanting to eat instead.",
+      "interventionApplied": "I acknowledged her wish to keep talking, then gently talked her through the next steps of her routine."
+    },
+    {
+      "id": "e_0172",
+      "date": "09/09/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She tried the door handle and talked about wanting fresh air in the middle of the night.",
+      "interventionApplied": "I reminded her the door stays secured overnight, sat with her briefly, and suggested a quiet activity."
+    },
+    {
+      "id": "e_0173",
+      "date": "09/09/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She was fixated on going back outdoors, pacing near the exit overnight.",
+      "interventionApplied": "I offered to sit and talk with her for a few minutes to ease her desire to go back outside."
+    },
+    {
+      "id": "e_0174",
+      "date": "09/09/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She paced briefly and talked quietly to herself before gradually settling.",
+      "interventionApplied": "I stayed nearby, spoke softly, and talked with her calmly until she resettled."
+    },
+    {
+      "id": "e_0175",
+      "date": "09/10/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She circled the walking path an extra time before agreeing to head back in.",
+      "interventionApplied": "I engaged her in conversation about her day to help ease the transition back indoors."
+    },
+    {
+      "id": "e_0176",
+      "date": "09/10/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She was highly talkative, moving between topics quickly while pacing the living area.",
+      "interventionApplied": "I invited her to join a calming activity and gently steered the conversation to help her settle."
+    },
+    {
+      "id": "e_0177",
+      "date": "09/10/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She refused her shower initially, talking rapidly about other things to avoid the topic.",
+      "interventionApplied": "I let her know a small snack would be available afterward, then encouraged her to complete her hygiene routine."
+    },
+    {
+      "id": "e_0178",
+      "date": "09/10/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She paced the hallway near the exit, insisting she wanted to go back outside.",
+      "interventionApplied": "I reassured her the outside would be there in the morning and encouraged her to return to bed."
+    },
+    {
+      "id": "e_0179",
+      "date": "09/10/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She stood near the door talking about going outside before being redirected.",
+      "interventionApplied": "I reminded her calmly that it was not time to go outside and encouraged her back to her room."
+    },
+    {
+      "id": "e_0180",
+      "date": "09/10/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She mumbled intermittently about going outside before finally settling for the night.",
+      "interventionApplied": "I offered brief reassurance and gave her space to settle on her own, checking in regularly."
+    },
+    {
+      "id": "e_0181",
+      "date": "09/11/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She kept a brisk pace and asked more than once to add extra time to the walk.",
+      "interventionApplied": "I redirected her calmly through conversation and walked alongside her for the remainder of the route."
+    },
+    {
+      "id": "e_0182",
+      "date": "09/11/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She was restless, talking continuously and pacing between the living room and her bedroom.",
+      "interventionApplied": "I suggested moving to a quieter space with less surrounding noise."
+    },
+    {
+      "id": "e_0183",
+      "date": "09/11/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She delayed showering by chatting at length and pacing between her room and the hallway.",
+      "interventionApplied": "I encouraged her shower by offering simple choices (timing, water temperature) to ease resistance."
+    },
+    {
+      "id": "e_0184",
+      "date": "09/11/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She paced toward the door overnight, asking again to go outside despite the hour.",
+      "interventionApplied": "I reminded her the door stays secured overnight, sat with her briefly, and suggested a quiet activity."
+    },
+    {
+      "id": "e_0185",
+      "date": "09/11/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She was fixated on going back outdoors, pacing near the exit overnight.",
+      "interventionApplied": "I offered to sit and talk with her for a few minutes to ease her desire to go back outside."
+    },
+    {
+      "id": "e_0186",
+      "date": "09/11/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She remained a little restless but eventually quieted down and fell asleep.",
+      "interventionApplied": "I checked in on her periodically to see that she was resting comfortably."
+    },
+    {
+      "id": "e_0187",
+      "date": "09/12/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She lingered by the door after her walk, still asking to go back out.",
+      "interventionApplied": "I reminded her of the planned distance and kindly encouraged her to head back when she wanted to continue further."
+    },
+    {
+      "id": "e_0188",
+      "date": "09/12/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She was animated in conversation and paced the hallway between rooms.",
+      "interventionApplied": "I offered her music, one of her preferred coping strategies, and suggested a seated activity."
+    },
+    {
+      "id": "e_0189",
+      "date": "09/12/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She asked for a late snack instead of showering and resisted the evening routine.",
+      "interventionApplied": "I offered to let her choose her pajamas/soap to increase her buy-in for showering."
+    },
+    {
+      "id": "e_0190",
+      "date": "09/12/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She tried the door handle and talked about wanting fresh air in the middle of the night.",
+      "interventionApplied": "I used a calm tone and simple verbal cues to redirect her attention away from the door."
+    },
+    {
+      "id": "e_0191",
+      "date": "09/12/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She asked repeatedly to step outside overnight, unsettled despite her earlier walk.",
+      "interventionApplied": "I calmly explained it was nighttime and reminded her the door stays secured until morning."
+    },
+    {
+      "id": "e_0192",
+      "date": "09/12/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She was fidgety for a short period but resettled with minimal prompting.",
+      "interventionApplied": "I checked in on her quietly at intervals until she settled on her own."
+    },
+    {
+      "id": "e_0193",
+      "date": "09/13/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She wanted to keep going past the usual route and paced near the yard afterward.",
+      "interventionApplied": "I agreed to a brief extra loop around the yard, then encouraged her back inside at the agreed time."
+    },
+    {
+      "id": "e_0194",
+      "date": "09/13/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She talked at length about her day and paced near the common area entrance.",
+      "interventionApplied": "I sat with her, listened actively, and gently steered the conversation to help her slow down."
+    },
+    {
+      "id": "e_0195",
+      "date": "09/13/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She pushed back on the shower schedule, requesting food and talking continuously.",
+      "interventionApplied": "I gave her a few minutes to finish talking, then gently reminded her it was time for her shower."
+    },
+    {
+      "id": "e_0196",
+      "date": "09/13/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She tried the door handle and talked about wanting fresh air in the middle of the night.",
+      "interventionApplied": "I reminded her the door stays secured overnight, sat with her briefly, and suggested a quiet activity."
+    },
+    {
+      "id": "e_0197",
+      "date": "09/13/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She paced the hallway near the exit, insisting she wanted to go back outside.",
+      "interventionApplied": "I used a calm tone and simple verbal cues to redirect her attention away from the door."
+    },
+    {
+      "id": "e_0198",
+      "date": "09/13/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She remained a little restless but eventually quieted down and fell asleep.",
+      "interventionApplied": "I checked in on her periodically to see that she was resting comfortably."
+    },
+    {
+      "id": "e_0199",
+      "date": "09/14/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She asked twice mid-route whether she could keep walking instead of returning.",
+      "interventionApplied": "I walked beside her and redirected her attention toward heading back on schedule."
+    },
+    {
+      "id": "e_0200",
+      "date": "09/14/2026",
+      "timeInterval": "4 PM \u2013 6 PM (Community Outing)",
+      "behaviorObserved": "She spoke at length with strangers and needed reminding to stay with the group during the outing.",
+      "interventionApplied": "I stayed near her, gently redirected her attention from the exits, and suggested a quieter spot during the outing."
+    },
+    {
+      "id": "e_0201",
+      "date": "09/14/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She was reluctant to bathe and paced near the bathroom, talking about wanting to eat instead.",
+      "interventionApplied": "I encouraged her shower by offering simple choices (timing, water temperature) to ease resistance."
+    },
+    {
+      "id": "e_0202",
+      "date": "09/14/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She paced toward the door overnight, asking again to go outside despite the hour.",
+      "interventionApplied": "I reassured her the outside would be there in the morning and encouraged her to return to bed."
+    },
+    {
+      "id": "e_0203",
+      "date": "09/14/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She was fixated on going back outdoors, pacing near the exit overnight.",
+      "interventionApplied": "I offered to sit and talk with her for a few minutes to ease her desire to go back outside."
+    },
+    {
+      "id": "e_0204",
+      "date": "09/14/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She mumbled intermittently about going outside before finally settling for the night.",
+      "interventionApplied": "I offered brief reassurance and gave her space to settle on her own, checking in regularly."
+    },
+    {
+      "id": "e_0205",
+      "date": "09/15/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She talked continuously about wanting to stay outside longer during her walk.",
+      "interventionApplied": "I stayed nearby, used a calm tone, and encouraged her steps back toward the building."
+    },
+    {
+      "id": "e_0206",
+      "date": "09/15/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She paced near the window repeatedly, talking about wanting to go back outside.",
+      "interventionApplied": "I offered a preferred sensory item and suggested a calmer activity."
+    },
+    {
+      "id": "e_0207",
+      "date": "09/15/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She refused her shower initially, talking rapidly about other things to avoid the topic.",
+      "interventionApplied": "I let her know a small snack would be available afterward, then encouraged her to complete her hygiene routine."
+    },
+    {
+      "id": "e_0208",
+      "date": "09/15/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She asked repeatedly to step outside overnight, unsettled despite her earlier walk.",
+      "interventionApplied": "I reminded her calmly that it was not time to go outside and encouraged her back to her room."
+    },
+    {
+      "id": "e_0209",
+      "date": "09/15/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She stood near the door talking about going outside before being redirected.",
+      "interventionApplied": "I calmly explained it was nighttime and reminded her the door stays secured until morning."
+    },
+    {
+      "id": "e_0210",
+      "date": "09/15/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She paced briefly and talked quietly to herself before gradually settling.",
+      "interventionApplied": "I stayed nearby, spoke softly, and talked with her calmly until she resettled."
+    },
+    {
+      "id": "e_0211",
+      "date": "09/16/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She was upbeat and talkative but resisted coming back indoors at the scheduled time.",
+      "interventionApplied": "I walked alongside her, matching her pace, and encouraged a steady rhythm through conversation."
+    },
+    {
+      "id": "e_0212",
+      "date": "09/16/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She was highly talkative, moving between topics quickly while pacing the living area.",
+      "interventionApplied": "I suggested moving to a quieter space with less surrounding noise."
+    },
+    {
+      "id": "e_0213",
+      "date": "09/16/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She delayed showering by chatting at length and pacing between her room and the hallway.",
+      "interventionApplied": "I checked in with her during her hygiene routine and offered calm reminders as needed."
+    },
+    {
+      "id": "e_0214",
+      "date": "09/16/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She paced toward the door overnight, asking again to go outside despite the hour.",
+      "interventionApplied": "I used a calm tone and simple verbal cues to redirect her attention away from the door."
+    },
+    {
+      "id": "e_0215",
+      "date": "09/16/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She tried the door handle and talked about wanting fresh air in the middle of the night.",
+      "interventionApplied": "I calmly explained it was nighttime and reminded her the door stays secured until morning."
+    },
+    {
+      "id": "e_0216",
+      "date": "09/16/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She was fidgety for a short period but resettled with minimal prompting.",
+      "interventionApplied": "I checked in on her quietly at intervals until she settled on her own."
+    },
+    {
+      "id": "e_0217",
+      "date": "09/17/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She talked continuously about wanting to stay outside longer during her walk.",
+      "interventionApplied": "I walked beside her and redirected her attention toward heading back on schedule."
+    },
+    {
+      "id": "e_0218",
+      "date": "09/17/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She was animated in conversation and paced the hallway between rooms.",
+      "interventionApplied": "I invited her to join a calming activity and gently steered the conversation to help her settle."
+    },
+    {
+      "id": "e_0219",
+      "date": "09/17/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She asked for a late snack instead of showering and resisted the evening routine.",
+      "interventionApplied": "I acknowledged her wish to keep talking, then gently talked her through the next steps of her routine."
+    },
+    {
+      "id": "e_0220",
+      "date": "09/17/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She stood near the door talking about going outside before being redirected.",
+      "interventionApplied": "I reassured her the outside would be there in the morning and encouraged her to return to bed."
+    },
+    {
+      "id": "e_0221",
+      "date": "09/17/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She asked repeatedly to step outside overnight, unsettled despite her earlier walk.",
+      "interventionApplied": "I reminded her calmly that it was not time to go outside and encouraged her back to her room."
+    },
+    {
+      "id": "e_0222",
+      "date": "09/17/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She remained a little restless but eventually quieted down and fell asleep.",
+      "interventionApplied": "I checked in on her periodically to see that she was resting comfortably."
+    },
+    {
+      "id": "e_0223",
+      "date": "09/18/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She wanted to keep going past the usual route and paced near the yard afterward.",
+      "interventionApplied": "I reminded her of the planned distance and kindly encouraged her to head back when she wanted to continue further."
+    },
+    {
+      "id": "e_0224",
+      "date": "09/18/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She was restless, talking continuously and pacing between the living room and her bedroom.",
+      "interventionApplied": "I offered a preferred sensory item and suggested a calmer activity."
+    },
+    {
+      "id": "e_0225",
+      "date": "09/18/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She asked for extra food before agreeing to shower, talking throughout the exchange.",
+      "interventionApplied": "I offered to let her choose her pajamas/soap to increase her buy-in for showering."
+    },
+    {
+      "id": "e_0226",
+      "date": "09/18/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She was fixated on going back outdoors, pacing near the exit overnight.",
+      "interventionApplied": "I reminded her the door stays secured overnight, sat with her briefly, and suggested a quiet activity."
+    },
+    {
+      "id": "e_0227",
+      "date": "09/18/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She paced the hallway near the exit, insisting she wanted to go back outside.",
+      "interventionApplied": "I offered to sit and talk with her for a few minutes to ease her desire to go back outside."
+    },
+    {
+      "id": "e_0228",
+      "date": "09/18/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She was fidgety for a short period but resettled with minimal prompting.",
+      "interventionApplied": "I offered brief reassurance and gave her space to settle on her own, checking in regularly."
+    },
+    {
+      "id": "e_0229",
+      "date": "09/19/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She was upbeat and talkative but resisted coming back indoors at the scheduled time.",
+      "interventionApplied": "I walked alongside her, matching her pace, and encouraged a steady rhythm through conversation."
+    },
+    {
+      "id": "e_0230",
+      "date": "09/19/2026",
+      "timeInterval": "4 PM \u2013 6 PM (Community Outing)",
+      "behaviorObserved": "She was very talkative with people during the outing and wandered toward the exit at one point.",
+      "interventionApplied": "I stayed near her, gently invited her back to the group when she wandered, and kept the group together."
+    },
+    {
+      "id": "e_0231",
+      "date": "09/19/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She asked for a late snack instead of showering and resisted the evening routine.",
+      "interventionApplied": "I encouraged her shower by offering simple choices (timing, water temperature) to ease resistance."
+    },
+    {
+      "id": "e_0232",
+      "date": "09/19/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She tried the door handle and talked about wanting fresh air in the middle of the night.",
+      "interventionApplied": "I calmly explained it was nighttime and reminded her the door stays secured until morning."
+    },
+    {
+      "id": "e_0233",
+      "date": "09/19/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She paced toward the door overnight, asking again to go outside despite the hour.",
+      "interventionApplied": "I reassured her the outside would be there in the morning and encouraged her to return to bed."
+    },
+    {
+      "id": "e_0234",
+      "date": "09/19/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She mumbled intermittently about going outside before finally settling for the night.",
+      "interventionApplied": "I checked in on her quietly at intervals until she settled on her own."
+    },
+    {
+      "id": "e_0235",
+      "date": "09/20/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She kept a brisk pace and asked more than once to add extra time to the walk.",
+      "interventionApplied": "I agreed to a brief extra loop around the yard, then encouraged her back inside at the agreed time."
+    },
+    {
+      "id": "e_0236",
+      "date": "09/20/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She paced near the window repeatedly, talking about wanting to go back outside.",
+      "interventionApplied": "I offered her music, one of her preferred coping strategies, and suggested a seated activity."
+    },
+    {
+      "id": "e_0237",
+      "date": "09/20/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She asked for extra food before agreeing to shower, talking throughout the exchange.",
+      "interventionApplied": "I gave her a few minutes to finish talking, then gently reminded her it was time for her shower."
+    },
+    {
+      "id": "e_0238",
+      "date": "09/20/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She asked repeatedly to step outside overnight, unsettled despite her earlier walk.",
+      "interventionApplied": "I reminded her calmly that it was not time to go outside and encouraged her back to her room."
+    },
+    {
+      "id": "e_0239",
+      "date": "09/20/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She was fixated on going back outdoors, pacing near the exit overnight.",
+      "interventionApplied": "I offered to sit and talk with her for a few minutes to ease her desire to go back outside."
+    },
+    {
+      "id": "e_0240",
+      "date": "09/20/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She paced briefly and talked quietly to herself before gradually settling.",
+      "interventionApplied": "I stayed nearby, spoke softly, and talked with her calmly until she resettled."
+    },
+    {
+      "id": "e_0241",
+      "date": "09/21/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She lingered by the door after her walk, still asking to go back out.",
+      "interventionApplied": "I redirected her calmly through conversation and walked alongside her for the remainder of the route."
+    },
+    {
+      "id": "e_0242",
+      "date": "09/21/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She talked at length about her day and paced near the common area entrance.",
+      "interventionApplied": "I stayed nearby, kept my tone calm, and suggested moving away from busier areas."
+    },
+    {
+      "id": "e_0243",
+      "date": "09/21/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She delayed showering by chatting at length and pacing between her room and the hallway.",
+      "interventionApplied": "I acknowledged her wish to keep talking, then gently talked her through the next steps of her routine."
+    },
+    {
+      "id": "e_0244",
+      "date": "09/21/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She paced the hallway near the exit, insisting she wanted to go back outside.",
+      "interventionApplied": "I used a calm tone and simple verbal cues to redirect her attention away from the door."
+    },
+    {
+      "id": "e_0245",
+      "date": "09/21/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She stood near the door talking about going outside before being redirected.",
+      "interventionApplied": "I reminded her the door stays secured overnight, sat with her briefly, and suggested a quiet activity."
+    },
+    {
+      "id": "e_0246",
+      "date": "09/21/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She remained a little restless but eventually quieted down and fell asleep.",
+      "interventionApplied": "I offered brief reassurance and gave her space to settle on her own, checking in regularly."
+    },
+    {
+      "id": "e_0247",
+      "date": "09/22/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She was chatty throughout the walk and pushed back when told it was time to turn around.",
+      "interventionApplied": "I acknowledged her wish to keep walking, then kindly reminded her it was time to head back."
+    },
+    {
+      "id": "e_0248",
+      "date": "09/22/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She spoke rapidly with staff/peers and had difficulty sitting still for more than a few minutes.",
+      "interventionApplied": "I sat with her, listened actively, and gently steered the conversation to help her slow down."
+    },
+    {
+      "id": "e_0249",
+      "date": "09/22/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She was reluctant to bathe and paced near the bathroom, talking about wanting to eat instead.",
+      "interventionApplied": "I checked in with her during her hygiene routine and offered calm reminders as needed."
+    },
+    {
+      "id": "e_0250",
+      "date": "09/22/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She paced the hallway near the exit, insisting she wanted to go back outside.",
+      "interventionApplied": "I offered to sit and talk with her for a few minutes to ease her desire to go back outside."
+    },
+    {
+      "id": "e_0251",
+      "date": "09/22/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She asked repeatedly to step outside overnight, unsettled despite her earlier walk.",
+      "interventionApplied": "I reminded her calmly that it was not time to go outside and encouraged her back to her room."
+    },
+    {
+      "id": "e_0252",
+      "date": "09/22/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She was fidgety for a short period but resettled with minimal prompting.",
+      "interventionApplied": "I checked in on her periodically to see that she was resting comfortably."
+    },
+    {
+      "id": "e_0253",
+      "date": "09/23/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She circled the walking path an extra time before agreeing to head back in.",
+      "interventionApplied": "I engaged her in conversation about her day to help ease the transition back indoors."
+    },
+    {
+      "id": "e_0254",
+      "date": "09/23/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She talked at length about her day and paced near the common area entrance.",
+      "interventionApplied": "I offered a preferred sensory item and suggested a calmer activity."
+    },
+    {
+      "id": "e_0255",
+      "date": "09/23/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She pushed back on the shower schedule, requesting food and talking continuously.",
+      "interventionApplied": "I let her know a small snack would be available afterward, then encouraged her to complete her hygiene routine."
+    },
+    {
+      "id": "e_0256",
+      "date": "09/23/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She stood near the door talking about going outside before being redirected.",
+      "interventionApplied": "I calmly explained it was nighttime and reminded her the door stays secured until morning."
+    },
+    {
+      "id": "e_0257",
+      "date": "09/23/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She tried the door handle and talked about wanting fresh air in the middle of the night.",
+      "interventionApplied": "I used a calm tone and simple verbal cues to redirect her attention away from the door."
+    },
+    {
+      "id": "e_0258",
+      "date": "09/23/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She mumbled intermittently about going outside before finally settling for the night.",
+      "interventionApplied": "I checked in on her quietly at intervals until she settled on her own."
+    },
+    {
+      "id": "e_0259",
+      "date": "09/24/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She asked twice mid-route whether she could keep walking instead of returning.",
+      "interventionApplied": "I stayed nearby, used a calm tone, and encouraged her steps back toward the building."
+    },
+    {
+      "id": "e_0260",
+      "date": "09/24/2026",
+      "timeInterval": "4 PM \u2013 6 PM (Community Outing)",
+      "behaviorObserved": "She paced around the venue, asking to visit more stops than were planned for the outing.",
+      "interventionApplied": "I stayed near her, gently redirected her attention from the exits, and suggested a quieter spot during the outing."
+    },
+    {
+      "id": "e_0261",
+      "date": "09/24/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She refused her shower initially, talking rapidly about other things to avoid the topic.",
+      "interventionApplied": "I offered to let her choose her pajamas/soap to increase her buy-in for showering."
+    },
+    {
+      "id": "e_0262",
+      "date": "09/24/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She paced toward the door overnight, asking again to go outside despite the hour.",
+      "interventionApplied": "I reminded her the door stays secured overnight, sat with her briefly, and suggested a quiet activity."
+    },
+    {
+      "id": "e_0263",
+      "date": "09/24/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She was fixated on going back outdoors, pacing near the exit overnight.",
+      "interventionApplied": "I reassured her the outside would be there in the morning and encouraged her to return to bed."
+    },
+    {
+      "id": "e_0264",
+      "date": "09/24/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She paced briefly and talked quietly to herself before gradually settling.",
+      "interventionApplied": "I stayed nearby, spoke softly, and talked with her calmly until she resettled."
+    },
+    {
+      "id": "e_0265",
+      "date": "09/25/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She circled the walking path an extra time before agreeing to head back in.",
+      "interventionApplied": "I engaged her in conversation about her day to help ease the transition back indoors."
+    },
+    {
+      "id": "e_0266",
+      "date": "09/25/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She was highly talkative, moving between topics quickly while pacing the living area.",
+      "interventionApplied": "I sat with her, listened actively, and gently steered the conversation to help her slow down."
+    },
+    {
+      "id": "e_0267",
+      "date": "09/25/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She asked for a late snack instead of showering and resisted the evening routine.",
+      "interventionApplied": "I gave her a few minutes to finish talking, then gently reminded her it was time for her shower."
+    },
+    {
+      "id": "e_0268",
+      "date": "09/25/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She paced toward the door overnight, asking again to go outside despite the hour.",
+      "interventionApplied": "I calmly explained it was nighttime and reminded her the door stays secured until morning."
+    },
+    {
+      "id": "e_0269",
+      "date": "09/25/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She stood near the door talking about going outside before being redirected.",
+      "interventionApplied": "I offered to sit and talk with her for a few minutes to ease her desire to go back outside."
+    },
+    {
+      "id": "e_0270",
+      "date": "09/25/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She mumbled intermittently about going outside before finally settling for the night.",
+      "interventionApplied": "I checked in on her periodically to see that she was resting comfortably."
+    },
+    {
+      "id": "e_0271",
+      "date": "09/26/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She was chatty throughout the walk and pushed back when told it was time to turn around.",
+      "interventionApplied": "I reminded her of the planned distance and kindly encouraged her to head back when she wanted to continue further."
+    },
+    {
+      "id": "e_0272",
+      "date": "09/26/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She spoke rapidly with staff/peers and had difficulty sitting still for more than a few minutes.",
+      "interventionApplied": "I invited her to join a calming activity and gently steered the conversation to help her settle."
+    },
+    {
+      "id": "e_0273",
+      "date": "09/26/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She was reluctant to bathe and paced near the bathroom, talking about wanting to eat instead.",
+      "interventionApplied": "I checked in with her during her hygiene routine and offered calm reminders as needed."
+    },
+    {
+      "id": "e_0274",
+      "date": "09/26/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She paced the hallway near the exit, insisting she wanted to go back outside.",
+      "interventionApplied": "I reassured her the outside would be there in the morning and encouraged her to return to bed."
+    },
+    {
+      "id": "e_0275",
+      "date": "09/26/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She asked repeatedly to step outside overnight, unsettled despite her earlier walk.",
+      "interventionApplied": "I reminded her calmly that it was not time to go outside and encouraged her back to her room."
+    },
+    {
+      "id": "e_0276",
+      "date": "09/26/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She was fidgety for a short period but resettled with minimal prompting.",
+      "interventionApplied": "I checked in on her quietly at intervals until she settled on her own."
+    },
+    {
+      "id": "e_0277",
+      "date": "09/27/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She lingered by the door after her walk, still asking to go back out.",
+      "interventionApplied": "I walked alongside her, matching her pace, and encouraged a steady rhythm through conversation."
+    },
+    {
+      "id": "e_0278",
+      "date": "09/27/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She paced near the window repeatedly, talking about wanting to go back outside.",
+      "interventionApplied": "I stayed nearby, kept my tone calm, and suggested moving away from busier areas."
+    },
+    {
+      "id": "e_0279",
+      "date": "09/27/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She pushed back on the shower schedule, requesting food and talking continuously.",
+      "interventionApplied": "I offered to let her choose her pajamas/soap to increase her buy-in for showering."
+    },
+    {
+      "id": "e_0280",
+      "date": "09/27/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She tried the door handle and talked about wanting fresh air in the middle of the night.",
+      "interventionApplied": "I reminded her the door stays secured overnight, sat with her briefly, and suggested a quiet activity."
+    },
+    {
+      "id": "e_0281",
+      "date": "09/27/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She was fixated on going back outdoors, pacing near the exit overnight.",
+      "interventionApplied": "I used a calm tone and simple verbal cues to redirect her attention away from the door."
+    },
+    {
+      "id": "e_0282",
+      "date": "09/27/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She remained a little restless but eventually quieted down and fell asleep.",
+      "interventionApplied": "I offered brief reassurance and gave her space to settle on her own, checking in regularly."
+    },
+    {
+      "id": "e_0283",
+      "date": "09/28/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She was upbeat and talkative but resisted coming back indoors at the scheduled time.",
+      "interventionApplied": "I agreed to a brief extra loop around the yard, then encouraged her back inside at the agreed time."
+    },
+    {
+      "id": "e_0284",
+      "date": "09/28/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She was restless, talking continuously and pacing between the living room and her bedroom.",
+      "interventionApplied": "I offered her music, one of her preferred coping strategies, and suggested a seated activity."
+    },
+    {
+      "id": "e_0285",
+      "date": "09/28/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She asked for extra food before agreeing to shower, talking throughout the exchange.",
+      "interventionApplied": "I acknowledged her wish to keep talking, then gently talked her through the next steps of her routine."
+    },
+    {
+      "id": "e_0286",
+      "date": "09/28/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She paced the hallway near the exit, insisting she wanted to go back outside.",
+      "interventionApplied": "I reassured her the outside would be there in the morning and encouraged her to return to bed."
+    },
+    {
+      "id": "e_0287",
+      "date": "09/28/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She asked repeatedly to step outside overnight, unsettled despite her earlier walk.",
+      "interventionApplied": "I used a calm tone and simple verbal cues to redirect her attention away from the door."
+    },
+    {
+      "id": "e_0288",
+      "date": "09/28/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She paced briefly and talked quietly to herself before gradually settling.",
+      "interventionApplied": "I stayed nearby, spoke softly, and talked with her calmly until she resettled."
+    },
+    {
+      "id": "e_0289",
+      "date": "09/29/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She kept a brisk pace and asked more than once to add extra time to the walk.",
+      "interventionApplied": "I redirected her calmly through conversation and walked alongside her for the remainder of the route."
+    },
+    {
+      "id": "e_0290",
+      "date": "09/29/2026",
+      "timeInterval": "4 PM \u2013 6 PM (Community Outing)",
+      "behaviorObserved": "She spoke at length with strangers and needed reminding to stay with the group during the outing.",
+      "interventionApplied": "I used calm verbal redirection and stayed beside her throughout the outing."
+    },
+    {
+      "id": "e_0291",
+      "date": "09/29/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She refused her shower initially, talking rapidly about other things to avoid the topic.",
+      "interventionApplied": "I let her know a small snack would be available afterward, then encouraged her to complete her hygiene routine."
+    },
+    {
+      "id": "e_0292",
+      "date": "09/29/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She tried the door handle and talked about wanting fresh air in the middle of the night.",
+      "interventionApplied": "I reminded her calmly that it was not time to go outside and encouraged her back to her room."
+    },
+    {
+      "id": "e_0293",
+      "date": "09/29/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She stood near the door talking about going outside before being redirected.",
+      "interventionApplied": "I calmly explained it was nighttime and reminded her the door stays secured until morning."
+    },
+    {
+      "id": "e_0294",
+      "date": "09/29/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She mumbled intermittently about going outside before finally settling for the night.",
+      "interventionApplied": "I checked in on her periodically to see that she was resting comfortably."
+    },
+    {
+      "id": "e_0295",
+      "date": "09/30/2026",
+      "timeInterval": "6 AM \u2013 8 AM (Morning Walk)",
+      "behaviorObserved": "She asked twice mid-route whether she could keep walking instead of returning.",
+      "interventionApplied": "I acknowledged her wish to keep walking, then kindly reminded her it was time to head back."
+    },
+    {
+      "id": "e_0296",
+      "date": "09/30/2026",
+      "timeInterval": "4 PM \u2013 6 PM",
+      "behaviorObserved": "She was animated in conversation and paced the hallway between rooms.",
+      "interventionApplied": "I suggested moving to a quieter space with less surrounding noise."
+    },
+    {
+      "id": "e_0297",
+      "date": "09/30/2026",
+      "timeInterval": "8 PM \u201310 PM",
+      "behaviorObserved": "She delayed showering by chatting at length and pacing between her room and the hallway.",
+      "interventionApplied": "I encouraged her shower by offering simple choices (timing, water temperature) to ease resistance."
+    },
+    {
+      "id": "e_0298",
+      "date": "09/30/2026",
+      "timeInterval": "10 PM \u20132 AM",
+      "behaviorObserved": "She paced toward the door overnight, asking again to go outside despite the hour.",
+      "interventionApplied": "I reminded her the door stays secured overnight, sat with her briefly, and suggested a quiet activity."
+    },
+    {
+      "id": "e_0299",
+      "date": "09/30/2026",
+      "timeInterval": "2 AM \u2013 4 AM",
+      "behaviorObserved": "She was fixated on going back outdoors, pacing near the exit overnight.",
+      "interventionApplied": "I offered to sit and talk with her for a few minutes to ease her desire to go back outside."
+    },
+    {
+      "id": "e_0300",
+      "date": "09/30/2026",
+      "timeInterval": "4 AM \u2013 6 AM",
+      "behaviorObserved": "She remained a little restless but eventually quieted down and fell asleep.",
+      "interventionApplied": "I checked in on her quietly at intervals until she settled on her own."
+    }
+  ],
+  "entryCount": 300,
+  "source": "Raysheal_Ellis_Incidence_Report.docx",
+  "seed": {
+    "title": "CBHS note \u2014 Raysheal Ellis (Aug\u2013Sep 2026)",
+    "occurredAt": "2026-08-12",
+    "category": "BEHAVIOR",
+    "severity": "MEDIUM",
+    "clientEventId": "raysheal_ellis_cbhs_aug_sep_2026"
+  }
+}

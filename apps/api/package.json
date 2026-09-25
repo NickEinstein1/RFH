@@ -20,7 +20,12 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
-    "prisma:seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+    "prisma:seed": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/seed.ts",
+    "prisma:seed:loving-garden": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/seed-loving-garden.ts",
+    "prisma:seed:loving-garden-updates": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/seed-loving-garden-updates.ts",
+    "prisma:seed:loving-garden-photos": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/seed-loving-garden-photos.ts",
+    "prisma:seed:loving-garden-cbhs": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/seed-loving-garden-cbhs.ts",
+    "prisma:seed:loving-garden-docs": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/seed-loving-garden-docs.ts"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
@@ -93,6 +98,6 @@
     "testEnvironment": "node"
   },
   "prisma": {
-    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+    "seed": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/seed.ts"
   }
 }

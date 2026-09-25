@@ -148,13 +148,95 @@ export class EmarService {
       });
     });
 
-    await this.audit.logForUser(user, 'med_pass.board_read', 'MedAdministration', null, {
+    this.audit.logForUserDeferred(user, 'med_pass.board_read', 'MedAdministration', null, {
       residentId,
       date: dateYmd,
       slotCount: slots.length,
     }, req);
 
     return { date: dateYmd, timezone: tenant.timezone, slots };
+  }
+
+  /**
+   * Facility-wide due meds for Today (one query set — avoids N+1 med-pass calls).
+   */
+  async dueTodayBoard(user: AuthUser, dateIso: string, limit = 12) {
+    const tenant = await this.prisma.db.tenant.findUniqueOrThrow({
+      where: { id: user.tenantId },
+    });
+    const dateYmd = dateIso.slice(0, 10);
+    const dayStart = facilityLocalToUtc(dateYmd, '00:00', tenant.timezone);
+    const dayEnd = facilityLocalToUtc(addDaysYmd(dateYmd, 1), '00:00', tenant.timezone);
+
+    const [residents, orders, administrations] = await Promise.all([
+      this.prisma.db.resident.findMany({
+        where: { tenantId: user.tenantId, deletedAt: null, status: 'ACTIVE' },
+        select: { id: true, firstName: true, lastName: true, room: true },
+        orderBy: [{ lastName: 'asc' }, { firstName: 'asc' }],
+      }),
+      this.prisma.db.medicationOrder.findMany({
+        where: {
+          tenantId: user.tenantId,
+          deletedAt: null,
+          status: MedOrderStatus.ACTIVE,
+          isPrn: false,
+          startDate: { lte: dayEnd },
+          OR: [{ endDate: null }, { endDate: { gte: dayStart } }],
+        },
+        select: {
+          id: true,
+          residentId: true,
+          drugName: true,
+          scheduleTimes: true,
+        },
+      }),
+      this.prisma.db.medAdministration.findMany({
+        where: {
+          tenantId: user.tenantId,
+          scheduledAt: { gte: dayStart, lt: dayEnd },
+        },
+        select: { orderId: true, scheduledAt: true, outcome: true },
+      }),
+    ]);
+
+    const residentById = new Map(residents.map((r) => [r.id, r]));
+    const givenKeys = new Set(
+      administrations
+        .filter((a) => a.outcome)
+        .map((a) => `${a.orderId}|${a.scheduledAt.getTime()}`),
+    );
+
+    const due: Array<{
+      residentId: string;
+      residentName: string;
+      room: string | null;
+      drugName: string;
+      scheduledAt: string;
+    }> = [];
+
+    for (const order of orders) {
+      const resident = residentById.get(order.residentId);
+      if (!resident) continue;
+      for (const time of order.scheduleTimes) {
+        const scheduledAt = facilityLocalToUtc(dateYmd, time, tenant.timezone);
+        const key = `${order.id}|${scheduledAt.getTime()}`;
+        if (givenKeys.has(key)) continue;
+        due.push({
+          residentId: resident.id,
+          residentName: `${resident.lastName}, ${resident.firstName}`,
+          room: resident.room,
+          drugName: order.drugName,
+          scheduledAt: scheduledAt.toISOString(),
+        });
+      }
+    }
+
+    due.sort((a, b) => a.scheduledAt.localeCompare(b.scheduledAt));
+    return {
+      date: dateYmd,
+      timezone: tenant.timezone,
+      slots: due.slice(0, Math.max(1, Math.min(limit, 40))),
+    };
   }
 
   async recordAdministration(user: AuthUser, dto: RecordMedAdminDto, req?: Request) {
@@ -787,7 +869,7 @@ export class EmarService {
         },
       },
     });
-    await this.audit.logForUser(user, 'med_alert.list', 'MedAlert', null, {
+    this.audit.logForUserDeferred(user, 'med_alert.list', 'MedAlert', null, {
       count: alerts.length,
     }, req);
     return alerts;

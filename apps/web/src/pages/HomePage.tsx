@@ -76,17 +76,13 @@ export function HomePage({ timezone }: { timezone: string }) {
     if (isFamily) return;
     void (async () => {
       try {
-        const [alertRows, incidentRows, residents, readiness] = await Promise.all([
+        const today = new Date().toISOString().slice(0, 10);
+        const [alertRows, incidentRows, dueBoard, readiness] = await Promise.all([
           api<MedAlert[]>('/emar/alerts').catch(() => [] as MedAlert[]),
           api<Incident[]>('/incidents').catch(() => [] as Incident[]),
-          api<
-            Array<{
-              id: string;
-              firstName: string;
-              lastName: string;
-              room: string | null;
-            }>
-          >('/residents'),
+          api<{ slots: DueSlot[] }>(
+            `/emar/med-pass/due?date=${encodeURIComponent(today)}&limit=12`,
+          ).catch(() => ({ slots: [] as DueSlot[] })),
           showReports
             ? api<Survey>('/reports/survey-readiness').catch(() => null)
             : Promise.resolve(null),
@@ -95,41 +91,7 @@ export function HomePage({ timezone }: { timezone: string }) {
         if (readiness) setSurvey(readiness);
         setAlerts(alertRows.slice(0, 6));
         setIncidents(incidentRows.filter((i) => i.status !== 'CLOSED').slice(0, 5));
-
-        const slots: DueSlot[] = [];
-        const sample = residents.slice(0, 8);
-        const today = new Date().toISOString().slice(0, 10);
-        await Promise.all(
-          sample.map(async (r) => {
-            try {
-              const pass = await api<{
-                slots: Array<{
-                  scheduledAt: string | null;
-                  isPrn: boolean;
-                  order: { drugName: string };
-                  administration: { outcome: string } | null;
-                }>;
-              }>(
-                `/emar/med-pass?residentId=${encodeURIComponent(r.id)}&date=${today}`,
-              );
-              for (const d of pass.slots || []) {
-                if (d.isPrn || d.administration) continue;
-                if (!d.scheduledAt) continue;
-                slots.push({
-                  residentId: r.id,
-                  residentName: `${r.lastName}, ${r.firstName}`,
-                  room: r.room,
-                  drugName: d.order.drugName,
-                  scheduledAt: d.scheduledAt,
-                });
-              }
-            } catch {
-              /* skip */
-            }
-          }),
-        );
-        slots.sort((a, b) => a.scheduledAt.localeCompare(b.scheduledAt));
-        setDue(slots.slice(0, 8));
+        setDue(dueBoard.slots || []);
         setError('');
       } catch (e) {
         setError(e instanceof Error ? e.message : 'Failed to load today');
@@ -142,7 +104,12 @@ export function HomePage({ timezone }: { timezone: string }) {
   return (
     <div className="home-today page-enter">
       <header className="home-hero">
-        <p className="home-eyebrow">{user?.tenantName}</p>
+        <p className="home-eyebrow">
+          {user?.tenantName}
+          {user?.role === 'CAREGIVER' && user.firstName
+            ? ` — ${user.firstName} ${user.lastName} (caregiver)`
+            : ''}
+        </p>
         <h1 className="page-title">Today’s care</h1>
         <p className="page-sub">
           Start with who’s due, what’s open, and what families need — then move through the home with

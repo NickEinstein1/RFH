@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { api, downloadFile } from '../api';
 import { useAuth } from '../auth';
 import { formatInFacilityTz } from '../time';
+import { formatUsDate } from '../usDate';
 import { enqueueNoteEvent, pendingCount } from '../offlineQueue';
 import {
   addBehaviorDay,
@@ -115,7 +116,7 @@ export function CbhsReportPanel({
     setForm(
       blankCbhsIncidentForm({
         fullLegalName: `${r.lastName}, ${r.firstName}`,
-        dateOfBirth: r.dateOfBirth?.slice(0, 10),
+        dateOfBirth: formatUsDate(r.dateOfBirth),
         facilityName: user?.tenantName,
         monthYearServices: new Date().toLocaleString('en-US', {
           month: 'long',
@@ -314,7 +315,9 @@ export function CbhsReportPanel({
                           ...form.client,
                           fullLegalName: `${r.lastName}, ${r.firstName}`,
                           dateOfBirth:
-                            r.dateOfBirth?.slice(0, 10) || form.client.dateOfBirth,
+                            formatUsDate(r.dateOfBirth) !== '—'
+                              ? formatUsDate(r.dateOfBirth)
+                              : form.client.dateOfBirth,
                         },
                       });
                     }
@@ -380,7 +383,7 @@ export function CbhsReportPanel({
               type="button"
               className="btn secondary"
               onClick={() =>
-                setForm(addBehaviorDay(form, new Date().toISOString().slice(0, 10)))
+                setForm(addBehaviorDay(form, formatUsDate(new Date())))
               }
             >
               Add day (6 intervals)

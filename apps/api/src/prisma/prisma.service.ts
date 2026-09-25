@@ -31,8 +31,12 @@ export class PrismaService
 
   async runWithTenant<T>(tenantId: string, fn: () => Promise<T>): Promise<T> {
     return this.$transaction(async (tx) => {
-      await tx.$executeRaw`SELECT set_config('app.tenant_id', ${tenantId}, true)`;
-      await tx.$executeRaw`SELECT set_config('app.bypass_rls', 'off', true)`;
+      // One round-trip to remote Postgres instead of two set_config calls.
+      await tx.$executeRaw`
+        SELECT
+          set_config('app.tenant_id', ${tenantId}, true),
+          set_config('app.bypass_rls', 'off', true)
+      `;
       return this.als.run(tx, fn);
     });
   }

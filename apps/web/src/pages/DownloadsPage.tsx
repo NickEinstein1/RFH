@@ -275,6 +275,24 @@ export function DownloadsPage() {
           </button>
         </section>
       ) : null}
+
+      <section className="download-panel">
+        <h2>Blank forms (templates)</h2>
+        <p className="meta">Fillable Word templates for admissions — not resident-specific PHI.</p>
+        <div className="download-controls">
+          <a
+            className="btn secondary"
+            href="/templates/Admission-Agreement_Medicaid-TEMPLATE-02.06.2026.docx"
+            download
+          >
+            Medicaid admission agreement template
+          </a>
+        </div>
+        <p className="meta" style={{ marginTop: '0.75rem' }}>
+          Loving Garden facility chart packets and signed Word sources are kept in the repo folder{' '}
+          <code>Loving garden documents</code> (care plans, CBHS notes, resident info sheets, and photos).
+        </p>
+      </section>
     </div>
   );
 }

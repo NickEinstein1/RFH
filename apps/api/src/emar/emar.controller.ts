@@ -43,6 +43,18 @@ export class EmarController {
     return this.emar.medPassBoard(user, residentId, day, req);
   }
 
+  @Get('med-pass/due')
+  @RequirePermissions(Permissions.MED_PASS)
+  dueToday(
+    @CurrentUser() user: AuthUser,
+    @Query('date') date: string,
+    @Query('limit') limit?: string,
+  ) {
+    const day = date || new Date().toISOString().slice(0, 10);
+    const n = limit ? Number(limit) : 12;
+    return this.emar.dueTodayBoard(user, day, Number.isFinite(n) ? n : 12);
+  }
+
   @Get('mar-sheet')
   @RequirePermissions(Permissions.MED_PASS)
   marSheet(

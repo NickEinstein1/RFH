@@ -123,7 +123,12 @@ export async function api<T>(
   if (token) headers.set('Authorization', `Bearer ${token}`);
 
   const res = await fetch(`/api${path}`, { ...options, headers });
-  if (res.status === 401 && !retried && !path.startsWith('/auth/login')) {
+  if (
+    res.status === 401 &&
+    !retried &&
+    !path.startsWith('/auth/login') &&
+    !path.startsWith('/auth/signup')
+  ) {
     const ok = await tryRefresh();
     if (ok) return api<T>(path, options, true);
   }

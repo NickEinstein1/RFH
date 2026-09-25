@@ -1,0 +1,79 @@
+{
+  "source": "Steven_Watson_Negotiated_Care_Plan.docx",
+  "facility": "Loving Garden AFH",
+  "providerName": "Jane Mburu",
+  "resident": {
+    "firstName": "Steven",
+    "lastName": "Watson",
+    "preferredName": "Steve",
+    "dateOfBirth": "08/01/1955",
+    "age": 71,
+    "sex": "MALE",
+    "admitDate": "11/04/2024",
+    "primaryLanguage": "English",
+    "allergies": [
+      "hydromorphone"
+    ],
+    "mrn": "LGAFH003",
+    "room": "003",
+    "diagnoses": [
+      "Bilateral rotator cuff tears",
+      "neuropathy",
+      "spinal stenosis",
+      "non-insulin dependent diabetes mellitus",
+      "sciatica",
+      "diabetic ulcer"
+    ]
+  },
+  "carePlan": {
+    "documentTitle": "NEGOTIATED CARE PLAN",
+    "carePlanDate": "11/25/2024",
+    "carePlanUpdated": "09/08/2026",
+    "header": {
+      "residentName": "Steven Watson",
+      "providerName": "Jane Mburu",
+      "carePlanDate": "11/25/2024 (updated 09/08/2026)",
+      "admissionDate": "11/04/2024",
+      "dischargeDate": "",
+      "dateOfBirth": "08/01/1955",
+      "age": "71",
+      "ssn": "",
+      "primaryLanguage": "English",
+      "contactNameAddress": "Jason Davis (Friend); Jairus Brenneise (Emergency Contact)",
+      "contactPhone": "509-690-4432; 253-320-0825",
+      "physician": "Dr. Mark Doane (Primary Physician)",
+      "physicianPhone": "253-383-0825",
+      "physicianFax": "",
+      "pharmacy": "Lincoln Pharmacy",
+      "pharmacyPhone": "253-473-1155",
+      "pharmacyFax": "253-473-1158",
+      "dentist": "",
+      "dentistPhone": "",
+      "dentistFax": "",
+      "advanceDirective": "",
+      "advanceDirectiveType": "",
+      "legalDocuments": "",
+      "legalDocumentsType": "",
+      "currentMedicalStatus": "Bilateral rotator cuff tears, neuropathy, spinal stenosis, non-insulin dependent diabetes mellitus, sciatica, diabetic ulcer",
+      "allergies": "hydromorphone",
+      "specialtyNeeds": "Medical concerns",
+      "dementia": "No",
+      "mentalHealth": "No",
+      "developmentalDisability": "No",
+      "emergencyEvacuation": "Assistance required",
+      "independent": "No",
+      "assistanceRequired": "Yes",
+      "specialInstructions": "Steven needs physical assistance to transfer in a wheelchair to evacuate in an emergency.",
+      "interestedParties": "Jason Davis (Friend) 509-690-4432; Jairus Brenneise (Emergency Contact) 253-320-0825",
+      "priorPlacement": "",
+      "providerContact": "Loving Garden AFH"
+    },
+    "highlights": {
+      "hospital": "Kaiser Permanente Puyallup Medical Center, 1007 39th Ave SE, Puyallup WA 98374",
+      "mobility": "Wheelchair-bound after surgery; extensive one-person assist; cane/motorized wheelchair equipment",
+      "medManagement": "Assistance with medications (prepare and hand; observe; reorder)",
+      "pain": "Ongoing pain arm/leg/back; foot swelling noted",
+      "psychMeds": "Duloxetine \u2014 monitor compliance and side effects"
+    }
+  }
+}

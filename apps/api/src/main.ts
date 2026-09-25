@@ -5,7 +5,8 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import helmet from 'helmet';
-import { json, urlencoded } from 'express';
+import { json, urlencoded, static as expressStatic } from 'express';
+import { join } from 'path';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -17,8 +18,19 @@ async function bootstrap() {
     helmet({
       contentSecurityPolicy: false,
       crossOriginEmbedderPolicy: false,
+      crossOriginResourcePolicy: { policy: 'cross-origin' },
       referrerPolicy: { policy: 'no-referrer' },
       hsts: config.get('NODE_ENV') === 'production' ? undefined : false,
+    }),
+  );
+
+  // Resident / facility media (JPEG photos). Mounted before Nest guards.
+  app.use(
+    '/api/media',
+    expressStatic(join(__dirname, '..', 'public'), {
+      maxAge: '7d',
+      index: false,
+      fallthrough: true,
     }),
   );
 

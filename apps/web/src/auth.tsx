@@ -23,10 +23,20 @@ const WARN_BEFORE_MS = 60 * 1000;
 const ABSOLUTE_MS = 8 * 60 * 60 * 1000;
 const SESSION_STARTED_KEY = 'rfh_session_started';
 
+type SignupInput = {
+  tenantName: string;
+  timezone?: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+};
+
 type AuthContextValue = {
   user: SessionUser | null;
   homes: HomeSummary[];
   login: (email: string, password: string, tenantName?: string) => Promise<void>;
+  signup: (input: SignupInput) => Promise<void>;
   logout: () => Promise<void>;
   switchHome: (tenantId: string) => Promise<void>;
   idleWarning: boolean;
@@ -75,6 +85,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(result.user);
   }, []);
 
+  const signup = useCallback(async (input: SignupInput) => {
+    const result = await api<{
+      accessToken: string;
+      refreshToken: string;
+      user: SessionUser;
+      homes?: HomeSummary[];
+    }>('/auth/signup', {
+      method: 'POST',
+      body: JSON.stringify(input),
+    });
+    const nextHomes = result.homes || [];
+    setSession(result.accessToken, result.refreshToken, result.user, nextHomes);
+    localStorage.setItem(SESSION_STARTED_KEY, String(Date.now()));
+    lastActivity.current = Date.now();
+    setIdleWarning(false);
+    setHomes(nextHomes);
+    setUser(result.user);
+  }, []);
+
   const switchHome = useCallback(async (tenantId: string) => {
     const result = await api<{
       accessToken: string;
@@ -91,11 +120,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     lastActivity.current = Date.now();
     setHomes(nextHomes);
     setUser(result.user);
-    window.location.assign('/');
+    window.location.assign('/today');
   }, []);
 
   useEffect(() => {
     if (!user) return;
+    // Homes already restored from localStorage — only refresh when empty.
+    if (homes.length > 0) return;
     void api<{ homes?: HomeSummary[] }>('/auth/me')
       .then((me) => {
         if (me.homes) {
@@ -104,7 +135,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
       })
       .catch(() => undefined);
-  }, [user?.tenantId]);
+  }, [user?.tenantId, homes.length]);
 
   useEffect(() => {
     if (!user) return;
@@ -140,8 +171,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [user]);
 
   const value = useMemo(
-    () => ({ user, homes, login, logout, switchHome, idleWarning }),
-    [user, homes, login, logout, switchHome, idleWarning],
+    () => ({ user, homes, login, signup, logout, switchHome, idleWarning }),
+    [user, homes, login, signup, logout, switchHome, idleWarning],
   );
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

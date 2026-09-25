@@ -12,7 +12,7 @@ export function ResetPasswordPage() {
   const [done, setDone] = useState(false);
   const [busy, setBusy] = useState(false);
 
-  if (user) return <Navigate to="/" replace />;
+  if (user) return <Navigate to="/today" replace />;
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();

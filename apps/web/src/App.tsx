@@ -7,6 +7,8 @@ import {
   pendingCount,
 } from './offlineQueue';
 import { LoginPage } from './pages/LoginPage';
+import { SignupPage } from './pages/SignupPage';
+import { LandingPage } from './pages/LandingPage';
 import { ResetPasswordPage } from './pages/ResetPasswordPage';
 import { HomePage } from './pages/HomePage';
 import { ResidentsPage } from './pages/ResidentsPage';
@@ -46,7 +48,7 @@ function Shell() {
     };
   }, []);
 
-  if (!user) return <Navigate to="/login" replace />;
+  if (!user) return <Navigate to="/" replace />;
   const isFamily = user.role === 'FAMILY_VIEWER';
   const showStaff = ['OWNER', 'ADMIN', 'NURSE', 'CAREGIVER'].includes(user.role);
   const showMedAlerts = !isFamily;
@@ -85,7 +87,12 @@ function Shell() {
               </select>
             </label>
           ) : (
-            <div className="brand-facility">{user.tenantName}</div>
+            <div className="brand-facility">
+              {user.tenantName}
+              {user.role === 'CAREGIVER'
+                ? ` — ${user.firstName} ${user.lastName} (caregiver)`
+                : ''}
+            </div>
           )}
         </div>
         <nav className="nav-actions">
@@ -94,7 +101,7 @@ function Shell() {
               Family
             </NavLink>
           ) : (
-            <NavLink to="/" end className={({ isActive }) => `btn ${isActive ? '' : 'secondary'}`}>
+            <NavLink to="/today" end className={({ isActive }) => `btn ${isActive ? '' : 'secondary'}`}>
               Today
             </NavLink>
           )}
@@ -148,7 +155,16 @@ function Shell() {
           </span>
           <span className="meta account-chip">
             <span>
-              {user.firstName} · {user.role}
+              {user.firstName} {user.lastName}
+              <span className="account-role">
+                {' '}
+                ·{' '}
+                {user.role === 'CAREGIVER'
+                  ? 'Caregiver'
+                  : user.role === 'FAMILY_VIEWER'
+                    ? 'Family'
+                    : user.role.charAt(0) + user.role.slice(1).toLowerCase().replace(/_/g, ' ')}
+              </span>
             </span>
           </span>
           <button className="btn ghost" type="button" onClick={() => void logout()}>
@@ -179,10 +195,12 @@ function AppRoutes() {
 
   return (
     <Routes>
+      <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/signup" element={<SignupPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
       <Route element={<Shell />}>
-        <Route index element={<HomePage timezone={tz} />} />
+        <Route path="today" element={<HomePage timezone={tz} />} />
         <Route path="family" element={<FamilyPortalPage timezone={tz} />} />
         <Route path="orders/intake" element={<OrderIntakePage />} />
         <Route path="residents" element={<ResidentsPage timezone={tz} />} />
@@ -196,7 +214,7 @@ function AppRoutes() {
         <Route path="reports" element={<ReportsPage timezone={tz} />} />
         <Route path="downloads" element={<DownloadsPage />} />
       </Route>
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="*" element={<Navigate to={user ? '/today' : '/'} replace />} />
     </Routes>
   );
 }

@@ -12,6 +12,12 @@
     "build": "npm run build -w @rfh/api && npm run build -w @rfh/web",
     "db:migrate": "npm run prisma:migrate -w @rfh/api",
     "db:seed": "npm run prisma:seed -w @rfh/api",
-    "db:generate": "npm run prisma:generate -w @rfh/api"
+    "db:seed:loving-garden-updates": "npm run prisma:seed:loving-garden-updates -w @rfh/api",
+    "db:seed:loving-garden-photos": "npm run prisma:seed:loving-garden-photos -w @rfh/api",
+    "db:seed:loving-garden-cbhs": "npm run prisma:seed:loving-garden-cbhs -w @rfh/api",
+    "db:seed:loving-garden-docs": "npm run prisma:seed:loving-garden-docs -w @rfh/api",
+    "db:generate": "npm run prisma:generate -w @rfh/api",
+    "db:supabase:apply": "bash scripts/supabase-apply-schema.sh",
+    "db:supabase:diff": "npm exec -w @rfh/api -- prisma migrate diff --from-empty --to-schema-datamodel prisma/schema.prisma --script"
   }
 }

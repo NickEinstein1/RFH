@@ -10,3 +10,5 @@ coverage/
 apps/api/prisma/*.db
 apps/web/dist/
 .tmp-back-mar/
+supabase/.temp/
+supabase/.branches/

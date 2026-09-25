@@ -37,20 +37,30 @@ export class AuthService {
 
   async registerTenant(dto: RegisterTenantDto, req?: { ip?: string; headers?: Record<string, string | string[] | undefined> }) {
     return this.prisma.runWithBypass(async () => {
-      const existing = await this.prisma.db.tenant.findFirst({
-        where: { name: dto.tenantName },
+      const email = dto.email.toLowerCase().trim();
+      const tenantName = dto.tenantName.trim();
+
+      const existingTenant = await this.prisma.db.tenant.findFirst({
+        where: { name: tenantName },
       });
-      if (existing) {
-        throw new ConflictException('Tenant name already exists');
+      if (existingTenant) {
+        throw new ConflictException('A facility with this name already exists');
+      }
+
+      const existingEmail = await this.prisma.db.user.findFirst({
+        where: { email, deletedAt: null },
+      });
+      if (existingEmail) {
+        throw new ConflictException('An account with this email already exists');
       }
 
       const passwordHash = await bcrypt.hash(dto.password, 12);
       const organization = await this.prisma.db.organization.create({
-        data: { name: `${dto.tenantName} Organization` },
+        data: { name: `${tenantName} Organization` },
       });
       const tenant = await this.prisma.db.tenant.create({
         data: {
-          name: dto.tenantName,
+          name: tenantName,
           timezone: dto.timezone ?? 'America/Los_Angeles',
           organizationId: organization.id,
         },
@@ -58,11 +68,11 @@ export class AuthService {
       const user = await this.prisma.db.user.create({
         data: {
           tenantId: tenant.id,
-          email: dto.email.toLowerCase(),
+          email,
           passwordHash,
           role: Role.OWNER,
-          firstName: dto.firstName,
-          lastName: dto.lastName,
+          firstName: dto.firstName.trim(),
+          lastName: dto.lastName.trim(),
         },
       });
 
@@ -526,13 +536,22 @@ export class AuthService {
     }));
   }
 
-  private async issueTokens(user: { id: string; tenantId: string; email: string; role: Role }) {
+  private async issueTokens(user: {
+    id: string;
+    tenantId: string;
+    email: string;
+    role: Role;
+    firstName: string;
+    lastName: string;
+  }) {
     const accessToken = await this.jwt.signAsync(
       {
         sub: user.id,
         tenantId: user.tenantId,
         email: user.email,
         role: user.role,
+        firstName: user.firstName,
+        lastName: user.lastName,
       },
       {
         secret: this.config.getOrThrow('JWT_ACCESS_SECRET'),

@@ -22,8 +22,17 @@ export class AuthController {
   constructor(private readonly auth: AuthService) {}
 
   @Public()
+  @Throttle({ default: { limit: 5, ttl: 60_000 } })
   @Post('register-tenant')
   registerTenant(@Body() dto: RegisterTenantDto, @Req() req: Request) {
+    return this.auth.registerTenant(dto, req);
+  }
+
+  /** Public AFH owner signup (alias of register-tenant). */
+  @Public()
+  @Throttle({ default: { limit: 5, ttl: 60_000 } })
+  @Post('signup')
+  signup(@Body() dto: RegisterTenantDto, @Req() req: Request) {
     return this.auth.registerTenant(dto, req);
   }
 

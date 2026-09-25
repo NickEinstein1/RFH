@@ -1,0 +1,22 @@
+{
+  "source": "Admission-Agreement_Medicaid-TEMPLATE-02.06.2026.docx",
+  "documentTitle": "RESIDENT ADMISSION AGREEMENT (MEDICAID AS A PAYOR SOURCE)",
+  "path": "docs/templates/Admission-Agreement_Medicaid-TEMPLATE-02.06.2026.docx",
+  "webPath": "/templates/Admission-Agreement_Medicaid-TEMPLATE-02.06.2026.docx",
+  "jurisdiction": "Washington AFH — RCW 70.128 / 70.129 / WAC 388-76",
+  "exhibits": [
+    "Exhibit 1: Basic Services Rate items",
+    "Exhibit 2: Additional services not in basic rate",
+    "Exhibit 3: Resident rights notification",
+    "Exhibit 4: Home rules and policies"
+  ],
+  "placeholderFields": [
+    "Insert name of Home or Provider",
+    "Insert name of Resident",
+    "Insert address of Home",
+    "Insert AFH License number",
+    "Insert Date of Admission",
+    "Enter basic services monthly rate",
+    "Enter total monthly rate"
+  ]
+}

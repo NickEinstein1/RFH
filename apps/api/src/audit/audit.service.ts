@@ -58,6 +58,32 @@ export class AuditService {
     });
   }
 
+  /** Fire-and-forget audit for hot read/list paths (avoids extra remote DB RTT). */
+  logForUserDeferred(
+    user: AuthUser,
+    action: string,
+    resourceType: string,
+    resourceId: string | null,
+    metadata?: Prisma.InputJsonValue,
+    req?: { ip?: string; headers?: Record<string, string | string[] | undefined> },
+  ) {
+    const ua = req?.headers?.['user-agent'];
+    const payload: AuditWriteInput = {
+      tenantId: user.tenantId,
+      actorId: user.id,
+      action,
+      resourceType,
+      resourceId,
+      metadata,
+      ip: req?.ip,
+      userAgent: Array.isArray(ua) ? ua[0] : ua,
+    };
+    // Own short bypass txn so this still works after the request RLS txn ends.
+    void this.prisma
+      .runWithBypass(async () => this.log(payload))
+      .catch(() => undefined);
+  }
+
   async findForTenant(
     tenantId: string,
     opts: { take?: number; cursor?: string; resourceType?: string } = {},

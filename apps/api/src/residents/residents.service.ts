@@ -52,13 +52,41 @@ export class ResidentsService {
         deletedAt: null,
         ...(linkedIds ? { id: { in: linkedIds } } : {}),
       },
+      select: {
+        id: true,
+        tenantId: true,
+        firstName: true,
+        lastName: true,
+        dateOfBirth: true,
+        sex: true,
+        mrn: true,
+        room: true,
+        status: true,
+        admitDate: true,
+        allergies: true,
+        photoUrl: true,
+        deletedAt: true,
+        createdAt: true,
+        updatedAt: true,
+      },
       orderBy: [{ lastName: 'asc' }, { firstName: 'asc' }],
     });
-    await this.audit.logForUser(user, 'resident.list', 'Resident', null, {
+    this.audit.logForUserDeferred(user, 'resident.list', 'Resident', null, {
       count: residents.length,
       familyScoped: Boolean(linkedIds),
     }, req);
-    return residents.map((r) => this.reveal(r));
+    // Strip bulky inline data-URL photos from census; keep routed /api/media paths.
+    return residents.map((r) =>
+      this.reveal({
+        ...r,
+        photoUrl:
+          r.photoUrl && r.photoUrl.startsWith('/api/media/')
+            ? r.photoUrl
+            : r.photoUrl && r.photoUrl.startsWith('data:')
+              ? null
+              : r.photoUrl,
+      }),
+    );
   }
 
   async findOne(user: AuthUser, id: string, req?: Request) {

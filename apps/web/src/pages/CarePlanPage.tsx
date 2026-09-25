@@ -8,6 +8,11 @@ import {
 } from '../templates/negotiatedCarePlan';
 import { formatUsDate } from '../usDate';
 
+function staffDisplayName(user: { firstName?: string; lastName?: string; tenantName?: string } | null | undefined) {
+  const full = `${user?.firstName || ''} ${user?.lastName || ''}`.trim();
+  return full || user?.tenantName || '';
+}
+
 type Resident = {
   id: string;
   firstName: string;
@@ -111,7 +116,7 @@ export function CarePlanPage() {
             residentName: p.resident
               ? `${p.resident.lastName}, ${p.resident.firstName}`
               : '',
-            providerName: user?.tenantName,
+            providerName: staffDisplayName(user),
           }),
       );
       setMode('edit');
@@ -135,14 +140,14 @@ export function CarePlanPage() {
       setForm(
         blankNegotiatedCarePlan({
           residentName: `${resident.lastName}, ${resident.firstName}`,
-          providerName: user?.tenantName,
-          dateOfBirth: resident.dateOfBirth?.slice(0, 10),
-          admissionDate: resident.admitDate?.slice(0, 10),
+          providerName: staffDisplayName(user),
+          dateOfBirth: formatUsDate(resident.dateOfBirth),
+          admissionDate: formatUsDate(resident.admitDate),
         }),
       );
       setTitle(`Negotiated Care Plan — ${resident.lastName}, ${resident.firstName}`);
     }
-  }, [params, resident, form, mode, planId, user?.tenantName]);
+  }, [params, resident, form, mode, planId, user]);
 
   function startNew() {
     if (!resident) return;
@@ -150,9 +155,9 @@ export function CarePlanPage() {
     setForm(
       blankNegotiatedCarePlan({
         residentName: `${resident.lastName}, ${resident.firstName}`,
-        providerName: user?.tenantName,
-        dateOfBirth: resident.dateOfBirth?.slice(0, 10),
-        admissionDate: resident.admitDate?.slice(0, 10),
+        providerName: staffDisplayName(user),
+        dateOfBirth: formatUsDate(resident.dateOfBirth),
+        admissionDate: formatUsDate(resident.admitDate),
       }),
     );
     setTitle(`Negotiated Care Plan — ${resident.lastName}, ${resident.firstName}`);

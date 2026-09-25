@@ -24,11 +24,18 @@ npm run dev:web   # http://localhost:5173
 
 ### Demo logins (password `Password123!`)
 
-| Email | Role |
-|-------|------|
-| owner@sunrise.demo | OWNER |
-| nurse@sunrise.demo | NURSE |
-| care@sunrise.demo | CAREGIVER |
-| family@sunrise.demo | FAMILY_VIEWER |
+| Email | Role | Facility |
+|-------|------|----------|
+| owner@sunrise.demo | OWNER | Sunrise Adult Family Home |
+| nurse@sunrise.demo | NURSE | Sunrise Adult Family Home |
+| care@sunrise.demo | CAREGIVER | Sunrise Adult Family Home |
+| family@sunrise.demo | FAMILY_VIEWER | Sunrise Adult Family Home |
 
-Facility: `Sunrise Adult Family Home`
+### Loving Garden AFH
+
+| Email | Password | Role |
+|-------|----------|------|
+| lovinggardenafh@gmail.com | LovinggardenAFH_2026 | OWNER (Jane Mburu) |
+
+Facility chart packets: `Loving garden documents/`
+
