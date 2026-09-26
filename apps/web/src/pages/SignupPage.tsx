@@ -1,6 +1,7 @@
-import { useState, type FormEvent } from 'react';
+import { useMemo, useState, type FormEvent } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { useAuth } from '../auth';
+import { AuthFrame, PasswordHint } from '../components/AuthFrame';
 
 const TIMEZONES = [
   'America/Los_Angeles',
@@ -11,6 +12,16 @@ const TIMEZONES = [
   'Pacific/Honolulu',
 ] as const;
 
+function passwordIssues(password: string): string[] {
+  const issues: string[] = [];
+  if (password.length < 12) issues.push('at least 12 characters');
+  if (!/[a-z]/.test(password)) issues.push('a lowercase letter');
+  if (!/[A-Z]/.test(password)) issues.push('an uppercase letter');
+  if (!/\d/.test(password)) issues.push('a number');
+  if (!/[^A-Za-z0-9]/.test(password)) issues.push('a symbol');
+  return issues;
+}
+
 export function SignupPage() {
   const { user, signup } = useAuth();
   const [tenantName, setTenantName] = useState('');
@@ -19,8 +30,11 @@ export function SignupPage() {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirm, setConfirm] = useState('');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+
+  const issues = useMemo(() => passwordIssues(password), [password]);
 
   if (user) return <Navigate to="/today" replace />;
 
@@ -29,12 +43,18 @@ export function SignupPage() {
     setBusy(true);
     setError('');
     try {
+      if (issues.length) {
+        throw new Error(`Password needs ${issues.join(', ')}.`);
+      }
+      if (password !== confirm) {
+        throw new Error('Passwords do not match.');
+      }
       await signup({
         tenantName: tenantName.trim(),
         timezone,
         firstName: firstName.trim(),
         lastName: lastName.trim(),
-        email: email.trim(),
+        email: email.trim().toLowerCase(),
         password,
       });
     } catch (err) {
@@ -45,27 +65,21 @@ export function SignupPage() {
   }
 
   return (
-    <div className="auth-split">
-      <aside className="auth-split-visual" aria-hidden="true">
-        <img src="/images/rfh-login-care-hero.jpg" alt="" width={1280} height={720} />
-        <div className="auth-split-veil" />
-        <div className="auth-split-copy">
-          <p className="login-brand-mark">RFH Care</p>
-          <p className="login-visual-title">Open your adult family home on RFH</p>
-        </div>
-      </aside>
-
-      <form className="login-panel auth-form" onSubmit={onSubmit}>
+    <AuthFrame visualLine="Register your adult family home as the owner.">
+      <form className="auth-form" onSubmit={onSubmit} noValidate>
         <Link to="/" className="auth-back">
           ← RFH Care
         </Link>
-        <p className="login-brand">Sign up</p>
-        <h1 className="login-facility">Create your facility</h1>
-        <p className="login-lede">
-          Register as the home owner. You can invite nurses and caregivers after you sign in.
+        <h1 className="auth-form-title">Create your home</h1>
+        <p className="auth-form-lede">
+          One owner account starts the facility. Invite nurses and caregivers after you sign in.
         </p>
 
-        {error ? <div className="error">{error}</div> : null}
+        {error ? (
+          <div className="error" role="alert">
+            {error}
+          </div>
+        ) : null}
 
         <div className="field">
           <label htmlFor="tenantName">Facility name</label>
@@ -73,7 +87,7 @@ export function SignupPage() {
             id="tenantName"
             value={tenantName}
             onChange={(e) => setTenantName(e.target.value)}
-            placeholder="e.g. Sunrise Adult Family Home"
+            placeholder="Exact licensed home name"
             required
             minLength={2}
             autoComplete="organization"
@@ -120,7 +134,9 @@ export function SignupPage() {
             onChange={(e) => setEmail(e.target.value)}
             required
             autoComplete="email"
+            placeholder="owner@yourfacility.com"
           />
+          <p className="field-hint">This email is how you sign in — it binds you to this facility.</p>
         </div>
         <div className="field">
           <label htmlFor="password">Password</label>
@@ -133,9 +149,19 @@ export function SignupPage() {
             minLength={12}
             autoComplete="new-password"
           />
-          <p className="field-hint">
-            At least 12 characters with upper, lower, number, and symbol.
-          </p>
+          <PasswordHint />
+        </div>
+        <div className="field">
+          <label htmlFor="confirm">Confirm password</label>
+          <input
+            id="confirm"
+            type="password"
+            value={confirm}
+            onChange={(e) => setConfirm(e.target.value)}
+            required
+            minLength={12}
+            autoComplete="new-password"
+          />
         </div>
 
         <div className="login-actions">
@@ -143,10 +169,10 @@ export function SignupPage() {
             {busy ? 'Creating home…' : 'Create account'}
           </button>
           <p className="auth-switch">
-            Already have an account? <Link to="/login">Sign in</Link>
+            Already registered? <Link to="/login">Sign in</Link>
           </p>
         </div>
       </form>
-    </div>
+    </AuthFrame>
   );
 }

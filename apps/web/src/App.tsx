@@ -214,7 +214,7 @@ function Shell() {
       ) : null}
       {showSecurity ? (
         <div className="security-banner">
-          Security: TLS at proxy · JWT + PHI keys in env · SMTP / fax optional · see docs/hipaa-ops.md
+          Session protected · idle timeout active · tenant-scoped access
         </div>
       ) : null}
       <main className="main">

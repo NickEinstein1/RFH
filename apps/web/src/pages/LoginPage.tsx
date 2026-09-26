@@ -2,8 +2,7 @@ import { useEffect, useState, type FormEvent } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { api } from '../api';
 import { useAuth } from '../auth';
-
-const HERO_SRC = '/images/rfh-login-care-hero.jpg';
+import { AuthFrame, PasswordHint } from '../components/AuthFrame';
 
 export function LoginPage() {
   const { user, login } = useAuth();
@@ -13,46 +12,18 @@ export function LoginPage() {
   const [busy, setBusy] = useState(false);
   const [mode, setMode] = useState<'login' | 'reset'>('login');
   const [resetMsg, setResetMsg] = useState('');
-  const [heroReady, setHeroReady] = useState(false);
-  const [heroFailed, setHeroFailed] = useState(false);
 
   useEffect(() => {
-    const existing = document.querySelector(`link[data-rfh-hero="login"]`);
+    const existing = document.querySelector(`link[data-rfh-hero="auth"]`);
     if (existing) return;
     const link = document.createElement('link');
     link.rel = 'preload';
     link.as = 'image';
-    link.href = HERO_SRC;
-    link.setAttribute('data-rfh-hero', 'login');
+    link.href = '/images/rfh-login-care-hero.jpg';
+    link.setAttribute('data-rfh-hero', 'auth');
     document.head.appendChild(link);
     return () => {
       link.remove();
-    };
-  }, []);
-
-  useEffect(() => {
-    let cancelled = false;
-    const img = new Image();
-    img.decoding = 'async';
-    img.fetchPriority = 'high';
-    img.onload = () => {
-      if (!cancelled) {
-        setHeroReady(true);
-        setHeroFailed(false);
-      }
-    };
-    img.onerror = () => {
-      if (!cancelled) {
-        setHeroFailed(true);
-        setHeroReady(false);
-      }
-    };
-    img.src = HERO_SRC;
-    if (img.complete && img.naturalWidth > 0) {
-      setHeroReady(true);
-    }
-    return () => {
-      cancelled = true;
     };
   }, []);
 
@@ -64,17 +35,17 @@ export function LoginPage() {
     setError('');
     setResetMsg('');
     try {
+      const normalized = email.trim().toLowerCase();
       if (mode === 'reset') {
         await api('/auth/password-reset/request', {
           method: 'POST',
-          body: JSON.stringify({ email }),
+          body: JSON.stringify({ email: normalized }),
         });
         setResetMsg(
           'If an account exists for that email, a reset link was sent (or logged when SMTP is off).',
         );
       } else {
-        // Email alone resolves the facility relationship on the server.
-        await login(email, password);
+        await login(normalized, password);
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Request failed');
@@ -84,56 +55,28 @@ export function LoginPage() {
   }
 
   return (
-    <div
-      className={`login-stage ${heroReady ? 'is-hero-ready' : ''} ${heroFailed ? 'is-hero-fallback' : ''}`}
-    >
-      <div className="login-hero" aria-hidden="true">
-        <div className="login-hero__fallback" />
-        {!heroFailed ? (
-          <img
-            className="login-hero__photo"
-            src={HERO_SRC}
-            alt=""
-            width={1280}
-            height={720}
-            decoding="async"
-            loading="eager"
-            fetchPriority="high"
-            onLoad={() => setHeroReady(true)}
-            onError={() => {
-              setHeroFailed(true);
-              setHeroReady(false);
-            }}
-          />
-        ) : null}
-        <div className="login-hero__veil" />
-        <div className="login-hero__grain" />
-      </div>
-
-      <section className="login-visual">
-        <Link to="/" className="login-brand-mark login-brand-link">
-          RFH Care
+    <AuthFrame visualLine="Sign in with the email on your facility account.">
+      <form className="auth-form" onSubmit={onSubmit} noValidate>
+        <Link to="/" className="auth-back">
+          ← RFH Care
         </Link>
-        <h1 className="login-visual-title">Presence for every med pass</h1>
-        <p className="login-visual-copy">
-          Built for adult family homes — calm charting, trusted handoffs, and room to care.
-        </p>
-      </section>
-
-      <form className="login-panel page-enter" onSubmit={onSubmit}>
-        <p className="login-brand">Sign in</p>
-        <h2 className="login-facility">Welcome back</h2>
-        <p className="login-caregiver login-caregiver--muted">
-          Use the email on your facility account — we’ll open the right home automatically.
-        </p>
-        <p className="login-lede">
+        <h1 className="auth-form-title">{mode === 'login' ? 'Sign in' : 'Reset password'}</h1>
+        <p className="auth-form-lede">
           {mode === 'login'
-            ? 'Enter your email and password to open today’s care board.'
-            : 'Enter your email and we’ll send a reset link if an account exists.'}
+            ? 'Your email opens the correct home. Multi-home owners switch facilities after sign-in.'
+            : 'We’ll email a reset link if that address is registered.'}
         </p>
 
-        {error ? <div className="error">{error}</div> : null}
-        {resetMsg ? <div className="toast toast-success">{resetMsg}</div> : null}
+        {error ? (
+          <div className="error" role="alert">
+            {error}
+          </div>
+        ) : null}
+        {resetMsg ? (
+          <div className="toast toast-success" role="status">
+            {resetMsg}
+          </div>
+        ) : null}
 
         <div className="field">
           <label htmlFor="email">Email</label>
@@ -158,6 +101,7 @@ export function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               autoComplete="current-password"
               required
+              minLength={8}
             />
           </div>
         ) : null}
@@ -177,13 +121,12 @@ export function LoginPage() {
           >
             {mode === 'login' ? 'Forgot password?' : 'Back to sign in'}
           </button>
+          {mode === 'login' ? <PasswordHint /> : null}
           <p className="auth-switch">
             New home? <Link to="/signup">Create an account</Link>
-            {' · '}
-            <Link to="/">Landing</Link>
           </p>
         </div>
       </form>
-    </div>
+    </AuthFrame>
   );
 }

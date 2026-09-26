@@ -38,10 +38,13 @@ export class AuthService {
   async registerTenant(dto: RegisterTenantDto, req?: { ip?: string; headers?: Record<string, string | string[] | undefined> }) {
     return this.prisma.runWithBypass(async () => {
       const email = dto.email.toLowerCase().trim();
-      const tenantName = dto.tenantName.trim();
+      const tenantName = dto.tenantName.trim().replace(/\s+/g, ' ');
+      if (tenantName.length < 2) {
+        throw new BadRequestException('Facility name is required');
+      }
 
       const existingTenant = await this.prisma.db.tenant.findFirst({
-        where: { name: tenantName },
+        where: { name: { equals: tenantName, mode: 'insensitive' } },
       });
       if (existingTenant) {
         throw new ConflictException('A facility with this name already exists');
@@ -51,7 +54,9 @@ export class AuthService {
         where: { email, deletedAt: null },
       });
       if (existingEmail) {
-        throw new ConflictException('An account with this email already exists');
+        throw new ConflictException(
+          'An account with this email already exists — sign in instead',
+        );
       }
 
       const passwordHash = await bcrypt.hash(dto.password, 12);
@@ -61,7 +66,7 @@ export class AuthService {
       const tenant = await this.prisma.db.tenant.create({
         data: {
           name: tenantName,
-          timezone: dto.timezone ?? 'America/Los_Angeles',
+          timezone: dto.timezone?.trim() || 'America/Los_Angeles',
           organizationId: organization.id,
         },
       });
