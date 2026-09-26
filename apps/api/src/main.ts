@@ -1,5 +1,10 @@
+import { existsSync } from 'fs';
 import { config as loadEnv } from 'dotenv';
-loadEnv({ path: '.env', override: true });
+
+// Never override platform env (Vercel). Only fill gaps from a local .env in development.
+if (existsSync('.env')) {
+  loadEnv({ path: '.env', override: process.env.NODE_ENV !== 'production' });
+}
 
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
@@ -8,8 +13,11 @@ import helmet from 'helmet';
 import { json, urlencoded, static as expressStatic } from 'express';
 import { join } from 'path';
 import { AppModule } from './app.module';
+import { assertRequiredEnv } from './common/env';
 
 async function bootstrap() {
+  assertRequiredEnv();
+
   const app = await NestFactory.create(AppModule, { bodyParser: false });
   const config = app.get(ConfigService);
 
@@ -61,4 +69,9 @@ async function bootstrap() {
   // eslint-disable-next-line no-console
   console.log(`RFH API listening on http://localhost:${port}/api`);
 }
-bootstrap();
+
+bootstrap().catch((err) => {
+  // eslint-disable-next-line no-console
+  console.error('[RFH API] bootstrap failed:', err instanceof Error ? err.message : err);
+  process.exit(1);
+});

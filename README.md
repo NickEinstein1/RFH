@@ -22,6 +22,14 @@ npm run dev:api   # http://localhost:3000/api
 npm run dev:web   # http://localhost:5173
 ```
 
+## Deploy API (Vercel)
+
+Project root directory must be `apps/api`. Required env vars:
+
+`DATABASE_URL`, `DIRECT_URL`, `JWT_ACCESS_SECRET`, `JWT_REFRESH_SECRET`, `PHI_FIELD_KEY`, `CORS_ORIGIN`, `NODE_ENV=production`
+
+After deploy, confirm `GET /api/health` returns `{ "status": "ok", ... }`. Missing secrets crash boot with a clear log line (not a silent 500).
+
 ### Demo logins (password `Password123!`)
 
 | Email | Role | Facility |
