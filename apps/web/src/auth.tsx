@@ -74,7 +74,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       homes?: HomeSummary[];
     }>('/auth/login', {
       method: 'POST',
-      body: JSON.stringify({ email, password, tenantName }),
+      body: JSON.stringify(
+        tenantName ? { email, password, tenantName } : { email, password },
+      ),
     });
     const nextHomes = result.homes || [];
     setSession(result.accessToken, result.refreshToken, result.user, nextHomes);

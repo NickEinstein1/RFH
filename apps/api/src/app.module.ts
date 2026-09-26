@@ -18,6 +18,7 @@ import { DownloadsModule } from './downloads/downloads.module';
 import { MailModule } from './mail/mail.module';
 import { FamilyModule } from './family/family.module';
 import { TenancyModule } from './tenancy/tenancy.module';
+import { IntegrationsModule } from './integrations/integrations.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { PermissionsGuard } from './common/guards/permissions.guard';
 import { TenantRlsInterceptor } from './tenancy/tenant-rls.interceptor';
@@ -49,6 +50,7 @@ import { HealthController } from './health.controller';
     ReportsModule,
     DownloadsModule,
     FamilyModule,
+    IntegrationsModule,
   ],
   controllers: [HealthController],
   providers: [

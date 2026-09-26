@@ -293,8 +293,8 @@ export function DownloadsPage() {
           </a>
         </div>
         <p className="meta" style={{ marginTop: '0.75rem' }}>
-          Loving Garden facility chart packets and signed Word sources are kept in the repo folder{' '}
-          <code>Loving garden documents</code> (care plans, CBHS notes, resident info sheets, and photos).
+          Facility chart packets (care plans, CBHS notes, resident info) are stored per home in the
+          charting modules and Downloads exports — not tied to a single demo facility.
         </p>
       </section>
     </div>

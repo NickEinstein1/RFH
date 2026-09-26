@@ -19,6 +19,8 @@ export const Permissions = {
   INCIDENTS_WRITE: 'incidents:write',
   INCIDENTS_CLOSE: 'incidents:close',
   REPORTS_READ: 'reports:read',
+  INTEGRATIONS_MANAGE: 'integrations:manage',
+  FAX_SEND: 'fax:send',
 } as const;
 
 export type Permission = (typeof Permissions)[keyof typeof Permissions];
@@ -57,6 +59,7 @@ export const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
     Permissions.INCIDENTS_CLOSE,
     Permissions.REPORTS_READ,
     Permissions.AUDIT_READ,
+    Permissions.FAX_SEND,
   ],
   [Role.CAREGIVER]: STAFF_CLINICAL,
   [Role.FAMILY_VIEWER]: [

@@ -729,6 +729,9 @@ export class EmarService {
     return {
       facilityName: tenant.name,
       timezone: tenant.timezone,
+      pharmacyName: tenant.pharmacyName,
+      pharmacyPhone: tenant.pharmacyPhone,
+      pharmacyFax: tenant.pharmacyFax,
       month: monthYm,
       daysInMonth,
       dayNumbers,

@@ -139,30 +139,68 @@ enum IncidentStatus {
   CLOSED
 }
 
+enum FaxJobStatus {
+  QUEUED
+  SENDING
+  SENT
+  FAILED
+  CANCELLED
+}
+
+enum PharmacyNetwork {
+  MANUAL_FAX
+  LINCOLN
+  READY_MEDS
+  CVS
+  WALGREENS
+  PIONEER_RX
+  QS1
+  SURESCRIPTS
+  OTHER
+}
+
+enum TransmitStatus {
+  DRAFT
+  FAX_QUEUED
+  FAX_SENT
+  ERX_SUBMITTED
+  FAILED
+}
+
 model Tenant {
   id             String   @id @default(cuid())
   name           String
   timezone       String   @default("America/Los_Angeles")
   organizationId String?
+  /// Default dispensing pharmacy shown on MAR / charts
+  pharmacyName   String?
+  pharmacyPhone  String?
+  pharmacyFax    String?
+  pharmacyNpi    String?
+  /// Facility outbound fax number (caller ID / cover sheet)
+  facilityFax    String?
+  faxEnabled     Boolean  @default(false)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  organization       Organization?        @relation(fields: [organizationId], references: [id])
-  users              User[]
-  residents          Resident[]
-  medicationOrders   MedicationOrder[]
-  medAdministrations MedAdministration[]
-  medAlerts          MedAlert[]
-  progressNotes      ProgressNote[]
-  auditLogs          AuditLog[]
-  carePlans          CarePlan[]
-  careTasks          CareTask[]
-  taskCompletions    TaskCompletion[]
-  staffCredentials   StaffCredential[]
-  credentialAlerts   CredentialAlert[]
-  familyLinks        FamilyResidentLink[]
-  incidents          Incident[]
-  medOrderIntakes    MedOrderIntake[]
+  organization        Organization?         @relation(fields: [organizationId], references: [id])
+  users               User[]
+  residents           Resident[]
+  medicationOrders    MedicationOrder[]
+  medAdministrations  MedAdministration[]
+  medAlerts           MedAlert[]
+  progressNotes       ProgressNote[]
+  auditLogs           AuditLog[]
+  carePlans           CarePlan[]
+  careTasks           CareTask[]
+  taskCompletions     TaskCompletion[]
+  staffCredentials    StaffCredential[]
+  credentialAlerts    CredentialAlert[]
+  familyLinks         FamilyResidentLink[]
+  incidents           Incident[]
+  medOrderIntakes     MedOrderIntake[]
+  pharmacyConnections PharmacyConnection[]
+  faxJobs             FaxJob[]
 
   @@index([organizationId])
 }
@@ -205,6 +243,7 @@ model User {
   incidentsReported  Incident[]           @relation("IncidentReportedBy")
   medOrderIntakesUploaded MedOrderIntake[] @relation("MedOrderIntakeUploadedBy")
   medOrderIntakesReviewed MedOrderIntake[] @relation("MedOrderIntakeReviewedBy")
+  faxJobsCreated     FaxJob[]             @relation("FaxJobCreatedBy")
 
   @@unique([tenantId, email])
   @@index([tenantId, deletedAt])
@@ -337,17 +376,26 @@ model MedicationOrder {
   highAlert     Boolean        @default(false)
   status        MedOrderStatus @default(ACTIVE)
   intakeId      String?
+  pharmacyConnectionId String?
+  transmitStatus       TransmitStatus @default(DRAFT)
+  lastTransmittedAt    DateTime?
+  pharmacyNpi          String?
+  pharmacyFax          String?
   deletedAt     DateTime?
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
 
-  tenant          Tenant              @relation(fields: [tenantId], references: [id])
-  resident        Resident            @relation(fields: [residentId], references: [id])
-  intake          MedOrderIntake?     @relation(fields: [intakeId], references: [id])
-  administrations MedAdministration[]
+  tenant              Tenant               @relation(fields: [tenantId], references: [id])
+  resident            Resident             @relation(fields: [residentId], references: [id])
+  intake              MedOrderIntake?      @relation(fields: [intakeId], references: [id])
+  pharmacyConnection  PharmacyConnection?  @relation(fields: [pharmacyConnectionId], references: [id])
+  administrations     MedAdministration[]
+  faxJobs             FaxJob[]
 
   @@index([tenantId, residentId, status, deletedAt])
   @@index([intakeId])
+  @@index([tenantId, pharmacyConnectionId])
+  @@index([tenantId, transmitStatus])
 }
 
 model MedAdministration {
@@ -583,4 +631,63 @@ model AuditLog {
   @@index([tenantId, createdAt])
   @@index([tenantId, resourceType, resourceId])
   @@index([tenantId, actorId, createdAt])
+}
+
+/// Per-home pharmacy / eRx / fax endpoint (market networks + manual fax fallback).
+model PharmacyConnection {
+  id           String          @id @default(cuid())
+  tenantId     String
+  network      PharmacyNetwork @default(MANUAL_FAX)
+  displayName  String
+  npi          String?
+  phone        String?
+  fax          String?
+  apiBaseUrl   String?
+  /// Opaque encrypted credentials or env-key reference — never log plaintext.
+  credentialsEnc String?       @db.Text
+  isDefault    Boolean         @default(false)
+  isActive     Boolean         @default(true)
+  settings     Json?
+  deletedAt    DateTime?
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  tenant Tenant            @relation(fields: [tenantId], references: [id])
+  orders MedicationOrder[]
+
+  @@index([tenantId, isActive, deletedAt])
+  @@index([tenantId, network])
+}
+
+/// Outbound fax queue (CBHS, MAR, Rx cover sheets, care plans).
+model FaxJob {
+  id                String       @id @default(cuid())
+  tenantId          String
+  createdById       String
+  toFaxNumber       String
+  fromFaxNumber     String?
+  subject           String
+  documentType      String
+  documentId        String?
+  medicationOrderId String?
+  status            FaxJobStatus @default(QUEUED)
+  provider          String       @default("noop")
+  providerJobId     String?
+  errorMessage      String?
+  pageCount         Int?
+  coverNote         String?      @db.Text
+  /// Local path or object-store key for the rendered PDF payload
+  mediaPath         String?
+  sentAt            DateTime?
+  deletedAt         DateTime?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+
+  tenant          Tenant           @relation(fields: [tenantId], references: [id])
+  createdBy       User             @relation("FaxJobCreatedBy", fields: [createdById], references: [id])
+  medicationOrder MedicationOrder? @relation(fields: [medicationOrderId], references: [id])
+
+  @@index([tenantId, status, createdAt])
+  @@index([tenantId, documentType, documentId])
+  @@index([medicationOrderId])
 }

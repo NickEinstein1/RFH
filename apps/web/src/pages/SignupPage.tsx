@@ -73,7 +73,7 @@ export function SignupPage() {
             id="tenantName"
             value={tenantName}
             onChange={(e) => setTenantName(e.target.value)}
-            placeholder="e.g. Loving Garden AFH"
+            placeholder="e.g. Sunrise Adult Family Home"
             required
             minLength={2}
             autoComplete="organization"

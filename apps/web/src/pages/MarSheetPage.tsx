@@ -57,6 +57,9 @@ type PrnEntry = {
 
 type MarSheet = {
   facilityName: string;
+  pharmacyName?: string | null;
+  pharmacyPhone?: string | null;
+  pharmacyFax?: string | null;
   month: string;
   dayNumbers: number[];
   legend: { given: string; notGiven: string; blankOrMissed: string; note: string };
@@ -509,7 +512,10 @@ export function MarSheetPage() {
                   ))}
                 </ul>
                 <p className="meta">
-                  Emergency 911 · Poison Control (800) 222-1222 · Lincoln Pharmacy 253.473.1155
+                  Emergency 911 · Poison Control (800) 222-1222
+                  {sheet.pharmacyName || sheet.pharmacyPhone
+                    ? ` · ${[sheet.pharmacyName, sheet.pharmacyPhone].filter(Boolean).join(' ')}`
+                    : ' · Pharmacy on file via Integrations'}
                 </p>
               </section>
               <section>

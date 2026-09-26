@@ -107,29 +107,87 @@ export class AuthService {
 
   async login(dto: LoginDto, req?: { ip?: string; headers?: Record<string, string | string[] | undefined> }) {
     return this.prisma.runWithBypass(async () => {
-      const email = dto.email.toLowerCase();
-      const users = await this.prisma.db.user.findMany({
+      const email = dto.email.toLowerCase().trim();
+      // Facility is resolved from email — no tenant picker on sign-in.
+      const candidates = await this.prisma.db.user.findMany({
         where: {
           email,
           isActive: true,
           deletedAt: null,
-          ...(dto.tenantName
-            ? { tenant: { name: dto.tenantName } }
-            : {}),
+          ...(dto.tenantName ? { tenant: { name: dto.tenantName } } : {}),
         },
         include: { tenant: true },
+        orderBy: [{ role: 'asc' }, { createdAt: 'asc' }],
       });
 
-      if (users.length === 0) {
+      if (candidates.length === 0) {
         throw new UnauthorizedException('Invalid credentials');
       }
-      if (users.length > 1 && !dto.tenantName) {
-        throw new UnauthorizedException(
-          'Multiple facilities found for this email — provide tenantName',
-        );
+
+      // Verify password against matching accounts; email alone forms the facility link.
+      const matched: typeof candidates = [];
+      for (const candidate of candidates) {
+        if (await bcrypt.compare(dto.password, candidate.passwordHash)) {
+          matched.push(candidate);
+        }
       }
 
-      const user = users[0];
+      if (matched.length === 0) {
+        const primary = candidates[0];
+        if (primary.lockedUntil && primary.lockedUntil.getTime() > Date.now()) {
+          await this.audit.log({
+            tenantId: primary.tenantId,
+            actorId: primary.id,
+            action: 'auth.login_locked',
+            resourceType: 'User',
+            resourceId: primary.id,
+            metadata: { lockedUntil: primary.lockedUntil.toISOString() },
+            ip: req?.ip,
+            userAgent: header(req?.headers, 'user-agent'),
+          });
+          throw new UnauthorizedException(
+            'Account temporarily locked after failed sign-in attempts. Try again later.',
+          );
+        }
+        const failedLoginCount = primary.failedLoginCount + 1;
+        const lockedUntil =
+          failedLoginCount >= MAX_FAILED_LOGINS
+            ? new Date(Date.now() + LOCKOUT_MS)
+            : null;
+        await this.prisma.db.user.update({
+          where: { id: primary.id },
+          data: {
+            failedLoginCount,
+            ...(lockedUntil ? { lockedUntil } : {}),
+          },
+        });
+        await this.audit.log({
+          tenantId: primary.tenantId,
+          actorId: primary.id,
+          action: 'auth.login_failed',
+          resourceType: 'User',
+          resourceId: primary.id,
+          metadata: {
+            reason: 'bad_password',
+            failedLoginCount,
+            locked: Boolean(lockedUntil),
+          },
+          ip: req?.ip,
+          userAgent: header(req?.headers, 'user-agent'),
+        });
+        throw new UnauthorizedException('Invalid credentials');
+      }
+
+      // Prefer OWNER, then earliest account — multi-home users switch via home switcher.
+      const roleRank = (role: string) =>
+        role === 'OWNER' ? 0 : role === 'ADMIN' ? 1 : role === 'NURSE' ? 2 : 3;
+      matched.sort(
+        (a, b) =>
+          roleRank(a.role) - roleRank(b.role) ||
+          a.createdAt.getTime() - b.createdAt.getTime(),
+      );
+      const user = matched[0];
+
       if (user.lockedUntil && user.lockedUntil.getTime() > Date.now()) {
         await this.audit.log({
           tenantId: user.tenantId,
@@ -144,37 +202,6 @@ export class AuthService {
         throw new UnauthorizedException(
           'Account temporarily locked after failed sign-in attempts. Try again later.',
         );
-      }
-
-      const match = await bcrypt.compare(dto.password, user.passwordHash);
-      if (!match) {
-        const failedLoginCount = user.failedLoginCount + 1;
-        const lockedUntil =
-          failedLoginCount >= MAX_FAILED_LOGINS
-            ? new Date(Date.now() + LOCKOUT_MS)
-            : null;
-        await this.prisma.db.user.update({
-          where: { id: user.id },
-          data: {
-            failedLoginCount,
-            ...(lockedUntil ? { lockedUntil } : {}),
-          },
-        });
-        await this.audit.log({
-          tenantId: user.tenantId,
-          actorId: user.id,
-          action: 'auth.login_failed',
-          resourceType: 'User',
-          resourceId: user.id,
-          metadata: {
-            reason: 'bad_password',
-            failedLoginCount,
-            locked: Boolean(lockedUntil),
-          },
-          ip: req?.ip,
-          userAgent: header(req?.headers, 'user-agent'),
-        });
-        throw new UnauthorizedException('Invalid credentials');
       }
 
       if (user.failedLoginCount > 0 || user.lockedUntil) {
@@ -317,34 +344,35 @@ export class AuthService {
         include: { tenant: true },
       });
 
-      // Always succeed to avoid account enumeration
-      if (users.length === 1) {
-        const user = users[0];
-        const raw = randomBytes(32).toString('hex');
-        await this.prisma.db.passwordResetToken.create({
-          data: {
-            userId: user.id,
-            tokenHash: hashToken(raw),
-            expiresAt: new Date(Date.now() + 30 * 60 * 1000),
-          },
-        });
+      // Always succeed to avoid account enumeration. Email alone identifies the account(s).
+      if (users.length >= 1) {
         const appOrigin = this.config.get('CORS_ORIGIN', 'http://localhost:5173');
-        const resetUrl = `${appOrigin}/reset-password?token=${raw}`;
-        await this.mail.sendPasswordReset({
-          to: user.email,
-          resetUrl,
-          facilityName: user.tenant.name,
-          tenantId: user.tenantId,
-        });
-        await this.audit.log({
-          tenantId: user.tenantId,
-          actorId: user.id,
-          action: 'auth.password_reset_request',
-          resourceType: 'User',
-          resourceId: user.id,
-          ip: req?.ip,
-          userAgent: header(req?.headers, 'user-agent'),
-        });
+        for (const user of users) {
+          const raw = randomBytes(32).toString('hex');
+          await this.prisma.db.passwordResetToken.create({
+            data: {
+              userId: user.id,
+              tokenHash: hashToken(raw),
+              expiresAt: new Date(Date.now() + 30 * 60 * 1000),
+            },
+          });
+          const resetUrl = `${appOrigin}/reset-password?token=${raw}`;
+          await this.mail.sendPasswordReset({
+            to: user.email,
+            resetUrl,
+            facilityName: user.tenant.name,
+            tenantId: user.tenantId,
+          });
+          await this.audit.log({
+            tenantId: user.tenantId,
+            actorId: user.id,
+            action: 'auth.password_reset_request',
+            resourceType: 'User',
+            resourceId: user.id,
+            ip: req?.ip,
+            userAgent: header(req?.headers, 'user-agent'),
+          });
+        }
       }
 
       return { ok: true };

@@ -31,11 +31,12 @@ npm run dev:web   # http://localhost:5173
 | care@sunrise.demo | CAREGIVER | Sunrise Adult Family Home |
 | family@sunrise.demo | FAMILY_VIEWER | Sunrise Adult Family Home |
 
-### Loving Garden AFH
+RFH Care is multi-tenant — each adult family home (including Loving Garden AFH) is a facility account, not the product brand. **Sign in with email + password only**; the facility is resolved from the account email. Multi-home users switch facilities from the top bar after login.
 
-| Email | Password | Role |
-|-------|----------|------|
-| lovinggardenafh@gmail.com | LovinggardenAFH_2026 | OWNER (Jane Mburu) |
+Optional demo: `lovinggardenafh@gmail.com` / `LovinggardenAFH_2026` (Loving Garden AFH).
 
-Facility chart packets: `Loving garden documents/`
+### Integrations
+
+- **Fax** — `/integrations` (owner/admin). Configure Telnyx or Twilio via env; otherwise jobs queue in noop mode.
+- **Pharmacies** — connect Lincoln, Ready Meds, retail chains, PioneerRx/QS1, or Surescripts templates per home; transmit med orders by fax (eRx adapters plug in later).
 

@@ -22,6 +22,7 @@ import { CarePlanPage } from './pages/CarePlanPage';
 import { DownloadsPage } from './pages/DownloadsPage';
 import { FamilyPortalPage } from './pages/FamilyPortalPage';
 import { OrderIntakePage } from './pages/OrderIntakePage';
+import { IntegrationsPage } from './pages/IntegrationsPage';
 import { CareAtmosphere } from './components/CareAtmosphere';
 
 function Shell() {
@@ -29,6 +30,7 @@ function Shell() {
   const [online, setOnline] = useState(isOnline());
   const [pending, setPending] = useState(pendingCount());
   const [switching, setSwitching] = useState(false);
+  const [navOpen, setNavOpen] = useState(false);
 
   useEffect(() => {
     const syncPending = () => setPending(pendingCount());
@@ -48,6 +50,15 @@ function Shell() {
     };
   }, []);
 
+  useEffect(() => {
+    if (!navOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setNavOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [navOpen]);
+
   if (!user) return <Navigate to="/" replace />;
   const isFamily = user.role === 'FAMILY_VIEWER';
   const showStaff = ['OWNER', 'ADMIN', 'NURSE', 'CAREGIVER'].includes(user.role);
@@ -55,11 +66,19 @@ function Shell() {
   const showIncidents = !isFamily;
   const showReports = ['OWNER', 'ADMIN', 'NURSE'].includes(user.role);
   const showOrders = ['OWNER', 'ADMIN', 'NURSE'].includes(user.role);
+  const showIntegrations = ['OWNER', 'ADMIN'].includes(user.role);
   const showSecurity = ['OWNER', 'ADMIN'].includes(user.role);
   const multiHome = homes.length > 1;
 
+  const navClass = ({ isActive }: { isActive: boolean }) =>
+    `btn ${isActive ? '' : 'secondary'}`;
+
+  function closeNav() {
+    setNavOpen(false);
+  }
+
   return (
-    <div className="app-shell">
+    <div className={`app-shell ${navOpen ? 'nav-open' : ''}`}>
       <CareAtmosphere variant="app" />
       <header className="topbar">
         <div className="brand-block">
@@ -95,59 +114,68 @@ function Shell() {
             </div>
           )}
         </div>
-        <nav className="nav-actions">
+
+        <button
+          type="button"
+          className="nav-toggle"
+          aria-expanded={navOpen}
+          aria-controls="app-nav"
+          onClick={() => setNavOpen((o) => !o)}
+        >
+          <span className="visually-hidden">{navOpen ? 'Close menu' : 'Open menu'}</span>
+          <span aria-hidden="true">{navOpen ? '✕' : '☰'}</span>
+        </button>
+
+        {navOpen ? (
+          <button type="button" className="nav-backdrop" aria-label="Close menu" onClick={closeNav} />
+        ) : null}
+
+        <nav id="app-nav" className={`nav-actions ${navOpen ? 'is-open' : ''}`}>
           {isFamily ? (
-            <NavLink to="/family" className={({ isActive }) => `btn ${isActive ? '' : 'secondary'}`}>
+            <NavLink to="/family" className={navClass} onClick={closeNav}>
               Family
             </NavLink>
           ) : (
-            <NavLink to="/today" end className={({ isActive }) => `btn ${isActive ? '' : 'secondary'}`}>
+            <NavLink to="/today" end className={navClass} onClick={closeNav}>
               Today
             </NavLink>
           )}
-          <NavLink
-            to="/residents"
-            className={({ isActive }) => `btn ${isActive ? '' : 'secondary'}`}
-          >
+          <NavLink to="/residents" className={navClass} onClick={closeNav}>
             Residents
           </NavLink>
           {showMedAlerts ? (
-            <NavLink to="/alerts" className={({ isActive }) => `btn ${isActive ? '' : 'secondary'}`}>
+            <NavLink to="/alerts" className={navClass} onClick={closeNav}>
               Alerts
             </NavLink>
           ) : null}
           {showIncidents ? (
-            <NavLink
-              to="/incidents"
-              className={({ isActive }) => `btn ${isActive ? '' : 'secondary'}`}
-            >
+            <NavLink to="/incidents" className={navClass} onClick={closeNav}>
               Notes
             </NavLink>
           ) : null}
           {showStaff ? (
-            <NavLink to="/staff" className={({ isActive }) => `btn ${isActive ? '' : 'secondary'}`}>
+            <NavLink to="/staff" className={navClass} onClick={closeNav}>
               Staff
             </NavLink>
           ) : null}
           {showOrders ? (
-            <NavLink
-              to="/orders/intake"
-              className={({ isActive }) => `btn ${isActive ? '' : 'secondary'}`}
-            >
+            <NavLink to="/orders/intake" className={navClass} onClick={closeNav}>
               Orders
             </NavLink>
           ) : null}
           {showReports ? (
-            <NavLink to="/reports" className={({ isActive }) => `btn ${isActive ? '' : 'secondary'}`}>
+            <NavLink to="/reports" className={navClass} onClick={closeNav}>
               Reports
             </NavLink>
           ) : null}
           {!isFamily ? (
-            <NavLink
-              to="/downloads"
-              className={({ isActive }) => `btn ${isActive ? '' : 'secondary'}`}
-            >
+            <NavLink to="/downloads" className={navClass} onClick={closeNav}>
               Downloads
+            </NavLink>
+          ) : null}
+          {showIntegrations ? (
+            <NavLink to="/integrations" className={navClass} onClick={closeNav}>
+              Integrations
             </NavLink>
           ) : null}
           <span className={`sync-chip ${online ? (pending ? 'warn' : 'ok') : 'danger'}`}>
@@ -167,7 +195,14 @@ function Shell() {
               </span>
             </span>
           </span>
-          <button className="btn ghost" type="button" onClick={() => void logout()}>
+          <button
+            className="btn ghost"
+            type="button"
+            onClick={() => {
+              closeNav();
+              void logout();
+            }}
+          >
             Sign out
           </button>
         </nav>
@@ -179,7 +214,7 @@ function Shell() {
       ) : null}
       {showSecurity ? (
         <div className="security-banner">
-          Security: TLS at proxy · JWT + PHI keys in env · SMTP optional · see docs/hipaa-ops.md
+          Security: TLS at proxy · JWT + PHI keys in env · SMTP / fax optional · see docs/hipaa-ops.md
         </div>
       ) : null}
       <main className="main">
@@ -203,6 +238,7 @@ function AppRoutes() {
         <Route path="today" element={<HomePage timezone={tz} />} />
         <Route path="family" element={<FamilyPortalPage timezone={tz} />} />
         <Route path="orders/intake" element={<OrderIntakePage />} />
+        <Route path="integrations" element={<IntegrationsPage />} />
         <Route path="residents" element={<ResidentsPage timezone={tz} />} />
         <Route path="residents/:id" element={<ResidentDetailPage timezone={tz} />} />
         <Route path="residents/:id/mar" element={<MarSheetPage />} />

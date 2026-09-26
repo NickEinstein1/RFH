@@ -5,76 +5,16 @@ import { useAuth } from '../auth';
 
 const HERO_SRC = '/images/rfh-login-care-hero.jpg';
 
-const FACILITIES = [
-  {
-    id: 'loving-garden',
-    name: 'Loving Garden AFH',
-    email: 'lovinggardenafh@gmail.com',
-    password: 'LovinggardenAFH_2026',
-    label: 'Loving Garden AFH',
-    caregiverName: 'Jane Mburu',
-    caregiverRole: 'Provider',
-  },
-  {
-    id: 'sunrise',
-    name: 'Sunrise Adult Family Home',
-    email: 'care@sunrise.demo',
-    password: 'Password123!',
-    label: 'Sunrise Adult Family Home',
-    caregiverName: null,
-    caregiverRole: null,
-  },
-  {
-    id: 'portfolio',
-    name: 'Loving Garden AFH',
-    email: 'owner@portfolio.demo',
-    password: 'Password123!',
-    label: 'Portfolio owner (multi-home)',
-    caregiverName: null,
-    caregiverRole: null,
-  },
-  {
-    id: 'sunrise-family',
-    name: 'Sunrise Adult Family Home',
-    email: 'family@sunrise.demo',
-    password: 'Password123!',
-    label: 'Family portal (Sunrise)',
-    caregiverName: null,
-    caregiverRole: null,
-  },
-  {
-    id: 'custom',
-    name: '',
-    email: '',
-    password: '',
-    label: 'My facility (enter name)',
-    caregiverName: null,
-    caregiverRole: null,
-  },
-] as const;
-
-function facilityOptionLabel(f: (typeof FACILITIES)[number]) {
-  if (f.caregiverName) {
-    return `${f.label} — ${f.caregiverName} (${(f.caregiverRole || 'caregiver').toLowerCase()})`;
-  }
-  return f.label;
-}
-
 export function LoginPage() {
   const { user, login } = useAuth();
-  const [facilityId, setFacilityId] = useState<string>(FACILITIES[0].id);
-  const facility = FACILITIES.find((f) => f.id === facilityId) || FACILITIES[0];
-  const [customTenant, setCustomTenant] = useState('');
-  const [email, setEmail] = useState<string>(FACILITIES[0].email);
-  const [password, setPassword] = useState(FACILITIES[0].password);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [mode, setMode] = useState<'login' | 'reset'>('login');
   const [resetMsg, setResetMsg] = useState('');
   const [heroReady, setHeroReady] = useState(false);
   const [heroFailed, setHeroFailed] = useState(false);
-
-  const tenantName = facilityId === 'custom' ? customTenant.trim() : facility.name;
 
   useEffect(() => {
     const existing = document.querySelector(`link[data-rfh-hero="login"]`);
@@ -118,32 +58,23 @@ export function LoginPage() {
 
   if (user) return <Navigate to="/today" replace />;
 
-  function onFacilityChange(id: string) {
-    setFacilityId(id);
-    const match = FACILITIES.find((f) => f.id === id);
-    if (match && match.id !== 'custom') {
-      setEmail(match.email);
-      setPassword(match.password || '');
-    }
-  }
-
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     setBusy(true);
     setError('');
     setResetMsg('');
     try {
-      if (!tenantName) {
-        throw new Error('Enter your facility name');
-      }
       if (mode === 'reset') {
         await api('/auth/password-reset/request', {
           method: 'POST',
-          body: JSON.stringify({ email, tenantName }),
+          body: JSON.stringify({ email }),
         });
-        setResetMsg('If an account exists, a reset link was emailed (or logged when SMTP is off).');
+        setResetMsg(
+          'If an account exists for that email, a reset link was sent (or logged when SMTP is off).',
+        );
       } else {
-        await login(email, password, tenantName);
+        // Email alone resolves the facility relationship on the server.
+        await login(email, password);
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Request failed');
@@ -191,56 +122,19 @@ export function LoginPage() {
 
       <form className="login-panel page-enter" onSubmit={onSubmit}>
         <p className="login-brand">Sign in</p>
-        <h2 className="login-facility">
-          {facilityId === 'custom' ? 'Your facility' : facility.label}
-        </h2>
-        {facility.caregiverName ? (
-          <p className="login-caregiver">
-            {facility.caregiverName}
-            <span> · {facility.caregiverRole || 'Caregiver'}</span>
-          </p>
-        ) : (
-          <p className="login-caregiver login-caregiver--muted">
-            Choose a demo home or enter your facility name
-          </p>
-        )}
+        <h2 className="login-facility">Welcome back</h2>
+        <p className="login-caregiver login-caregiver--muted">
+          Use the email on your facility account — we’ll open the right home automatically.
+        </p>
         <p className="login-lede">
           {mode === 'login'
-            ? 'Enter your facility credentials to open today’s care board.'
-            : 'We’ll email a reset link for this facility if the account exists.'}
+            ? 'Enter your email and password to open today’s care board.'
+            : 'Enter your email and we’ll send a reset link if an account exists.'}
         </p>
 
         {error ? <div className="error">{error}</div> : null}
         {resetMsg ? <div className="toast toast-success">{resetMsg}</div> : null}
 
-        <div className="field">
-          <label htmlFor="tenant">Facility</label>
-          <select
-            id="tenant"
-            value={facilityId}
-            onChange={(e) => onFacilityChange(e.target.value)}
-            required
-          >
-            {FACILITIES.map((f) => (
-              <option key={f.id} value={f.id}>
-                {facilityOptionLabel(f)}
-              </option>
-            ))}
-          </select>
-        </div>
-        {facilityId === 'custom' ? (
-          <div className="field">
-            <label htmlFor="customTenant">Facility name</label>
-            <input
-              id="customTenant"
-              value={customTenant}
-              onChange={(e) => setCustomTenant(e.target.value)}
-              placeholder="Exact facility name"
-              required
-              autoComplete="organization"
-            />
-          </div>
-        ) : null}
         <div className="field">
           <label htmlFor="email">Email</label>
           <input
@@ -249,7 +143,9 @@ export function LoginPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             autoComplete="username"
+            placeholder="you@yourfacility.com"
             required
+            autoFocus
           />
         </div>
         {mode === 'login' ? (

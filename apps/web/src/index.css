@@ -233,6 +233,47 @@ a {
   align-items: center;
 }
 
+.nav-toggle {
+  display: none;
+  min-height: var(--touch);
+  min-width: var(--touch);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  color: var(--ink);
+  font-size: 1.25rem;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-backdrop {
+  display: none;
+}
+
+.integrations-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.75rem 0 0;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.integrations-connection {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg-elevated);
+}
+
+.integrations-page .download-panel + .download-panel {
+  margin-top: 1rem;
+}
+
 .main {
   padding: 1.25rem;
   max-width: 1100px;
@@ -1986,6 +2027,103 @@ a {
   .landing-main,
   .landing-strip {
     animation: none;
+  }
+}
+
+/* —— Tablet / phone shell —— */
+@media (max-width: 1024px) {
+  .main {
+    padding: 1rem;
+    max-width: 100%;
+  }
+
+  .topbar {
+    flex-wrap: wrap;
+    gap: 0.65rem;
+  }
+
+  .brand-facility,
+  .home-switcher select {
+    max-width: min(240px, 55vw);
+  }
+}
+
+@media (max-width: 860px) {
+  .nav-toggle {
+    display: inline-flex;
+    margin-left: auto;
+  }
+
+  .nav-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    border: 0;
+    background: rgba(15, 23, 42, 0.35);
+    z-index: 18;
+  }
+
+  .nav-actions {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(320px, 88vw);
+    z-index: 20;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: 0.45rem;
+    padding: 4.5rem 1rem 1.25rem;
+    background: rgba(255, 255, 255, 0.97);
+    border-left: 1px solid var(--border);
+    box-shadow: -12px 0 40px rgba(15, 23, 42, 0.12);
+    transform: translateX(105%);
+    transition: transform 180ms ease;
+    overflow-y: auto;
+  }
+
+  .nav-actions.is-open {
+    transform: translateX(0);
+  }
+
+  .nav-actions .btn,
+  .nav-actions .sync-chip,
+  .nav-actions .account-chip {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .login-stage {
+    overflow: auto;
+  }
+
+  .med-record-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tpl-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-title {
+    font-size: 1.55rem;
+  }
+
+  .btn {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+  }
+
+  .security-banner {
+    font-size: 0.78rem;
+    padding: 0.45rem 0.75rem;
+  }
+
+  .brand {
+    font-size: 1.25rem;
   }
 }
 
