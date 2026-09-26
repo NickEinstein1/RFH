@@ -2,7 +2,7 @@ import { useEffect, useState, type FormEvent } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { api } from '../api';
 import { useAuth } from '../auth';
-import { AuthFrame, PasswordHint } from '../components/AuthFrame';
+import { AuthFrame } from '../components/AuthFrame';
 
 export function LoginPage() {
   const { user, login } = useAuth();
@@ -55,16 +55,16 @@ export function LoginPage() {
   }
 
   return (
-    <AuthFrame visualLine="Sign in with the email on your facility account.">
+    <AuthFrame visualLine="Sign in with your work email. We’ll open the right home.">
       <form className="auth-form" onSubmit={onSubmit} noValidate>
-        <Link to="/" className="auth-back">
-          ← RFH Care
+        <Link to="/" className="auth-form__back">
+          ← Back to home
         </Link>
-        <h1 className="auth-form-title">{mode === 'login' ? 'Sign in' : 'Reset password'}</h1>
-        <p className="auth-form-lede">
+        <h1 className="auth-form__title">{mode === 'login' ? 'Sign in' : 'Reset password'}</h1>
+        <p className="auth-form__lede">
           {mode === 'login'
-            ? 'Your email opens the correct home. Multi-home owners switch facilities after sign-in.'
-            : 'We’ll email a reset link if that address is registered.'}
+            ? 'Email and password only—no facility picker.'
+            : 'Enter your email to receive a reset link.'}
         </p>
 
         {error ? (
@@ -91,6 +91,7 @@ export function LoginPage() {
             autoFocus
           />
         </div>
+
         {mode === 'login' ? (
           <div className="field">
             <label htmlFor="password">Password</label>
@@ -106,8 +107,8 @@ export function LoginPage() {
           </div>
         ) : null}
 
-        <div className="login-actions">
-          <button className="btn login-submit" type="submit" disabled={busy}>
+        <div className="auth-form__actions">
+          <button className="btn auth-form__submit" type="submit" disabled={busy}>
             {busy ? 'Please wait…' : mode === 'login' ? 'Sign in' : 'Send reset link'}
           </button>
           <button
@@ -121,8 +122,7 @@ export function LoginPage() {
           >
             {mode === 'login' ? 'Forgot password?' : 'Back to sign in'}
           </button>
-          {mode === 'login' ? <PasswordHint /> : null}
-          <p className="auth-switch">
+          <p className="auth-form__switch">
             New home? <Link to="/signup">Create an account</Link>
           </p>
         </div>

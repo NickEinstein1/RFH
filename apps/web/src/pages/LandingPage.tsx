@@ -9,104 +9,105 @@ export function LandingPage() {
 
   return (
     <div className="landing">
-      {/* —— First viewport: brand + one promise + CTAs + full-bleed hero —— */}
-      <section className="landing-viewport">
-        <div className="landing-hero" aria-hidden="true">
+      <section className="landing-hero-stage">
+        <div className="landing-hero-media" aria-hidden="true">
           <img
-            className="landing-hero__photo"
+            className="landing-hero-media__photo"
             src={HERO_SRC}
             alt=""
-            width={1280}
-            height={720}
+            width={1600}
+            height={900}
             decoding="async"
             fetchPriority="high"
           />
-          <div className="landing-hero__veil" />
-          <div className="landing-hero__grain" />
+          <div className="landing-hero-media__veil" />
         </div>
 
-        <header className="landing-top">
-          <div className="landing-brand">RFH Care</div>
-          <nav className="landing-top-actions" aria-label="Account">
-            <Link className="btn ghost landing-link" to="/login">
+        <header className="landing-nav">
+          <span className="landing-nav__mark" aria-hidden="true">
+            RFH Care
+          </span>
+          <nav className="landing-nav__actions" aria-label="Account">
+            <Link className="landing-nav__link" to="/login">
               Sign in
             </Link>
-            <Link className="btn landing-cta" to="/signup">
-              Start free
+            <Link className="landing-nav__cta" to="/signup">
+              Create account
             </Link>
           </nav>
         </header>
 
-        <main className="landing-main">
-          <p className="landing-brand-hero">RFH Care</p>
-          <h1 className="landing-title">Adult family home charting, built for trust</h1>
-          <p className="landing-copy">
-            eMAR, care plans, and family access in one secure workspace for your home.
+        <div className="landing-hero-copy">
+          <p className="landing-hero-copy__brand">RFH Care</p>
+          <h1 className="landing-hero-copy__title">Presence for every med pass</h1>
+          <p className="landing-hero-copy__lede">
+            Calm eMAR and care charting for adult family homes—secured to your facility email.
           </p>
-          <div className="landing-actions">
-            <Link className="btn landing-cta landing-cta-lg" to="/signup">
+          <div className="landing-hero-copy__actions">
+            <Link className="landing-btn landing-btn--primary" to="/signup">
               Create your home
             </Link>
-            <Link className="btn secondary landing-cta-lg landing-cta-quiet" to="/login">
-              Sign in with email
+            <Link className="landing-btn landing-btn--ghost" to="/login">
+              Sign in
             </Link>
-          </div>
-        </main>
-      </section>
-
-      {/* —— Security: one job —— */}
-      <section className="landing-section landing-security" aria-labelledby="security-heading">
-        <h2 id="security-heading">Security is the operating model</h2>
-        <p className="landing-section-lede">
-          Every home is isolated. Access is role-based. Sensitive fields and sessions are protected by
-          design—not bolted on later.
-        </p>
-        <ul className="landing-security-list">
-          <li>
-            <strong>Tenant isolation</strong>
-            <span>Postgres row-level security scoped to your facility</span>
-          </li>
-          <li>
-            <strong>PHI field encryption</strong>
-            <span>Selected clinical fields encrypted at the application layer</span>
-          </li>
-          <li>
-            <strong>Hardened sign-in</strong>
-            <span>Email-bound accounts, lockout after failed attempts, idle session timeout</span>
-          </li>
-          <li>
-            <strong>Audit trail</strong>
-            <span>Immutable logs for chart access, med pass, and administrative actions</span>
-          </li>
-        </ul>
-      </section>
-
-      {/* —— Product: one job —— */}
-      <section className="landing-section landing-product" aria-labelledby="product-heading">
-        <h2 id="product-heading">What your team uses every day</h2>
-        <p className="landing-section-lede">
-          One product for the floor, the nurse, and the family—without duplicating the same promise in
-          three places.
-        </p>
-        <div className="landing-product-grid">
-          <div>
-            <strong>Med pass &amp; MAR</strong>
-            <p>Due boards, monthly MAR, offline-ready recording, and pharmacy fax hooks.</p>
-          </div>
-          <div>
-            <strong>Care &amp; notes</strong>
-            <p>Negotiated care plans and CBHS behavior notes that export like survey forms.</p>
-          </div>
-          <div>
-            <strong>Family portal</strong>
-            <p>Minimum-necessary visibility for loved ones—never full clinical dump by default.</p>
           </div>
         </div>
       </section>
 
-      <footer className="landing-footer">
+      <section className="landing-band landing-band--security" aria-labelledby="security-heading">
+        <div className="landing-band__inner">
+          <h2 id="security-heading">Built around security</h2>
+          <p className="landing-band__lede">
+            Each home stays isolated. Roles limit access. Sessions time out. Sensitive chart fields
+            are encrypted.
+          </p>
+          <ul className="landing-security-grid">
+            <li>
+              <strong>Facility isolation</strong>
+              <span>Row-level security keeps another home’s charts out of reach.</span>
+            </li>
+            <li>
+              <strong>Email-bound sign-in</strong>
+              <span>Your email opens the right facility—no picking homes at login.</span>
+            </li>
+            <li>
+              <strong>Session controls</strong>
+              <span>Idle timeout, lockout after failed attempts, hashed passwords.</span>
+            </li>
+            <li>
+              <strong>Audit trail</strong>
+              <span>Immutable records for access, med pass, and administrative changes.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section className="landing-band" aria-labelledby="work-heading">
+        <div className="landing-band__inner">
+          <h2 id="work-heading">Day-to-day work</h2>
+          <p className="landing-band__lede">
+            Med pass, care plans, and family visibility in one place.
+          </p>
+          <div className="landing-work">
+            <div>
+              <strong>Med pass &amp; MAR</strong>
+              <p>Due boards, monthly MAR, and offline-ready recording.</p>
+            </div>
+            <div>
+              <strong>Care &amp; notes</strong>
+              <p>Negotiated care plans and CBHS notes ready for export.</p>
+            </div>
+            <div>
+              <strong>Family portal</strong>
+              <p>Minimum-necessary updates for loved ones.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer className="landing-foot">
         <span>RFH Care</span>
-        <nav>
+        <nav aria-label="Footer">
           <Link to="/login">Sign in</Link>
           <Link to="/signup">Create account</Link>
         </nav>

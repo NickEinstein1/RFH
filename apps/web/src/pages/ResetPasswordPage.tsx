@@ -37,22 +37,24 @@ export function ResetPasswordPage() {
   }
 
   return (
-    <AuthFrame visualLine="Choose a new password for your facility account.">
+    <AuthFrame visualLine="Choose a new password, then sign in with your email.">
       <form className="auth-form" onSubmit={onSubmit} noValidate>
-        <Link to="/" className="auth-back">
-          ← RFH Care
+        <Link to="/" className="auth-form__back">
+          ← Back to home
         </Link>
-        <h1 className="auth-form-title">New password</h1>
-        <p className="auth-form-lede">
+        <h1 className="auth-form__title">New password</h1>
+        <p className="auth-form__lede">
           {token
-            ? 'Set a strong password, then sign in with your email.'
+            ? 'Set a strong password for your facility account.'
             : 'This reset link is missing or invalid. Request a new one from sign in.'}
         </p>
+
         {error ? (
           <div className="error" role="alert">
             {error}
           </div>
         ) : null}
+
         {done ? (
           <p className="empty">
             Password updated. <Link to="/login">Sign in</Link>
@@ -86,11 +88,11 @@ export function ResetPasswordPage() {
                 disabled={!token}
               />
             </div>
-            <div className="login-actions">
-              <button className="btn login-submit" type="submit" disabled={busy || !token}>
+            <div className="auth-form__actions">
+              <button className="btn auth-form__submit" type="submit" disabled={busy || !token}>
                 {busy ? 'Saving…' : 'Update password'}
               </button>
-              <p className="auth-switch">
+              <p className="auth-form__switch">
                 <Link to="/login">Back to sign in</Link>
               </p>
             </div>

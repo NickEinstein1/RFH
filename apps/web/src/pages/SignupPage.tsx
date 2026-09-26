@@ -65,14 +65,14 @@ export function SignupPage() {
   }
 
   return (
-    <AuthFrame visualLine="Register your adult family home as the owner.">
+    <AuthFrame visualLine="Register your adult family home. Your email becomes your sign-in.">
       <form className="auth-form" onSubmit={onSubmit} noValidate>
-        <Link to="/" className="auth-back">
-          ← RFH Care
+        <Link to="/" className="auth-form__back">
+          ← Back to home
         </Link>
-        <h1 className="auth-form-title">Create your home</h1>
-        <p className="auth-form-lede">
-          One owner account starts the facility. Invite nurses and caregivers after you sign in.
+        <h1 className="auth-form__title">Create your home</h1>
+        <p className="auth-form__lede">
+          You become the owner. Invite nurses and caregivers after you sign in.
         </p>
 
         {error ? (
@@ -87,12 +87,13 @@ export function SignupPage() {
             id="tenantName"
             value={tenantName}
             onChange={(e) => setTenantName(e.target.value)}
-            placeholder="Exact licensed home name"
+            placeholder="Licensed home name"
             required
             minLength={2}
             autoComplete="organization"
           />
         </div>
+
         <div className="field">
           <label htmlFor="timezone">Timezone</label>
           <select id="timezone" value={timezone} onChange={(e) => setTimezone(e.target.value)}>
@@ -103,7 +104,8 @@ export function SignupPage() {
             ))}
           </select>
         </div>
-        <div className="auth-name-row">
+
+        <div className="auth-form__name-row">
           <div className="field">
             <label htmlFor="firstName">First name</label>
             <input
@@ -125,6 +127,7 @@ export function SignupPage() {
             />
           </div>
         </div>
+
         <div className="field">
           <label htmlFor="email">Work email</label>
           <input
@@ -136,8 +139,8 @@ export function SignupPage() {
             autoComplete="email"
             placeholder="owner@yourfacility.com"
           />
-          <p className="field-hint">This email is how you sign in — it binds you to this facility.</p>
         </div>
+
         <div className="field">
           <label htmlFor="password">Password</label>
           <input
@@ -151,6 +154,7 @@ export function SignupPage() {
           />
           <PasswordHint />
         </div>
+
         <div className="field">
           <label htmlFor="confirm">Confirm password</label>
           <input
@@ -164,11 +168,11 @@ export function SignupPage() {
           />
         </div>
 
-        <div className="login-actions">
-          <button className="btn login-submit" type="submit" disabled={busy}>
+        <div className="auth-form__actions">
+          <button className="btn auth-form__submit" type="submit" disabled={busy}>
             {busy ? 'Creating home…' : 'Create account'}
           </button>
-          <p className="auth-switch">
+          <p className="auth-form__switch">
             Already registered? <Link to="/login">Sign in</Link>
           </p>
         </div>

@@ -4,37 +4,33 @@ import type { ReactNode } from 'react';
 const HERO_SRC = '/images/rfh-login-care-hero.jpg';
 
 type AuthFrameProps = {
-  /** Short line under the brand on the visual pane */
   visualLine: string;
   children: ReactNode;
 };
 
-/**
- * Single visual system for sign-in, sign-up, and password reset.
- * Brand on the hero; forms stay quiet and single-purpose.
- */
+/** Shared layout for sign-in, sign-up, and password reset. */
 export function AuthFrame({ visualLine, children }: AuthFrameProps) {
   return (
-    <div className="auth-frame">
-      <aside className="auth-frame-visual" aria-hidden="true">
+    <div className="auth-shell">
+      <aside className="auth-shell__visual" aria-hidden="true">
         <img
-          className="auth-frame-photo"
+          className="auth-shell__photo"
           src={HERO_SRC}
           alt=""
-          width={1280}
-          height={720}
+          width={1600}
+          height={900}
           decoding="async"
           fetchPriority="high"
         />
-        <div className="auth-frame-veil" />
-        <div className="auth-frame-copy">
-          <Link to="/" className="auth-frame-brand">
+        <div className="auth-shell__veil" />
+        <div className="auth-shell__caption">
+          <Link to="/" className="auth-shell__brand">
             RFH Care
           </Link>
-          <p className="auth-frame-line">{visualLine}</p>
+          <p className="auth-shell__line">{visualLine}</p>
         </div>
       </aside>
-      <div className="auth-frame-panel">{children}</div>
+      <main className="auth-shell__panel">{children}</main>
     </div>
   );
 }
@@ -42,7 +38,7 @@ export function AuthFrame({ visualLine, children }: AuthFrameProps) {
 export function PasswordHint() {
   return (
     <p className="field-hint">
-      12+ characters with upper, lower, number, and symbol. Stored hashed; never emailed in plain text.
+      Use 12+ characters with upper, lower, number, and symbol.
     </p>
   );
 }
